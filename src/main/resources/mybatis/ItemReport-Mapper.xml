@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.infosoul.mserver.repository.mybatis.report.IItemReportDao">
+
+    <resultMap id="axisVo" type="com.infosoul.mserver.vo.report.AxisVo">
+        <result column="time" property="xAxisData"/>    
+        <result column="amount" property="yAxisData"/>
+    </resultMap>
+    
+    <!-- 新增商品数:日报 -->
+	<select id="getItemNewAmountByDaily" resultMap="axisVo">
+        SELECT DATE(a.create_date) AS time, COUNT(1) as amount FROM item AS a
+        <where>
+            <if test="param1 != null and param1 != ''">
+                a.create_date <![CDATA[ >= #{param1} ]]>
+            </if>
+            <if test="param2 != null and param2 != ''">
+                AND a.create_date <![CDATA[ <= #{param2} ]]>
+            </if>
+            GROUP BY time
+            ORDER BY time
+        </where>        
+    </select>
+    
+    <!-- 新增商品数:周报 -->
+    <select id="getItemNewAmountByWeekly" resultMap="axisVo">
+        SELECT YEARWEEK(a.create_date, 3) AS time, count(1) as amount FROM item AS a
+        <where>
+            a.create_date BETWEEN #{param1} AND #{param2}
+        </where>
+        GROUP BY time
+        ORDER BY time
+    </select>
+    
+    <!-- 新增商品数:月报 -->
+    <select id="getItemNewAmountByMonthly" resultMap="axisVo">
+        SELECT EXTRACT(YEAR_MONTH FROM a.create_date) AS time, count(1) as amount FROM item AS a 
+        <where>
+            a.create_date BETWEEN #{param1} AND #{param2}
+        </where>
+        GROUP BY time
+        ORDER BY time
+    </select>
+    
+    <!-- 上架商品数/下架商品数:日报 -->
+    <select id="getItemUpDownAmountByDaily" resultMap="axisVo">
+        SELECT DATE(a.create_date) AS time, count(1) AS amount FROM retail_item AS a
+        <where>
+            a.create_date BETWEEN #{param1} AND #{param2} AND a.del_flag=#{param3}
+        </where>
+        GROUP BY time
+        ORDER BY time     
+    </select>
+    
+    <!-- 上架商品数/下架商品数:周报 -->
+    <select id="getItemUpDownAmountByWeekly" resultMap="axisVo">
+        SELECT YEARWEEK(a.create_date, 3) AS time, count(1) AS amount FROM retail_item AS a
+        <where>
+            a.create_date BETWEEN #{param1} AND #{param2} AND a.del_flag=#{param3}
+        </where>
+        GROUP BY time
+        ORDER BY time     
+    </select>
+    
+    <!-- 上架商品数/下架商品数:月报 -->
+    <select id="getItemUpDownAmountByMonthly" resultMap="axisVo">
+        SELECT EXTRACT(YEAR_MONTH FROM a.create_date) AS time, count(1) AS amount FROM retail_item AS a
+        <where>
+            a.create_date BETWEEN #{param1} AND #{param2} AND a.del_flag=#{param3}
+        </where>
+        GROUP BY time
+        ORDER BY time     
+    </select>
+
+
+</mapper>

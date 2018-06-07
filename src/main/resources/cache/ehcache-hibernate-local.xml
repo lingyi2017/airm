@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache updateCheck="false" name="hibernateCache">
+
+	<diskStore path="java.io.tmpdir/mobileserver/ehcache/hibernate" />
+
+	<!-- DefaultCache setting. -->
+	<defaultCache 
+        maxEntriesLocalHeap="100" 
+        eternal="false" 
+        timeToIdleSeconds="300"
+		timeToLiveSeconds="600" 
+		overflowToDisk="true" 
+		maxEntriesLocalDisk="100000" />
+
+	<cache name="com.infosoul.mserver.entity.sys.Dict" 
+        maxEntriesLocalHeap="100" 
+        eternal="false"
+		overflowToDisk="true" 
+		maxEntriesLocalDisk="100000" />
+
+	<cache name="com.infosoul.mserver.entity.sys.Area" 
+        maxEntriesLocalHeap="100" 
+        eternal="false"
+		overflowToDisk="true" 
+		maxEntriesLocalDisk="100000" />
+	<cache name="com.infosoul.mserver.entity.sys.Area.childList" 
+        maxEntriesLocalHeap="100"
+		eternal="false" 
+		overflowToDisk="true" 
+		maxEntriesLocalDisk="100000" />
+	<cache name="com.infosoul.mserver.entity.sys.Area.officeList" 
+        maxEntriesLocalHeap="100"
+		eternal="false" 
+		overflowToDisk="true" 
+		maxEntriesLocalDisk="100000" />
+
+	<cache name="com.infosoul.mserver.entity.sys.Office" 
+        maxEntriesLocalHeap="100" 
+        eternal="false"
+		overflowToDisk="true" 
+		maxEntriesLocalDisk="100000" />
+	<cache name="com.infosoul.mserver.entity.sys.Office.childList" 
+        maxEntriesLocalHeap="100"
+		eternal="false" 
+		overflowToDisk="true" 
+		maxEntriesLocalDisk="100000" />
+	<cache name="com.infosoul.mserver.entity.sys.Office.userList" 
+        maxEntriesLocalHeap="100"
+		eternal="false" 
+		overflowToDisk="true" 
+		maxEntriesLocalDisk="100000" />
+
+	<cache name="com.infosoul.mserver.entity.sys.Menu" 
+        maxEntriesLocalHeap="100" 
+        eternal="false"
+		overflowToDisk="true" 
+		maxEntriesLocalDisk="100000" />
+	<cache name="com.infosoul.mserver.entity.sys.Menu.childList" 
+        maxEntriesLocalHeap="100"
+		eternal="false" 
+		overflowToDisk="true" 
+		maxEntriesLocalDisk="100000" />
+	<cache name="com.infosoul.mserver.entity.sys.Menu.roleList" 
+        maxEntriesLocalHeap="100"
+		eternal="false" 
+		overflowToDisk="true" 
+		maxEntriesLocalDisk="100000" />
+
+	<cache name="com.infosoul.mserver.entity.sys.Role" 
+        maxEntriesLocalHeap="100" 
+        eternal="false"
+		overflowToDisk="true" 
+		maxEntriesLocalDisk="100000" />
+	<cache name="com.infosoul.mserver.entity.sys.Role.menuList" 
+        maxEntriesLocalHeap="100"
+		eternal="false" 
+		overflowToDisk="true" 
+		maxEntriesLocalDisk="100000" />
+	<cache name="com.infosoul.mserver.entity.sys.Role.userList" 
+        maxEntriesLocalHeap="100"
+		eternal="false" 
+		overflowToDisk="true" 
+		maxEntriesLocalDisk="100000" />
+
+	<cache name="com.infosoul.mserver.entity.sys.User" 
+        maxEntriesLocalHeap="100" 
+        eternal="false"
+		overflowToDisk="true" 
+		maxEntriesLocalDisk="100000" />
+	<cache name="com.infosoul.mserver.entity.sys.User.roleList" 
+        maxEntriesLocalHeap="100"
+		eternal="false" 
+		overflowToDisk="true" 
+		maxEntriesLocalDisk="100000" />
+
+</ehcache>

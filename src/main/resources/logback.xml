@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+
+	<!-- 级别：TRACE、DEBUG、INFO、WARN和ERROR -->
+	<!-- 控制台输出 -->
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{yyyy-MM-dd-HH:mm:ss} [%thread] %-5level %logger{80} %caller{1} - %msg%n %rEx</pattern>
+		</encoder>
+	</appender>
+
+	<!-- 输出ERROR级别的日志到文件(同样采用文件大小策略进行文件输出，超过指定大小对文件压缩(.zip)备份) -->
+	<appender name="all_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>/var/log/tcsw/all_error.log</File>
+		<append>false</append>
+		<Encoding>UTF-8</Encoding>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level><!-- 指定要对级别为ERROR日志信息过滤 -->
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>/var/log/tcsw/all_error.%i.log</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>5</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>5MB</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{yyyy-MM-dd-HH:mm:ss} [%thread] %-5level %logger{80} %caller{1} - %msg%n %rEx</Pattern>
+		</layout>
+	</appender>
+
+	<appender name="all_info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>/var/log/tcsw/all_info.log</File>
+		<append>false</append>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>/var/log/tcsw/all_info.%i.log</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>5</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>5MB</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{yyyy-MM-dd-HH:mm:ss} [%thread] %-5level %logger{80} %caller{1} - %msg%n %rEx</Pattern>
+		</layout>
+	</appender>
+
+	<appender name="controller" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>/var/log/tcsw/controller.log</File>
+		<append>false</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>/var/log/tcsw/controller.%i.log</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>5</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>5MB</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{yyyy-MM-dd-HH:mm:ss} [%thread] %-5level %logger{80} %caller{1} - %msg%n %rEx</Pattern>
+		</layout>
+	</appender>
+
+	<appender name="repository" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>/var/log/tcsw/repository.log</File>
+		<append>false</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>/var/log/tcsw/repository.%i.log</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>5</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>5MB</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{yyyy-MM-dd-HH:mm:ss} [%thread] %-5level %logger{80} %caller{1} - %msg%n %rEx</Pattern>
+		</layout>
+	</appender>
+
+	<appender name="service" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>/var/log/tcsw/service.log</File>
+		<append>false</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>/var/log/tcsw/service.%i.log</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>5</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>5MB</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{yyyy-MM-dd-HH:mm:ss} [%thread] %-5level %logger{80} %caller{1} - %msg%n %rEx</Pattern>
+		</layout>
+	</appender>
+
+	<appender name="webservice" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>/var/log/tcsw/webservice.log</File>
+		<append>false</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>/var/log/tcsw/webservice.%i.log</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>5</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>5MB</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{yyyy-MM-dd-HH:mm:ss} [%thread] %-5level %logger{80} %caller{1} - %msg%n %rEx</Pattern>
+		</layout>
+	</appender>
+    
+    <!-- additivity属性为false，表示此loger的打印信息不再向上级传递 -->
+	<logger name="com.infosoul.mserver.controller" level="DEBUG" additivity="false">
+		<appender-ref ref="controller" />
+	</logger>
+
+	<logger name="com.infosoul.mserver.repository" level="DEBUG">
+		<appender-ref ref="repository" />
+	</logger>
+
+	<logger name="com.infosoul.mserver.service" level="DEBUG">
+		<appender-ref ref="service" />
+	</logger>
+
+	<logger name="com.infosoul.mserver.webservice" level="DEBUG">
+		<appender-ref ref="webservice" />
+	</logger>
+
+	<!--log4jdbc，上线改为INFO -->
+	<logger name="jdbc.sqltiming" level="INFO" />
+	<logger name="jdbc.resultsettable" level="INFO" />
+    <logger name="jdbc.sqlonly" level="OFF" />
+    <logger name="jdbc.audit" level="OFF" />
+    <logger name="jdbc.resultset" level="OFF" />
+    <logger name="jdbc.connection" level="OFF" />
+
+	<!-- Hibernate SQL语句输出到日志中
+	<logger name="org.hibernate.SQL" level="DEBUG" />
+	 -->
+
+	<root>
+	    <!-- appender-ref ref="stdout" /-->
+		<appender-ref ref="all_info" level="INFO" />
+		<appender-ref ref="all_error" />
+	</root>
+
+</configuration>
