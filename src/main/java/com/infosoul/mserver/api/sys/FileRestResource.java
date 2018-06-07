@@ -1,16 +1,14 @@
 /**
- * 
+ *
  */
-package com.infosoul.mserver.webservice.rest.util;
+package com.infosoul.mserver.api.sys;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.infosoul.mserver.api.Result;
+import com.infosoul.mserver.webservice.rest.RsResponse;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
@@ -19,29 +17,23 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.infosoul.mserver.webservice.rest.Result.Status;
-import com.infosoul.mserver.webservice.rest.RsResponse;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * <p> Title: </p>
- * 
+ * <p>
  * <p> Description: </p>
- * 
+ * <p>
  * <p> Copyright: Copyright (c) 2014 by Free-Lancer </p>
- * 
+ * <p>
  * <p> Company: Free-Lancer </p>
- * 
+ *
  * @author: free lance
  * @Email: free.lance@Gmail.com
  * @version: 2.0
  * @date: 2014-12-29 上午11:42:24
- * 
  */
 @Path("/file")
 public class FileRestResource {
@@ -53,18 +45,19 @@ public class FileRestResource {
 
     /**
      * 上传文件
-     * 
-     * @param inputStream
-     * @param contentDisposition
-     * @param context
+     *
+     * @param fileInputStream
+     * @param contentDispositionHeader
      * @return
+     * @throws FileNotFoundException
+     * @throws IOException
      */
     @POST
     @Path("/upload")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Result<String> uploadFile(@FormDataParam("file") InputStream fileInputStream,
-            @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) throws FileNotFoundException,
+                                     @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) throws FileNotFoundException,
             IOException {
         String result = "文件上传失败";
         if (contentDispositionHeader != null && contentDispositionHeader.getFileName() != null
@@ -99,13 +92,13 @@ public class FileRestResource {
             }
         }
 
-        return Result.buildResult(Status.OK, result);
+        return Result.buildResult(Result.Status.OK, result);
 
     }
 
     // 获取头上上传的当前时间
     private String getUploadCurrentTime() {
-        
+
         return new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
     }
 }

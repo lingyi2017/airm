@@ -1,14 +1,13 @@
 package com.infosoul.mserver.api.filter;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.JavaType;
 import com.infosoul.mserver.api.Result;
+import com.infosoul.mserver.api.util.AppResultUtils;
 import com.infosoul.mserver.api.util.JWTUtils;
 import com.infosoul.mserver.common.mapper.JsonMapper;
 import com.infosoul.mserver.common.utils.Constant;
 import com.infosoul.mserver.common.utils.UserUtils;
 import com.infosoul.mserver.entity.sys.User;
-import com.infosoul.mserver.webservice.rest.util.AppResultUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;

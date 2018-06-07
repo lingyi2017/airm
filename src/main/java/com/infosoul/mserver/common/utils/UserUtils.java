@@ -1,8 +1,11 @@
 package com.infosoul.mserver.common.utils;
 
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.collect.Maps;
+import com.infosoul.mserver.common.persistence.Parameter;
+import com.infosoul.mserver.common.security.SystemAuthorizingRealm.Principal;
+import com.infosoul.mserver.entity.sys.*;
+import com.infosoul.mserver.repository.hibernate.sys.*;
+import com.infosoul.mserver.service.BaseService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.UnavailableSecurityManagerException;
 import org.apache.shiro.session.InvalidSessionException;
@@ -10,24 +13,9 @@ import org.apache.shiro.subject.Subject;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
 
-import com.google.common.collect.Maps;
-import com.infosoul.mserver.common.jzgs.Constant4Jzgs;
-import com.infosoul.mserver.common.persistence.Page;
-import com.infosoul.mserver.common.persistence.Parameter;
-import com.infosoul.mserver.common.security.SystemAuthorizingRealm.Principal;
-import com.infosoul.mserver.entity.sys.Area;
-import com.infosoul.mserver.entity.sys.Menu;
-import com.infosoul.mserver.entity.sys.Office;
-import com.infosoul.mserver.entity.sys.Role;
-import com.infosoul.mserver.entity.sys.User;
-import com.infosoul.mserver.repository.hibernate.sys.AreaDao;
-import com.infosoul.mserver.repository.hibernate.sys.MenuDao;
-import com.infosoul.mserver.repository.hibernate.sys.OfficeDao;
-import com.infosoul.mserver.repository.hibernate.sys.RoleDao;
-import com.infosoul.mserver.repository.hibernate.sys.UserDao;
-import com.infosoul.mserver.service.BaseService;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户工具类
@@ -120,7 +108,7 @@ public class UserUtils extends BaseService {
             // 如果不是超级管理员，则不显示超级管理员用户
             if (!includeAdmin) {
                 sqlPage.append(" AND r.id != :id ");
-                parameter.put("id", Constant4Jzgs.ROLE_ID_ADMIN);
+                parameter.put("id", "admin");
             }
             list = roleDao.findBySql(sqlPage.toString(), parameter, Role.class);
             putCache(CACHE_ROLE_LIST + includeAdmin, list);

@@ -157,6 +157,13 @@ public class JsonMapper extends ObjectMapper {
     }
 
     /**
+     * TODO: 构造Map类型.
+     */
+    public JavaType contructMapType(Class<? extends Map> mapClass, Class<?> keyClass, Class<?> valueClass) {
+        return this.getTypeFactory().constructMapType(mapClass, keyClass, valueClass);
+    }
+
+    /**
      * 構造泛型的Collection Type如:
      * ArrayList<MyBean>, 则调用constructCollectionType(ArrayList.class,MyBean.class)
      * HashMap<String,MyBean>, 则调用(HashMap.class,String.class, MyBean.class)

@@ -1,8 +1,8 @@
 package com.infosoul.mserver.api.sys;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.infosoul.mserver.api.Result;
+import com.infosoul.mserver.api.util.AppResultUtils;
 import com.infosoul.mserver.common.mapper.JsonMapper;
 import com.infosoul.mserver.common.security.UsernamePasswordToken;
 import com.infosoul.mserver.common.utils.Constant;
@@ -10,16 +10,12 @@ import com.infosoul.mserver.common.utils.UserUtils;
 import com.infosoul.mserver.common.web.MediaTypes;
 import com.infosoul.mserver.entity.sys.User;
 import com.infosoul.mserver.service.sys.SystemService;
-import com.infosoul.mserver.webservice.rest.util.AppResultUtils;
 import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.subject.Subject;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +23,11 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.List;
 import java.util.Map;
 
 /**

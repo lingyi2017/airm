@@ -1,20 +1,7 @@
 package com.infosoul.mserver.webservice.rest.report;
 
-import java.util.List;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.google.common.collect.Lists;
+import com.infosoul.mserver.api.Result;
 import com.infosoul.mserver.common.mapper.JsonMapper;
 import com.infosoul.mserver.common.utils.Collections3;
 import com.infosoul.mserver.common.utils.StringUtils;
@@ -23,7 +10,13 @@ import com.infosoul.mserver.service.report.ItemReportService;
 import com.infosoul.mserver.vo.report.AxisVo;
 import com.infosoul.mserver.vo.report.Echarts;
 import com.infosoul.mserver.vo.report.Series;
-import com.infosoul.mserver.webservice.rest.Result.Status;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.ws.rs.*;
+import java.util.List;
 
 @Path("/report/item")
 @Consumes(MediaTypes.JSON_UTF_8)
@@ -38,19 +31,17 @@ public class ItemReportRestResource {
 
     /**
      * 商品数据统计chart/table
-     * 
-     * @param startDate
+     *
+     * @param beginDate
      * @param endDate
-     * @param period
-     *            : daily,weekly,monthly
-     * @param type
-     *            : chart/table
+     * @param period    : daily,weekly,monthly
+     * @param type      : chart/table
      * @return
      */
     @GET
     @Path("/amountChart")
     public String getItemReport(
-            @QueryParam("beginDate") String beginDate, 
+            @QueryParam("beginDate") String beginDate,
             @QueryParam("endDate") String endDate,
             @DefaultValue("daily") @QueryParam("period") String period,
             @DefaultValue("chart") @QueryParam("type") String type) {
@@ -61,7 +52,7 @@ public class ItemReportRestResource {
             // reportType = "table";
             if (StringUtils.isBlank(beginDate) || StringUtils.isBlank(endDate)) {
                 String errorString = JsonMapper.getInstance().toJson(
-                        Result.buildErrorResult(Status.BAD_REQUEST, "未输入起止时间！"));
+                        Result.buildErrorResult(Result.Status.BAD_REQUEST, "未输入起止时间！"));
                 return errorString;
             }
 
@@ -178,7 +169,7 @@ public class ItemReportRestResource {
                 seriesList.add(new Series(legendDataList.get(2), itemDownData));
                 seriesList.add(new Series(legendDataList.get(3), itemSumData));
             }
-            
+
             // Echarts echarts = new Echarts(legendDataList, axis, seriesList);
             Echarts echarts = new Echarts(legendDataList, xAxisDataList, seriesList);
             String echarts2Json = JsonMapper.getInstance().toJson(echarts);

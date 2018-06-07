@@ -1,17 +1,16 @@
-package com.infosoul.mserver.webservice.rest.util;
-
-import java.util.List;
-import java.util.Map;
-
-import com.infosoul.mserver.api.Result;
-import org.apache.commons.lang3.StringUtils;
+package com.infosoul.mserver.api.util;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.google.common.collect.Maps;
+import com.infosoul.mserver.api.Result;
 import com.infosoul.mserver.common.mapper.JsonMapper;
 import com.infosoul.mserver.common.utils.DateUtils;
 import com.infosoul.mserver.common.utils.UserUtils;
 import com.infosoul.mserver.entity.sys.User;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 处理返回给客户端数据工具类

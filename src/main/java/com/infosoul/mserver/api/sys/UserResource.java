@@ -2,12 +2,12 @@ package com.infosoul.mserver.api.sys;
 
 import com.google.common.collect.Maps;
 import com.infosoul.mserver.api.Result;
+import com.infosoul.mserver.api.util.AppResultUtils;
 import com.infosoul.mserver.common.mapper.JsonMapper;
 import com.infosoul.mserver.common.utils.UserUtils;
 import com.infosoul.mserver.common.web.MediaTypes;
 import com.infosoul.mserver.entity.sys.User;
 import com.infosoul.mserver.service.sys.SystemService;
-import com.infosoul.mserver.webservice.rest.util.AppResultUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
