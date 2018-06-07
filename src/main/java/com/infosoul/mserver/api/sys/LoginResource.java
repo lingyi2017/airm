@@ -3,6 +3,7 @@ package com.infosoul.mserver.api.sys;
 import com.google.common.collect.Maps;
 import com.infosoul.mserver.api.Result;
 import com.infosoul.mserver.api.util.AppResultUtils;
+import com.infosoul.mserver.api.util.JWTUtils;
 import com.infosoul.mserver.common.mapper.JsonMapper;
 import com.infosoul.mserver.common.security.UsernamePasswordToken;
 import com.infosoul.mserver.common.utils.Constant;
@@ -43,7 +44,7 @@ import java.util.Map;
 public class LoginResource {
 
     @Context
-    ServletContext context;
+    private ServletContext context;
 
     @Context
     private HttpServletRequest request;
@@ -51,7 +52,7 @@ public class LoginResource {
     @Autowired
     private SystemService systemService;
 
-    private static Logger logger = LoggerFactory.getLogger(LoginResource.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoginResource.class);
 
     private static JsonMapper mapper = JsonMapper.getInstance();
 
@@ -102,7 +103,7 @@ public class LoginResource {
                         responseMap.put("officeName", user.getOffice().getArea().getName());
                     }
 
-                    responseMap.put(Constant.JWT, "");
+                    responseMap.put("token", JWTUtils.createToken(user, userName));
                 } else {
                     responseMap.put("status", Result.Status.ERROR.getCode());
                     responseMap.put("message", "您没有权限使用该系统");

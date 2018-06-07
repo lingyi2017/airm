@@ -1,7 +1,11 @@
 package com.infosoul.mserver.api.util;
 
+import com.google.common.collect.Maps;
+import com.infosoul.mserver.common.config.Global;
 import com.infosoul.mserver.common.utils.Constant;
+import com.infosoul.mserver.common.utils.DateUtils;
 import com.infosoul.mserver.entity.sys.User;
+import io.jsonwebtoken.Header;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -9,6 +13,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -166,5 +171,24 @@ public class JWTUtils {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	/**
+	 * 创建令牌
+	 *
+	 * @param user
+	 * @param userName
+	 * @return
+	 */
+	public static String createToken(User user, String userName){
+		Map<String, Object> header = Maps.newHashMap();
+		header.put(Header.TYPE, "JWT");
+		Map<String, Object> claims = Maps.newHashMap();
+		claims.put(Constant.USERID, user.getId());  // 用户ID
+		claims.put(Constant.USERNAME, userName);  // 用户名
+		int min = Integer.parseInt(Global.getConfig("jwt.exp"));
+		long exp = DateUtils.addMin(new Date(), min);
+		claims.put(Constant.EXP, exp);  // 过期时间
+		return JWTUtils.createJWT(header, claims, user.getPassword());
 	}
 }

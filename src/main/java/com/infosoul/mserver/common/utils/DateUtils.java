@@ -321,4 +321,18 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         System.out.println("getDateStart=" + formatDate(getDateStart(date), parsePatterns[1]));
         System.out.println("getDateEnd=" + formatDate(getDateEnd(date), parsePatterns[1]));
     }
+
+    /**
+     * 得到min分钟后的时间
+     *
+     * @param date
+     * @param min  可以为负数
+     * @return
+     */
+    public static long addMin(Date date, int min) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.MINUTE, min);
+        return cal.getTime().getTime();
+    }
 }
