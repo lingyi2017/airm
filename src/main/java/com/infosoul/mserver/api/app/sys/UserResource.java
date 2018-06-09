@@ -1,4 +1,4 @@
-package com.infosoul.mserver.api.sys;
+package com.infosoul.mserver.api.app.sys;
 
 import com.google.common.collect.Maps;
 import com.infosoul.mserver.api.Result;

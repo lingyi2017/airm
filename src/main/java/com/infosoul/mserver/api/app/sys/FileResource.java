@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.infosoul.mserver.api.sys;
+package com.infosoul.mserver.api.app.sys;
 
 import com.infosoul.mserver.api.Result;
 import com.infosoul.mserver.webservice.rest.RsResponse;
@@ -36,9 +36,9 @@ import java.util.Date;
  * @date: 2014-12-29 上午11:42:24
  */
 @Path("/file")
-public class FileRestResource {
+public class FileResource {
 
-    private static Logger logger = LoggerFactory.getLogger(FileRestResource.class);
+    private static Logger logger = LoggerFactory.getLogger(FileResource.class);
 
     @Context
     ServletContext context;

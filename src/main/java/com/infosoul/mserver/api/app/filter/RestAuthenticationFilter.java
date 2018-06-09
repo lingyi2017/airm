@@ -1,4 +1,4 @@
-package com.infosoul.mserver.api.filter;
+package com.infosoul.mserver.api.app.filter;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.infosoul.mserver.api.Result;
