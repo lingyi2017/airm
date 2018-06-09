@@ -111,7 +111,7 @@ public class JWTUtils {
     public static String getUserName(String jwt, String secretKey) {
         try {
             Map<String, Object> claims = getClaims(jwt, secretKey);
-            String userName = (String) claims.get(Constant.USERNAME);
+            String userName = (String) claims.get(Constant.USER_NAME);
             return userName;
         } catch (Exception e) {
             e.printStackTrace();
@@ -187,8 +187,8 @@ public class JWTUtils {
         header.put(Header.TYPE, "JWT");
 
         Map<String, Object> claims = Maps.newHashMap();
-        claims.put(Constant.USERID, user.getId());
-        claims.put(Constant.USERNAME, user.getLoginName());
+        claims.put(Constant.USER_ID, user.getId());
+        claims.put(Constant.USER_NAME, user.getLoginName());
         int min = Integer.parseInt(Global.getConfig("jwt.exp"));
         long exp = DateUtils.addMin(new Date(), min);
         // 过期时间

@@ -1,7 +1,7 @@
 package com.infosoul.mserver.api.app.sys;
 
 import com.infosoul.mserver.api.BaseResource;
-import com.infosoul.mserver.api.Response;
+import com.infosoul.mserver.api.ResponseRest;
 import com.infosoul.mserver.api.util.JWTUtils;
 import com.infosoul.mserver.common.security.UsernamePasswordToken;
 import com.infosoul.mserver.common.utils.UserUtils;
@@ -49,10 +49,10 @@ public class LoginResource extends BaseResource {
      */
     @POST
     @Path("/login")
-    public Response Login(LoginRqDTO requestDTO, @Context HttpServletRequest request) {
+    public ResponseRest Login(LoginRqDTO requestDTO, @Context HttpServletRequest request) {
         if (null == requestDTO || StringUtils.isEmpty(requestDTO.getUserName()) ||
                 StringUtils.isEmpty(requestDTO.getPassword())) {
-            return error(Response.Status.BAD_REQUEST);
+            return error(ResponseRest.Status.BAD_REQUEST);
         }
 
         try {
@@ -72,12 +72,12 @@ public class LoginResource extends BaseResource {
             LoginRpDTO dto = buildLoginRp(user);
             return success(dto);
         } catch (UnknownAccountException uae) {
-            return error(Response.Status.EXIST, "该用户不存在");
+            return error(ResponseRest.Status.EXIST, "该用户不存在");
         } catch (IncorrectCredentialsException ice) {
-            return error(Response.Status.BAD_REQUEST, "密码错误");
+            return error(ResponseRest.Status.BAD_REQUEST, "密码错误");
         } catch (Exception e) {
             logger.error("登录异常", e);
-            return error(Response.Status.INTERNAL_SERVER_ERROR, "用户登录发生异常");
+            return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "用户登录发生异常");
         }
     }
 

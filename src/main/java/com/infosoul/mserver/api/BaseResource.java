@@ -13,24 +13,24 @@ public abstract class BaseResource {
 
     protected static final Logger logger = LoggerFactory.getLogger(BaseResource.class);
 
-    protected Response success() {
-        return Response.success();
+    protected ResponseRest success() {
+        return ResponseRest.success();
     }
 
-    protected Response success(Object content) {
-        return Response.success(content);
+    protected ResponseRest success(Object content) {
+        return ResponseRest.success(content);
     }
 
-    protected Response success(Object content, Integer total) {
-        return Response.success(content, total);
+    protected ResponseRest success(Object content, Integer total) {
+        return ResponseRest.success(content, total);
     }
 
-    protected Response error(Response.Status status) {
-        return Response.error(status);
+    protected ResponseRest error(ResponseRest.Status status) {
+        return ResponseRest.error(status);
     }
 
-    protected Response error(Response.Status status, String errorMsg) {
-        return Response.error(status, errorMsg);
+    protected ResponseRest error(ResponseRest.Status status, String errorMsg) {
+        return ResponseRest.error(status, errorMsg);
     }
 
 }

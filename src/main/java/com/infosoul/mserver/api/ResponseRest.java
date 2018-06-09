@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author longxy
  * @date 2018-06-09 14:55
  */
-public class Response implements Serializable {
+public class ResponseRest implements Serializable {
 
     private static final long serialVersionUID = -6939262514788848052L;
 
@@ -102,26 +102,26 @@ public class Response implements Serializable {
         }
     }
 
-    private Response(Boolean success, Status status) {
+    private ResponseRest(Boolean success, Status status) {
         this.success = success;
         this.errorCode = status.getCode();
         this.errorMsg = status.getMsg();
     }
 
-    private Response(Boolean success, Status status, String errorMsg) {
+    private ResponseRest(Boolean success, Status status, String errorMsg) {
         this.success = success;
         this.errorCode = status.getCode();
         this.errorMsg = errorMsg;
     }
 
-    private Response(Boolean success, Status status, Object content) {
+    private ResponseRest(Boolean success, Status status, Object content) {
         this.success = success;
         this.content = content;
         this.errorCode = status.getCode();
         this.errorMsg = status.getMsg();
     }
 
-    private Response(Boolean success, Status status, Object content, Integer total) {
+    private ResponseRest(Boolean success, Status status, Object content, Integer total) {
         this.success = success;
         this.content = content;
         this.errorCode = status.getCode();
@@ -129,24 +129,24 @@ public class Response implements Serializable {
         this.total = total;
     }
 
-    public static Response success() {
-        return new Response(true, Status.OK);
+    public static ResponseRest success() {
+        return new ResponseRest(true, Status.OK);
     }
 
-    public static Response success(Object content) {
-        return new Response(true, Status.OK, content);
+    public static ResponseRest success(Object content) {
+        return new ResponseRest(true, Status.OK, content);
     }
 
-    public static Response success(Object content, Integer total) {
-        return new Response(true, Status.OK, content, total);
+    public static ResponseRest success(Object content, Integer total) {
+        return new ResponseRest(true, Status.OK, content, total);
     }
 
-    public static Response error(Status status) {
-        return new Response(false, status);
+    public static ResponseRest error(Status status) {
+        return new ResponseRest(false, status);
     }
 
-    public static Response error(Status status, String errorMsg) {
-        return new Response(false, status, errorMsg);
+    public static ResponseRest error(Status status, String errorMsg) {
+        return new ResponseRest(false, status, errorMsg);
     }
 
     public Boolean getSuccess() {
