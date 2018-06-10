@@ -83,7 +83,6 @@ public class UserUtils extends BaseService {
      * @return
      */
     public static List<Role> getRoleList(boolean includeAdmin) {
-        @SuppressWarnings("unchecked")
         List<Role> list = (List<Role>) getCache(CACHE_ROLE_LIST + includeAdmin);
         if (list == null) {
 //            User user = getUser();
@@ -117,7 +116,6 @@ public class UserUtils extends BaseService {
     }
 
     public static List<Menu> getMenuList() {
-        @SuppressWarnings("unchecked")
         List<Menu> menuList = (List<Menu>) getCache(CACHE_MENU_LIST);
         if (menuList == null) {
             User user = getUser();

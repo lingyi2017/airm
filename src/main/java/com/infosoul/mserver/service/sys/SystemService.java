@@ -1,6 +1,6 @@
 /**
  * Copyright &copy; 2012-2013 <a href="https://github.com/free lance/infosys">infosys</a> All rights reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.infosoul.mserver.service.sys;
@@ -37,7 +37,7 @@ import com.infosoul.mserver.service.BaseService;
 
 /**
  * 系统管理，安全相关实体的管理类,包括用户、角色、菜单.
- * 
+ *
  * @author free lance
  * @version 2013-5-15
  */
@@ -53,10 +53,10 @@ public class SystemService extends BaseService {
 
     @Autowired
     private UserDao userDao;
-    
+
     @Autowired
     private RoleDao roleDao;
-    
+
     @Autowired
     private MenuDao menuDao;
 
@@ -68,49 +68,49 @@ public class SystemService extends BaseService {
     public User getUser(String id) {
         return userDao.get(id);
     }
-    
+
     public User getUserByPhone(String phone) {
         return userDao.findByPhone(phone);
     }
-    
+
     public User getUserByNick(String nick) {
         return userDao.findByNick(nick);
     }
 
     public Page<User> findUser(Page<User> page, User user) {
-		User currentUser = UserUtils.getUser();
-		DetachedCriteria dc = userDao.createDetachedCriteria();
+        User currentUser = UserUtils.getUser();
+        DetachedCriteria dc = userDao.createDetachedCriteria();
 
         // 如果不是超级管理员，则不显示超级管理员用户
         if (!currentUser.isAdmin()) {
             dc.add(Restrictions.ne("id", "1"));
         }
-		dc.add(dataScopeFilter(currentUser, "office", ""));
-		
-		if (StringUtils.isNotEmpty(user.getLoginName())){
-			dc.add(Restrictions.like("loginName", "%" + user.getLoginName() + "%"));
-		}
-		if(StringUtils.isNotEmpty(user.getPhone())){
-		    dc.add(Restrictions.like("phone", "%" + user.getPhone() + "%"));
+        dc.add(dataScopeFilter(currentUser, "office", ""));
+
+        if (StringUtils.isNotEmpty(user.getLoginName())) {
+            dc.add(Restrictions.like("loginName", "%" + user.getLoginName() + "%"));
         }
-		if (StringUtils.isNotEmpty(user.getName())){
-			dc.add(Restrictions.like("name", "%" + user.getName() + "%"));
-		}
-		
-		if (!currentUser.isAdmin()) {
-		    dc.add(Restrictions.eq(User.FIELD_DEL_FLAG, User.DEL_FLAG_NORMAL));
-		}
-		if (!StringUtils.isNotEmpty(page.getOrderBy())){
-			dc.addOrder(Order.desc("name"));
-		}
+        if (StringUtils.isNotEmpty(user.getPhone())) {
+            dc.add(Restrictions.like("phone", "%" + user.getPhone() + "%"));
+        }
+        if (StringUtils.isNotEmpty(user.getName())) {
+            dc.add(Restrictions.like("name", "%" + user.getName() + "%"));
+        }
+
+        if (!currentUser.isAdmin()) {
+            dc.add(Restrictions.eq(User.FIELD_DEL_FLAG, User.DEL_FLAG_NORMAL));
+        }
+        if (!StringUtils.isNotEmpty(page.getOrderBy())) {
+            dc.addOrder(Order.desc("name"));
+        }
         try {
             return userDao.find(page, dc);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
-    
+
 
     // 取用户的数据范围
     public String getDataScope(User user) {
@@ -120,7 +120,7 @@ public class SystemService extends BaseService {
     public User getUserByLoginName(String loginName) {
         return userDao.findByLoginName(loginName);
     }
-    
+
     public User getUserById(String id) {
         return userDao.findById(id);
     }
@@ -143,12 +143,12 @@ public class SystemService extends BaseService {
         systemRealm.clearCachedAuthorizationInfo(loginName);
     }
 
-    @Transactional(readOnly = false) 
-	public void activateRetailerUserById( String id, Date date){
-    	userDao.updateDelFlagById(User.DEL_FLAG_NORMAL,id) ;
-    	userDao.updateActiveDate(date,id) ;
-	}
-    
+    @Transactional(readOnly = false)
+    public void activateRetailerUserById(String id, Date date) {
+        userDao.updateDelFlagById(User.DEL_FLAG_NORMAL, id);
+        userDao.updateActiveDate(date, id);
+    }
+
     @Transactional(readOnly = false)
     public void updateUserLoginInfo(String id) {
         userDao.updateLoginInfo(SecurityUtils.getSubject().getSession().getHost(), new Date(), id);
@@ -165,7 +165,7 @@ public class SystemService extends BaseService {
 
     /**
      * 验证密码
-     * 
+     *
      * @param plainPassword
      *            明文密码
      * @param password
@@ -187,7 +187,7 @@ public class SystemService extends BaseService {
     public Role findRoleByName(String name) {
         return roleDao.findByName(name);
     }
-  
+
     /**
      * 返回全部的角色清单，只有超级管理员才能管理超级管理员角色
      * @return
@@ -196,7 +196,7 @@ public class SystemService extends BaseService {
         User currentUser = UserUtils.getUser();
         return UserUtils.getRoleList(currentUser.isAdmin());
     }
-    
+
     public List<User> findAllUser() {
         return userDao.findAllList();
     }
@@ -206,7 +206,8 @@ public class SystemService extends BaseService {
         roleDao.clear();
         roleDao.save(role);
         systemRealm.clearAllCachedAuthorizationInfo();
-        UserUtils.removeCache(UserUtils.CACHE_ROLE_LIST);
+        User currentUser = UserUtils.getUser();
+        UserUtils.removeCache(UserUtils.CACHE_ROLE_LIST + currentUser.isAdmin());
     }
 
     @Transactional(readOnly = false)
@@ -275,8 +276,8 @@ public class SystemService extends BaseService {
         systemRealm.clearAllCachedAuthorizationInfo();
         UserUtils.removeCache(UserUtils.CACHE_MENU_LIST);
     }
-    
-    
+
+
     // @Cacheable(value = GlobalStatic.qxCacheKey, key = "'getRolesAsString_'+#userId")
     public Set<String> getRoleAsString(String userId) throws Exception {
         List<Role> list = roleDao.findByUserId(userId);
@@ -289,8 +290,8 @@ public class SystemService extends BaseService {
         }
         return set;
     }
-    
-    
+
+
     // @Cacheable(value = GlobalStatic.qxCacheKey, key = "'getPermissionsAsString_'+#userId")
     public Set<String> getPermissionsAsString(String userId) throws Exception {
         List<Menu> setMenu = findAllMenuByUserId(userId);
@@ -306,7 +307,7 @@ public class SystemService extends BaseService {
         }
         return set;
     }
-    
+
     private List<Menu> findAllMenuByUserId(String userId) throws Exception {
         if (StringUtils.isBlank(userId)) {
             return null;
@@ -328,7 +329,7 @@ public class SystemService extends BaseService {
         return list;
 
     }
-    
+
     /**
      * 根据菜单type取menu
      * @param type
@@ -337,10 +338,10 @@ public class SystemService extends BaseService {
     public List<Menu> findMenuByType(String type) {
         return menuDao.findByType(type);
     }
-    
+
     /**
      * 保存头像路径
-     * 
+     *
      * @param photo
      * @param loginName
      */
@@ -348,5 +349,5 @@ public class SystemService extends BaseService {
     public void updatePhotoByLoginName(String photo, String loginName) {
         userDao.updatePhotoById(photo, loginName);
     }
-    
+
 }

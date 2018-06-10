@@ -40,14 +40,14 @@
 	<form:form id="inputForm" modelAttribute="user" action="${ctx}/sys/user/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<tags:message content="${message}"/>
-		<div class="control-group">
+		<div class="control-group" style="display: none;">
 			<label class="control-label"><spring:message code='organization' />:</label>
 			<div class="controls">
                 <tags:treeselect id="company" name="company.id" value="${user.company.id}" labelName="company.name" labelValue="${user.company.name}"
 					title="机构" url="/sys/office/treeData?type=1" cssClass="required"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group" style="display: none;">
 			<label class="control-label"><spring:message code='department' />:</label>
 			<div class="controls">
                 <tags:treeselect id="office" name="office.id" value="${user.office.id}" labelName="office.name" labelValue="${user.office.name}"
@@ -62,15 +62,15 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label"><spring:message code='work.number' />:</label>
-			<div class="controls">
-				<form:input path="no" htmlEscape="false" maxlength="50" class="required"/>
-			</div>
-		</div>
-		<div class="control-group">
 			<label class="control-label"><spring:message code='user.name' />:</label>
 			<div class="controls">
 				<form:input path="name" htmlEscape="false" maxlength="50" class="required"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label"><spring:message code='user.nick' />:</label>
+			<div class="controls">
+				<form:input path="nick" htmlEscape="false" maxlength="50" class="required"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -99,13 +99,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label"><spring:message code='mobilephone' />:</label>
-			<div class="controls">
-				<form:input path="mobile" htmlEscape="false" maxlength="100"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label"><spring:message code='memo' />:</label>
+			<label class="control-label"><spring:message code='remarks' />:</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="input-xlarge"/>
 			</div>

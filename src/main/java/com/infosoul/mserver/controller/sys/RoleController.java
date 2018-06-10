@@ -30,7 +30,7 @@ import com.infosoul.mserver.service.sys.SystemService;
 
 /**
  * 角色Controller
- * 
+ *
  * @author free lance
  * @version 2013-5-15 update 2013-06-08
  */
@@ -40,9 +40,6 @@ public class RoleController extends BaseController {
 
     @Autowired
     private SystemService systemService;
-
-    // @Autowired
-    // private CategoryService categoryService;
 
     @Autowired
     private OfficeService officeService;
@@ -57,7 +54,7 @@ public class RoleController extends BaseController {
     }
 
     @RequiresPermissions("sys:role:view")
-    @RequestMapping(value = { "list", "" })
+    @RequestMapping(value = {"list", ""})
     public String list(Role role, Model model) {
         List<Role> list = systemService.findAllRole();
         model.addAttribute("list", list);
@@ -72,8 +69,7 @@ public class RoleController extends BaseController {
         }
         model.addAttribute("role", role);
         model.addAttribute("menuList", systemService.findAllMenu());
-        // model.addAttribute("categoryList", categoryService.findByUser(false, null));
-        model.addAttribute("officeList", officeService.findAll());
+//        model.addAttribute("officeList", officeService.findAll());
         return "/sys/roleForm";
     }
 
@@ -97,8 +93,6 @@ public class RoleController extends BaseController {
     public String delete(@RequestParam String id, RedirectAttributes redirectAttributes) {
         if (Role.isAdmin(id)) {
             addMessage(redirectAttributes, "删除角色失败, 不允许内置角色或编号空");
-            // }else if (UserUtils.getUser().getRoleIdList().contains(id)){
-            // addMessage(redirectAttributes, "删除角色失败, 不能删除当前用户所在角色");
         } else {
             systemService.deleteRole(id);
             addMessage(redirectAttributes, "删除角色成功");

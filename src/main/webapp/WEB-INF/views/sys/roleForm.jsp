@@ -100,7 +100,7 @@
 	<form:form id="inputForm" modelAttribute="role" action="${ctx}/sys/role/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<tags:message content="${message}"/>
-		<div class="control-group">
+		<div class="control-group" style="display: none;">
 			<label class="control-label"><spring:message code='organization' />:</label>
 			<div class="controls">
                 <tags:treeselect id="office" name="office.id" value="${role.office.id}" labelName="office.name" labelValue="${role.office.name}"
@@ -114,7 +114,7 @@
 				<form:input path="name" htmlEscape="false" maxlength="50" class="required"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group" style="display: none;">
 			<label class="control-label"><spring:message code='data.scope' />:</label>
 			<div class="controls">
 				<form:select path="dataScope">

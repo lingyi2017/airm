@@ -34,25 +34,37 @@
 		<div class="control-group">
 			<label class="control-label"><spring:message code="user.name" />:</label>
 			<div class="controls">
-				<form:input path="name" htmlEscape="false" maxlength="50" class="required" readonly="true" type="hidden"/><label class="lbl">${user.name}</label>
+				<label class="lbl">${user.name}</label>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label"><spring:message code='user.nick' />:</label>
+			<div class="controls">
+				<label class="lbl">${user.nick}</label>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">用户类型:</label>
+			<div class="controls">
+				<label class="lbl">${fns:getDictLabel(user.userType, 'sys_user_type', '无')}</label>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label"><spring:message code="email" />:</label>
 			<div class="controls">
-				<form:input path="email" htmlEscape="false" maxlength="50" class="email" readonly="true" type="hidden"/><label class="lbl">${user.email}</label>
+				<label class="lbl">${user.email}</label>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label"><spring:message code="telephone" />:</label>
 			<div class="controls">
-				<form:input path="phone" htmlEscape="false" maxlength="50" readonly="true" type="hidden"/><label class="lbl">${user.phone}</label>
+				<label class="lbl">${user.phone}</label>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label"><spring:message code="memo" />:</label>
 			<div class="controls">
-				<form:input path="remarks" htmlEscape="false" rows="3" maxlength="200" class="input-xlarge" readonly="true" type="hidden" /><label class="lbl">${user.remarks}</label>
+				<label class="lbl">${user.remarks}</label>
 			</div>
 		</div>		
 		<div class="control-group">

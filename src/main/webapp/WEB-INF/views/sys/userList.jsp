@@ -97,6 +97,8 @@
         <th class="sort name"><spring:message code='user.name'/></th>
         <th><spring:message code='telephone'/></th>
         <th><spring:message code='role'/></th>
+        <th>用户类型</th>
+        <th>状态</th>
         <shiro:hasPermission name="sys:user:edit">
             <th><spring:message code='operation'/></th>
         </shiro:hasPermission>
@@ -109,6 +111,8 @@
             <td>${user.name}</td>
             <td>${user.phone}</td>
             <td>${user.roleNames}</td>
+            <td>${fns:getDictLabel(user.userType, 'sys_user_type', '无')}</td>
+            <td>${fns:getDictLabel(user.delFlag, 'del_flag', '无')}</td>
             <shiro:hasPermission name="sys:user:edit">
                 <td>
                     <a href="${ctx}/sys/user/form?id=${user.id}"><spring:message code='update'/></a>

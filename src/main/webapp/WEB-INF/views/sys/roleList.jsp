@@ -12,14 +12,12 @@
 	</ul>
 	<tags:message content="${message}"/>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
-		<tr><th><spring:message code='role.name' /></th><th><spring:message code='organization' /></th><th><spring:message code='data.scope' /></th><shiro:hasPermission name="sys:role:edit"><th><spring:message code='operation' /></th></shiro:hasPermission></tr>
+		<tr><th><spring:message code='role.name' /></th><shiro:hasPermission name="sys:role:edit"><th><spring:message code='operation' /></th></shiro:hasPermission></tr>
 		<c:forEach items="${list}" var="role">
 			<tr>
 				<td><a href="form?id=${role.id}">${role.name}</a></td>
-				<td>${role.office.name}</td>
-				<td>${fns:getDictLabel(role.dataScope, 'sys_data_scope', '无')}</td>
 				<shiro:hasPermission name="sys:role:edit"><td>
-					<a href="${ctx}/sys/role/assign?id=${role.id}"><spring:message code='assign' /></a>
+					<a href="${ctx}/sys/role/assign?id=${role.id}" style="display: none;"><spring:message code='assign' /></a>
 					<a href="${ctx}/sys/role/form?id=${role.id}"><spring:message code='update' /></a>
 					<a href="${ctx}/sys/role/delete?id=${role.id}" onclick="return confirmx('确认要删除该角色吗？', this.href)"><spring:message code='delete' /></a>
 				</td></shiro:hasPermission>	
