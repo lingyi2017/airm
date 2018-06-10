@@ -18,6 +18,11 @@ public class UserRpDTO implements Serializable {
     private String name;
 
     /**
+     * 用户类型：0-超级系统管理员；1-管理员；2-普通工作人员；
+     */
+    private String userType;
+
+    /**
      * 邮箱
      */
     private String email;
@@ -43,6 +48,14 @@ public class UserRpDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     public String getEmail() {

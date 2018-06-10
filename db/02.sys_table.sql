@@ -221,9 +221,11 @@ INSERT INTO `sys_dict` VALUES ('30', '所在部门及以下数据',   '4', 'sys_
 INSERT INTO `sys_dict` VALUES ('31', '所在部门数据',         '5', 'sys_data_scope', '数据范围', '50', '1', now(), '1', now(), null, '0');
 INSERT INTO `sys_dict` VALUES ('32', '仅本人数据',           '8', 'sys_data_scope', '数据范围', '40',  '1', now(), '1', now(), null, '0');
 INSERT INTO `sys_dict` VALUES ('33', '按明细设置',           '9', 'sys_data_scope', '数据范围', '50', '1', now(), '1', now(), null, '0');
-
-INSERT INTO `sys_dict` VALUES ('37', '男',      '0', 'sys_user_sex', '性别', '10', 'admin', now(), 'admin', now(), null, '0');
-INSERT INTO `sys_dict` VALUES ('38', '女',      '1', 'sys_user_sex', '性别', '20', 'admin', now(), 'admin', now(), null, '0');
+INSERT INTO `sys_dict` VALUES ('34', '超级系统管理员', '0', 'sys_user_type', '用户类型', '10', 'admin', now(), 'admin', now(), null, '0');
+INSERT INTO `sys_dict` VALUES ('35', '管理员', '1', 'sys_user_type', '用户类型', '20', 'admin', now(), 'admin', now(), null, '0');
+INSERT INTO `sys_dict` VALUES ('36', '普通工作人员', '2', 'sys_user_type', '用户类型', '30', 'admin', now(), 'admin', now(), null, '0');
+INSERT INTO `sys_dict` VALUES ('37', '男', '0', 'sys_user_sex', '性别', '10', 'admin', now(), 'admin', now(), null, '0');
+INSERT INTO `sys_dict` VALUES ('38', '女', '1', 'sys_user_sex', '性别', '20', 'admin', now(), 'admin', now(), null, '0');
 
 -- ----------------------------
 -- Records of sys_menu

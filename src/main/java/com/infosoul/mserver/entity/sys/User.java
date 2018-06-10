@@ -49,7 +49,7 @@ public class User extends IdEntity<User> {
     private String postalcode; // 邮编
     private String phone; // 电话
     private String mobile; // 手机
-    private String userType;//用户类型：0-超级系统管理员；1-运营人员；2-零售商户；3-消费者
+    private String userType;//用户类型：0-超级系统管理员；1-管理员；2-普通工作人员；
     private String loginIp; // 最后登陆IP
     private Date loginDate; // 最后登陆日期
     private Date activeDate; // 激活日期
