@@ -233,7 +233,7 @@ INSERT INTO `sys_dict` VALUES ('38', '女', '1', 'sys_user_sex', '性别', '20',
 INSERT INTO `sys_menu` VALUES ('1', '0', '0,', '顶级菜单', null, null, null, '0', '1', '0', null, null, null, null, now(), null, '0');
 
 -- 系统管理
-INSERT INTO `sys_menu` VALUES ('2', '1', '0,1,', '系统管理', null, null, null, '200', '1', '0', null, null, null, null, null, null, '0');
+INSERT INTO `sys_menu` VALUES ('2', '1', '0,1,', '系统管理', null, null, null, '700', '1', '0', null, null, null, null, null, null, '0');
 INSERT INTO `sys_menu` VALUES ('3', '2', '0,1,2,', '系统设置', null, null, null, '980', '1', '0', null, null, null, null, null, null, '0');
 INSERT INTO `sys_menu` VALUES ('4', '3', '0,1,2,3,', '菜单管理', '/sys/menu/', null, 'list-alt', '30', '1', '0', null, '1', now(), '1', now(), null, '0');
 INSERT INTO `sys_menu` VALUES ('5', '4', '0,1,2,3,4,', '查看', null, null, null, '30', '0', '0', 'sys:menu:view', '1', now(), '1', now(), null, '0');
@@ -245,18 +245,39 @@ INSERT INTO `sys_menu` VALUES ('10', '3', '0,1,2,3,', '字典管理', '/sys/dict
 INSERT INTO `sys_menu` VALUES ('11', '10', '0,1,2,3,10,', '查看', null, null, null, '30', '0', '0', 'sys:dict:view', '1', now(), '1', now(), null, '0');
 INSERT INTO `sys_menu` VALUES ('12', '10', '0,1,2,3,10,', '修改', null, null, null, '30', '0', '0', 'sys:dict:edit', '1', now(), '1', now(), null, '0');
 
-INSERT INTO `sys_menu` VALUES ('13', '2', '0,1,2,', '机构用户', null, null, null, '970', '1', '0', null, '1', now(), '1', now(), null, '0');
+-- 机构管理
+INSERT INTO `sys_menu` VALUES ('13', '2', '0,1,2,', '机构用户', null, null, null, '900', '1', '0', null, '1', now(), '1', now(), null, '0');
 INSERT INTO `sys_menu` VALUES ('20', '13', '0,1,2,13,', '用户管理', '/sys/user/', null, 'user', '30', '1', '0', null, '1', now(), '1', now(), null, '0');
 INSERT INTO `sys_menu` VALUES ('21', '20', '0,1,2,13,20,', '查看', null, null, null, '30', '0', '0', 'sys:user:view', '1', now(), '1', now(), null, '0');
 INSERT INTO `sys_menu` VALUES ('22', '20', '0,1,2,13,20,', '修改', null, null, null, '30', '0', '0', 'sys:user:edit', '1', now(), '1', now(), null, '0');
 
 -- 我的面板
-INSERT INTO `sys_menu` VALUES ('27', '1', '0,1,', '我的面板', null, null, 'user', '100', '1', '0', '', null, now(), 'admin', null, null, '0');
+INSERT INTO `sys_menu` VALUES ('27', '1', '0,1,', '我的面板', null, null, 'user', '800', '1', '0', '', null, now(), 'admin', null, null, '0');
 INSERT INTO `sys_menu` VALUES ('28', '27', '0,1,27,', '个人信息', null, null, null, '990', '1', '0', null, '1', now(), '1', now(), null, '0');
 INSERT INTO `sys_menu` VALUES ('29', '28', '0,1,27,28,', '个人信息', '/sys/user/info', null, 'user', '30', '1', '0', null, '1', now(), '1', now(), null, '0');
 INSERT INTO `sys_menu` VALUES ('30', '28', '0,1,27,28,', '修改密码', '/sys/user/modifyPwd', null, 'lock', '40', '1', '0',  null, '1', now(), '1', now(), null, '0');
 
+-- 地图展示
+INSERT INTO `sys_menu` VALUES ('100', '1', '0,1,', '地图展示', null, null, 'user', '100', '1', '0', '', null, now(), 'admin', null, null, '0');
+INSERT INTO `sys_menu` VALUES ('101', '100', '0,1,100,', '地图展示', null, null, null, '100', '1', '0', null, '1', now(), '1', now(), null, '0');
+INSERT INTO `sys_menu` VALUES ('102', '101', '0,1,100,101,', '地图展示', '/airm/map', null, 'th', '10', '1', '0', null, '1', now(), '1', now(), null, '0');
 
+-- 设备管理
+INSERT INTO `sys_menu` VALUES ('200', '1', '0,1,', '设备管理', null, null, 'user', '100', '1', '0', '', null, now(), 'admin', null, null, '0');
+INSERT INTO `sys_menu` VALUES ('201', '200', '0,1,200,', '设备管理', null, null, null, '100', '1', '0', null, '1', now(), '1', now(), null, '0');
+
+INSERT INTO `sys_menu` VALUES ('202', '201', '0,1,200,201,', '设备管理', '/airm/device/list', null, 'th-list', '10', '1', '0', null, '1', now(), '1', now(), null, '0');
+INSERT INTO `sys_menu` VALUES ('203', '202', '0,1,200,201,202,', '查看', null, null, null, '20', '0', '0', 'airm:device:view', '1', now(), '1', now(), null, '0');
+INSERT INTO `sys_menu` VALUES ('204', '202', '0,1,200,201,202,', '修改', null, null, null, '20', '0', '0', 'airm:device:edit', '1', now(), '1', now(), null, '0');
+
+INSERT INTO `sys_menu` VALUES ('205', '201', '0,1,200,201,', '门限配置', '/airm/param/list', null, 'th-list', '20', '1', '0', null, '1', now(), '1', now(), null, '0');
+INSERT INTO `sys_menu` VALUES ('206', '202', '0,1,200,201,205,', '查看', null, null, null, '20', '0', '0', 'airm:param:view', '1', now(), '1', now(), null, '0');
+INSERT INTO `sys_menu` VALUES ('207', '202', '0,1,200,201,205,', '配置', null, null, null, '20', '0', '0', 'airm:param:edit', '1', now(), '1', now(), null, '0');
+
+-- 报表统计
+INSERT INTO `sys_menu` VALUES ('300', '1', '0,1,', '报表统计', null, null, 'list', '100', '1', '0', '', null, now(), 'admin', null, null, '0');
+INSERT INTO `sys_menu` VALUES ('301', '300', '0,1,300,', '报表统计', null, null, null, '100', '1', '0', null, '1', now(), '1', now(), null, '0');
+INSERT INTO `sys_menu` VALUES ('302', '301', '0,1,300,301,', '参数指标', '/airm/param/stat', null, 'list', '10', '1', '0', null, '1', now(), '1', now(), null, '0');
 
 -- ----------------------------
 -- Records of sys_area
