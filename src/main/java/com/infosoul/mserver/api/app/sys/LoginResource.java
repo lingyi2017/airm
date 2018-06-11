@@ -50,8 +50,8 @@ public class LoginResource extends BaseResource {
     @POST
     @Path("/login")
     public ResponseRest Login(LoginRqDTO requestDTO, @Context HttpServletRequest request) {
-        if (null == requestDTO || StringUtils.isEmpty(requestDTO.getUserName()) ||
-                StringUtils.isEmpty(requestDTO.getPassword())) {
+        if (null == requestDTO || StringUtils.isEmpty(requestDTO.getUserName())
+                || StringUtils.isEmpty(requestDTO.getPassword())) {
             return error(ResponseRest.Status.BAD_REQUEST);
         }
 

@@ -45,8 +45,7 @@ public class RestAuthFilter implements ContainerRequestFilter {
     private static final JsonMapper mapper = JsonMapper.getInstance();
 
     @Override
-    public void filter(ContainerRequestContext requestContext)
-            throws IOException {
+    public void filter(ContainerRequestContext requestContext) throws IOException {
         String uri = requestContext.getUriInfo().getPath();
         String requestMethod = requestContext.getMethod();
         // 仅拦截app端资源
@@ -54,16 +53,16 @@ public class RestAuthFilter implements ContainerRequestFilter {
             SecurityContext securityContext = requestContext.getSecurityContext();
             // 未认证
             if (securityContext == null || securityContext.getUserPrincipal() == null) {
-                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).
-                        entity(ResponseRest.error(ResponseRest.Status.UNAUTHORIZED)).build());
+                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                        .entity(ResponseRest.error(ResponseRest.Status.UNAUTHORIZED)).build());
                 return;
             }
             String entity;
             // POST方式
             if (Constant.POST.equals(requestMethod)) {
                 if (!(requestContext instanceof ContainerRequest)) {
-                    requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).
-                            entity(ResponseRest.error(ResponseRest.Status.UNKNOWN_ERROR)).build());
+                    requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                            .entity(ResponseRest.error(ResponseRest.Status.UNKNOWN_ERROR)).build());
                     return;
                 }
                 ContainerRequest cr = (ContainerRequest) requestContext;
@@ -79,8 +78,8 @@ public class RestAuthFilter implements ContainerRequestFilter {
                     }
                 } catch (IOException e) {
                     LOGGER.error("rest认证IOException1", e);
-                    requestContext.abortWith(Response.status(Response.Status.INTERNAL_SERVER_ERROR).
-                            entity(ResponseRest.error(ResponseRest.Status.INTERNAL_SERVER_ERROR)).build());
+                    requestContext.abortWith(Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                            .entity(ResponseRest.error(ResponseRest.Status.INTERNAL_SERVER_ERROR)).build());
                 } finally {
                     if (reader != null) {
                         try {
@@ -88,16 +87,16 @@ public class RestAuthFilter implements ContainerRequestFilter {
                             reader.close();
                         } catch (IOException e) {
                             LOGGER.error("rest认证IOException2", e);
-                            requestContext.abortWith(Response.status(Response.Status.INTERNAL_SERVER_ERROR).
-                                    entity(ResponseRest.error(ResponseRest.Status.INTERNAL_SERVER_ERROR)).build());
+                            requestContext.abortWith(Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                                    .entity(ResponseRest.error(ResponseRest.Status.INTERNAL_SERVER_ERROR)).build());
                         }
                     }
                 }
 
                 // 获取 token 信息
                 if (StringUtils.isBlank(sb.toString())) {
-                    requestContext.abortWith(Response.status(Response.Status.BAD_REQUEST).
-                            entity(ResponseRest.error(ResponseRest.Status.BAD_REQUEST)).build());
+                    requestContext.abortWith(Response.status(Response.Status.BAD_REQUEST)
+                            .entity(ResponseRest.error(ResponseRest.Status.BAD_REQUEST)).build());
                     return;
                 }
                 JavaType javaType = mapper.createMapType(Map.class, String.class, Object.class);
@@ -105,14 +104,14 @@ public class RestAuthFilter implements ContainerRequestFilter {
                 Map<String, Object> map = mapper.fromJson(sb.toString(), javaType);
                 // map为空
                 if (MapUtils.isEmpty(map)) {
-                    requestContext.abortWith(Response.status(Response.Status.BAD_REQUEST).
-                            entity(ResponseRest.error(ResponseRest.Status.BAD_REQUEST)).build());
+                    requestContext.abortWith(Response.status(Response.Status.BAD_REQUEST)
+                            .entity(ResponseRest.error(ResponseRest.Status.BAD_REQUEST)).build());
                     return;
                 }
                 // token不存在
                 if ((map.get(Constant.TOKEN) == null) || StringUtils.isBlank(map.get(Constant.TOKEN).toString())) {
-                    requestContext.abortWith(Response.status(Response.Status.BAD_REQUEST).
-                            entity(ResponseRest.error(ResponseRest.Status.BAD_REQUEST, "token 不存在")).build());
+                    requestContext.abortWith(Response.status(Response.Status.BAD_REQUEST)
+                            .entity(ResponseRest.error(ResponseRest.Status.BAD_REQUEST, "token 不存在")).build());
                     return;
                 }
 
@@ -121,14 +120,15 @@ public class RestAuthFilter implements ContainerRequestFilter {
             } else if (Constant.GET.equals(requestMethod)) {
                 List<String> jwtList = requestContext.getUriInfo().getQueryParameters().get(Constant.TOKEN);
                 if (CollectionUtils.isEmpty(jwtList)) {
-                    requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).
-                            entity(ResponseRest.error(ResponseRest.Status.UNAUTHORIZED)).build());
+                    requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                            .entity(ResponseRest.error(ResponseRest.Status.UNAUTHORIZED)).build());
                     return;
                 }
                 String token = jwtList.get(0);
                 authToken(requestContext, token);
             } else {
-                entity = AppResultUtils.toString(Result.Status.METHOD_NOT_ALLOWED, Result.Status.METHOD_NOT_ALLOWED.getReason());
+                entity = AppResultUtils.toString(Result.Status.METHOD_NOT_ALLOWED,
+                        Result.Status.METHOD_NOT_ALLOWED.getReason());
                 requestContext.abortWith(Response.status(Response.Status.METHOD_NOT_ALLOWED).entity(entity).build());
             }
         }
@@ -144,14 +144,14 @@ public class RestAuthFilter implements ContainerRequestFilter {
         User user = UserUtils.getUser();
         // 用户不存在
         if (user == null || StringUtils.isBlank(user.getId())) {
-            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).
-                    entity(ResponseRest.error(ResponseRest.Status.UNAUTHORIZED)).build());
+            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(ResponseRest.error(ResponseRest.Status.UNAUTHORIZED)).build());
             return;
         }
         Boolean isFormat = JWTUtils.formatValidation(token);
         if (!isFormat) {
-            requestContext.abortWith(Response.status(Response.Status.BAD_REQUEST).
-                    entity(ResponseRest.error(ResponseRest.Status.BAD_REQUEST, "token 格式错误")).build());
+            requestContext.abortWith(Response.status(Response.Status.BAD_REQUEST)
+                    .entity(ResponseRest.error(ResponseRest.Status.BAD_REQUEST, "token 格式错误")).build());
             return;
         }
         try {
@@ -162,8 +162,8 @@ public class RestAuthFilter implements ContainerRequestFilter {
             String serverJWT = JWTUtils.createJWT(header, claims, secretKey);
             // jwt 不正确
             if (!token.equals(serverJWT)) {
-                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).
-                        entity(ResponseRest.error(ResponseRest.Status.UNAUTHORIZED)).build());
+                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                        .entity(ResponseRest.error(ResponseRest.Status.UNAUTHORIZED)).build());
                 return;
             }
             // 过期时间
@@ -171,13 +171,13 @@ public class RestAuthFilter implements ContainerRequestFilter {
             long current = System.currentTimeMillis();
             // token过期
             if (current > exp) {
-                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).
-                        entity(ResponseRest.error(ResponseRest.Status.UNAUTHORIZED, "token已失效")).build());
+                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                        .entity(ResponseRest.error(ResponseRest.Status.UNAUTHORIZED, "token已失效")).build());
             }
         } catch (Exception e) {
             LOGGER.error("rest认证异常", e);
-            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).
-                    entity(ResponseRest.error(ResponseRest.Status.UNAUTHORIZED, "token被篡改")).build());
+            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(ResponseRest.error(ResponseRest.Status.UNAUTHORIZED, "token被篡改")).build());
         }
     }
 
