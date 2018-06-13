@@ -74,7 +74,8 @@ public class UserController extends BaseController {
             String dataScope = systemService.getDataScope(currentUser);
             // System.out.println(dataScope);
             if (dataScope.indexOf("office.id=") != -1) {
-                String AuthorizedOfficeId = dataScope.substring(dataScope.indexOf("office.id=") + 10, dataScope.indexOf(" or"));
+                String AuthorizedOfficeId =
+                        dataScope.substring(dataScope.indexOf("office.id=") + 10, dataScope.indexOf(" or"));
                 if (!AuthorizedOfficeId.equalsIgnoreCase(officeId)) {
                     return "error/403";
                 }
@@ -88,7 +89,7 @@ public class UserController extends BaseController {
     @RequiresPermissions("sys:user:edit")
     @RequestMapping("save")
     public String save(User user, String oldLoginName, String newPassword, HttpServletRequest request, Model model,
-                       RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes) {
         // 修正引用赋值问题，不知道为何，Company和Office引用的一个实例地址，修改了一个，另外一个跟着修改。
         user.setCompany(new Office(request.getParameter("company.id")));
         user.setOffice(new Office(request.getParameter("office.id")));
@@ -139,7 +140,7 @@ public class UserController extends BaseController {
     @RequiresPermissions("sys:user:view")
     @RequestMapping(value = "export", method = RequestMethod.POST)
     public String exportFile(User user, HttpServletRequest request, HttpServletResponse response,
-                             RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes) {
         try {
             String fileName = "用户数据" + DateUtils.getDate("yyyyMMddHHmmss") + ".xlsx";
             Page<User> page = systemService.findUser(new Page<User>(request, response, -1), user);

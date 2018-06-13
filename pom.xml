@@ -50,6 +50,16 @@
 		<jdbc.driver.groupId>mysql</jdbc.driver.groupId>
 		<jdbc.driver.artifactId>mysql-connector-java</jdbc.driver.artifactId>
 		<jdbc.driver.version>5.1.34</jdbc.driver.version>
+
+		<!-- jpush -->
+		<jpush.api.client.version>3.3.6</jpush.api.client.version>
+		<jpush.api.common.version>1.1.1</jpush.api.common.version>
+
+		<!-- netty -->
+		<netty.version>4.1.6.Final</netty.version>
+
+		<!-- gson -->
+		<gson.version>2.4</gson.version>
 	</properties>
 
 	<prerequisites>
@@ -787,6 +797,31 @@
 			<version>${jwt.version}</version>
 		</dependency>
 
+		<!-- jpush -->
+		<dependency>
+			<groupId>cn.jpush.api</groupId>
+			<artifactId>jpush-client</artifactId>
+			<version>${jpush.api.client.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.jpush.api</groupId>
+			<artifactId>jiguang-common</artifactId>
+			<version>${jpush.api.common.version}</version>
+		</dependency>
+
+		<!-- netty -->
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>${netty.version}</version>
+		</dependency>
+
+		<!-- gson -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>${gson.version}</version>
+		</dependency>
 	</dependencies>
 
 	<!-- 插件配置 -->
