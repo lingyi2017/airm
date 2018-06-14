@@ -11,33 +11,36 @@ import com.infosoul.mserver.common.utils.IdGen;
 
 /**
  * 数据Entity类
+ * 
  * @author free lance
  * @version 2013-05-28
  */
 @MappedSuperclass
 public abstract class IdEntity<T> extends DataEntity<T> implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    /**
+     * 编号
+     */
+    protected String id;
 
-	protected String id;		// 编号
-	
-	public IdEntity() {
-		super();
-	}
-	
-	@PrePersist
-	public void prePersist(){
-		super.prePersist();
-		this.id = IdGen.uuid();
-	}
+    public IdEntity() {
+        super();
+    }
 
-	@Id
-	public String getId() {
-		return id;
-	}
+    @PrePersist
+    @Override
+    public void prePersist() {
+        super.prePersist();
+        this.id = IdGen.uuid();
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
-	
+    @Id
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
 }
