@@ -35,7 +35,7 @@ public class Device extends IdEntity<Device> {
     private BigDecimal lat;
 
     /**
-     * 状态：1-正常；2-告警；离线
+     * 状态：1-正常；2-告警；3-离线
      */
     private String status;
 
