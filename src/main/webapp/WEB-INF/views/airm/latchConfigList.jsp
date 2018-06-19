@@ -53,6 +53,7 @@
         <li><a href="${ctx}/airm/latchConfig/form">配置添加</a></li>
     </shiro:hasPermission>
 </ul>
+<tags:message content="${message}"/>
 <form:form id="searchForm" modelAttribute="latchConfig" action="${ctx}/airm/latchConfig/list" method="post"
            class="breadcrumb form-search">
     <input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>

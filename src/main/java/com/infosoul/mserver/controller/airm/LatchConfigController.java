@@ -88,26 +88,26 @@ public class LatchConfigController extends BaseController {
             e.printStackTrace();
             logger.error("配置保存异常", e);
         }
-        return "redirect:/airm/latchConfig/list?repage";
+        return "redirect:/airm/latchConfig/list/?repage";
     }
 
     /**
      * 配置修改
      * 
      * @param entity
-     * @param redirAttr
+     * @param redirectAttributes
      * @return
      */
     @RequiresPermissions("airm:latchConfig:edit")
     @RequestMapping("/update")
-    public String update(LatchConfig entity, RedirectAttributes redirAttr) {
+    public String update(LatchConfig entity, RedirectAttributes redirectAttributes) {
         try {
             latchConfigService.update(entity);
-            addMessage(redirAttr, "修改配置'" + entity.getName() + "'成功");
+            addMessage(redirectAttributes, "保存菜单'" + entity.getName() + "'成功");
         } catch (Exception e) {
             logger.error("配置修改异常", e);
         }
-        return "redirect:/airm/latchConfig/list?repage";
+        return "redirect:/airm/latchConfig/?repage";
     }
 
     /**
@@ -126,6 +126,6 @@ public class LatchConfigController extends BaseController {
         } catch (Exception e) {
             logger.error("配置删除异常", e);
         }
-        return "redirect:/airm/latchConfig/list";
+        return "redirect:/airm/latchConfig/list/?repage";
     }
 }

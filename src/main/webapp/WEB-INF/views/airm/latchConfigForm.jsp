@@ -8,7 +8,7 @@
         $(document).ready(function () {
             $("#inputForm").validate({
                 submitHandler: function (form) {
-                    loading(accipiter.getLang("loading"));
+                    loading('正在提交，请稍等...');
                     form.submit();
                 }
             });
