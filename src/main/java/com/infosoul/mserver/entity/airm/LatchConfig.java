@@ -18,6 +18,11 @@ public class LatchConfig extends IdEntity<LatchConfig> {
     private Integer serialNum;
 
     /**
+     * 传感器名称
+     */
+    private String name;
+
+    /**
      * 参数最大值
      */
     private Double maxVal;
@@ -28,6 +33,14 @@ public class LatchConfig extends IdEntity<LatchConfig> {
 
     public void setSerialNum(Integer serialNum) {
         this.serialNum = serialNum;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Double getMaxVal() {

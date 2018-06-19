@@ -270,9 +270,9 @@ INSERT INTO `sys_menu` VALUES ('202', '201', '0,1,200,201,', '设备管理', '/a
 INSERT INTO `sys_menu` VALUES ('203', '202', '0,1,200,201,202,', '查看', null, null, null, '20', '0', '0', 'airm:device:view', '1', now(), '1', now(), null, '0');
 INSERT INTO `sys_menu` VALUES ('204', '202', '0,1,200,201,202,', '修改', null, null, null, '20', '0', '0', 'airm:device:edit', '1', now(), '1', now(), null, '0');
 
-INSERT INTO `sys_menu` VALUES ('205', '201', '0,1,200,201,', '门限配置', '/airm/param/list', null, 'th-list', '20', '1', '0', null, '1', now(), '1', now(), null, '0');
-INSERT INTO `sys_menu` VALUES ('206', '202', '0,1,200,201,205,', '查看', null, null, null, '20', '0', '0', 'airm:param:view', '1', now(), '1', now(), null, '0');
-INSERT INTO `sys_menu` VALUES ('207', '202', '0,1,200,201,205,', '配置', null, null, null, '20', '0', '0', 'airm:param:edit', '1', now(), '1', now(), null, '0');
+INSERT INTO `sys_menu` VALUES ('205', '201', '0,1,200,201,', '门限配置', '/airm/latchConfig/list', null, 'th-list', '20', '1', '0', null, '1', now(), '1', now(), null, '0');
+INSERT INTO `sys_menu` VALUES ('206', '202', '0,1,200,201,205,', '查看', null, null, null, '20', '0', '0', 'airm:latchConfig:view', '1', now(), '1', now(), null, '0');
+INSERT INTO `sys_menu` VALUES ('207', '202', '0,1,200,201,205,', '配置', null, null, null, '20', '0', '0', 'airm:latchConfig:edit', '1', now(), '1', now(), null, '0');
 
 -- 报表统计
 INSERT INTO `sys_menu` VALUES ('300', '1', '0,1,', '报表统计', null, null, 'list', '100', '1', '0', '', null, now(), 'admin', null, null, '0');

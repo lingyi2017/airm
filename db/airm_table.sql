@@ -30,7 +30,7 @@ CREATE TABLE airm_device
 DROP TABLE IF EXISTS airm_record;
 CREATE TABLE airm_record
 (
-  id VARCHAR (16) NOT NULL COMMENT '编号',
+  id VARCHAR (64) NOT NULL COMMENT '编号',
   device_id VARCHAR (16) NOT NULL COMMENT '设备ID',
   status CHAR (1) COMMENT '状态：1-正常；2-告警',
   sensor_val1 DOUBLE (6, 2) COMMENT '传感器1采样值',
@@ -66,7 +66,7 @@ CREATE TABLE airm_record
 DROP TABLE IF EXISTS airm_sensor;
 CREATE TABLE airm_sensor
 (
-  id VARCHAR (16) NOT NULL COMMENT '编号',
+  id VARCHAR (64) NOT NULL COMMENT '编号',
   serial_num INT COMMENT '传感器编号',
   name VARCHAR (32) COMMENT '传感器名称',
   create_date DATETIME COMMENT '添加时间',
@@ -77,8 +77,9 @@ CREATE TABLE airm_sensor
 DROP TABLE IF EXISTS airm_latch_config;
 CREATE TABLE airm_latch_config
 (
-  id VARCHAR (16) NOT NULL COMMENT '编号',
+  id VARCHAR (64) NOT NULL COMMENT '编号',
   serial_num INT COMMENT '传感器编号',
+  name VARCHAR (64) COMMENT '传感器名称',
   max_val DOUBLE (6, 2) COMMENT '参数最大值',
   create_date DATETIME COMMENT '添加时间',
   del_flag CHAR(1) DEFAULT '0' NOT NULL COMMENT '删除标记',

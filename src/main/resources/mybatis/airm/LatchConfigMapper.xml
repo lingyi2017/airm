@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.infosoul.mserver.repository.mybatis.airm.ILatchConfigDao">
+
+    <resultMap id="latchConfigMap" type="latchConfig">
+        <id column="id" property="id"/>
+        <result column="serial_num" property="serialNum"/>
+        <result column="name" property="name"/>
+        <result column="max_val" property="maxVal"/>
+        <result column="create_date" property="createDate"/>
+    </resultMap>
+
+    <!-- 通过id获取 -->
+    <select id="findById" parameterType="String" resultMap="latchConfigMap">
+        SELECT
+          *
+        from
+          airm_latch_config AS a
+        WHERE
+          a.id = #{id} AND a.del_flag = 0
+    </select>
+
+    <!-- 配置列表 -->
+    <select id="findList" resultMap="latchConfigMap" parameterType="latchConfig">
+      SELECT
+        *
+      FROM
+        airm_latch_config AS a
+      WHERE
+        a.del_flag = 0
+        <if test="name != null and name !=''">
+            AND a.name LIKE CONCAT('%', #{name}, '%')
+        </if>
+        <if test="page.orderBy !=null and page.orderBy!=''">
+            ORDER BY ${page.orderBy}
+        </if>
+    </select>
+
+    <!-- 保存 -->
+    <insert id="save" parameterType="latchConfig">
+        INSERT INTO airm_latch_config
+          (id,
+          name,
+          serial_num,
+          max_val,
+          create_date)
+        VALUES
+          (#{id},
+          #{name},
+          #{serialNum},
+          #{maxVal},
+          now()
+          )
+    </insert>
+
+    <!-- 删除 -->
+    <delete id="deleteById" parameterType="string">
+        UPDATE airm_latch_config
+          SET del_flag = '1'
+        WHERE
+          id = #{id}
+    </delete>
+
+    <!-- 修改 -->
+    <update id="update" parameterType="latchConfig">
+        UPDATE airm_latch_config
+        SET
+          name = #{name},
+          serial_num = #{serialNum},
+          max_val = #{maxVal}
+        where
+          id = #{id}
+    </update>
+</mapper>
