@@ -15,14 +15,19 @@ public class Device extends IdEntity<Device> {
     private static final long serialVersionUID = -9001310146656303179L;
 
     /**
+     * 设备名称
+     */
+    private String name;
+
+    /**
      * 设备ID
      */
     private String deviceId;
 
     /**
-     * 设备ime号
+     * 设备imei号
      */
-    private String ime;
+    private String imei;
 
     /**
      * 经度
@@ -104,6 +109,14 @@ public class Device extends IdEntity<Device> {
      */
     private String sensorUnit6;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getDeviceId() {
         return deviceId;
     }
@@ -112,12 +125,12 @@ public class Device extends IdEntity<Device> {
         this.deviceId = deviceId;
     }
 
-    public String getIme() {
-        return ime;
+    public String getImei() {
+        return imei;
     }
 
-    public void setIme(String ime) {
-        this.ime = ime;
+    public void setImei(String imei) {
+        this.imei = imei;
     }
 
     public BigDecimal getLon() {

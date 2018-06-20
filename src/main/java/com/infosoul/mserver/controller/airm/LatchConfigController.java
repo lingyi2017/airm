@@ -103,7 +103,7 @@ public class LatchConfigController extends BaseController {
     public String update(LatchConfig entity, RedirectAttributes redirectAttributes) {
         try {
             latchConfigService.update(entity);
-            addMessage(redirectAttributes, "保存菜单'" + entity.getName() + "'成功");
+            addMessage(redirectAttributes, "保存配置'" + entity.getName() + "'成功");
         } catch (Exception e) {
             logger.error("配置修改异常", e);
         }

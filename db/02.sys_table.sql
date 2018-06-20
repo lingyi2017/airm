@@ -226,6 +226,9 @@ INSERT INTO `sys_dict` VALUES ('35', '管理员', '1', 'sys_user_type', '用户�
 INSERT INTO `sys_dict` VALUES ('36', '普通工作人员', '2', 'sys_user_type', '用户类型', '30', 'admin', now(), 'admin', now(), null, '0');
 INSERT INTO `sys_dict` VALUES ('37', '男', '0', 'sys_user_sex', '性别', '10', 'admin', now(), 'admin', now(), null, '0');
 INSERT INTO `sys_dict` VALUES ('38', '女', '1', 'sys_user_sex', '性别', '20', 'admin', now(), 'admin', now(), null, '0');
+INSERT INTO `sys_dict` VALUES ('39', '正常', '1', 'device_status', '设备状态', '10', 'admin', now(), 'admin', now(), null, '0');
+INSERT INTO `sys_dict` VALUES ('40', '告警', '2', 'device_status', '设备状态', '20', 'admin', now(), 'admin', now(), null, '0');
+INSERT INTO `sys_dict` VALUES ('41', '离线', '3', 'device_status', '设备状态', '30', 'admin', now(), 'admin', now(), null, '0');
 
 -- ----------------------------
 -- Records of sys_menu

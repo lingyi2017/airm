@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.infosoul.mserver.repository.mybatis.airm.IDeviceDao">
+
+    <resultMap id="deviceMap" type="device">
+        <id column="id" property="id"/>
+        <result column="device_id" property="deviceId"/>
+        <result column="imei" property="imei"/>
+        <result column="lon" property="lon"/>
+        <result column="lat" property="lat"/>
+        <result column="status" property="status"/>
+        <result column="station" property="station"/>
+        <result column="sensor_name1" property="sensorName1"/>
+        <result column="sensor_unit1" property="sensorUnit1"/>
+        <result column="sensor_name2" property="sensorName2"/>
+        <result column="sensor_unit2" property="sensorUnit2"/>
+        <result column="sensor_name3" property="sensorName3"/>
+        <result column="sensor_unit3" property="sensorUnit3"/>
+        <result column="sensor_name4" property="sensorName4"/>
+        <result column="sensor_unit4" property="sensorUnit4"/>
+        <result column="sensor_name5" property="sensorName5"/>
+        <result column="sensor_unit5" property="sensorUnit5"/>
+        <result column="sensor_name6" property="sensorName6"/>
+        <result column="sensor_unit6" property="sensorUnit6"/>
+        <result column="create_date" property="createDate"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+
+    <!-- 通过id获取 -->
+    <select id="findById" parameterType="String" resultMap="deviceMap">
+        SELECT
+          *
+        from
+          airm_device AS a
+        WHERE
+          a.id = #{id}
+    </select>
+
+    <!-- 通过deviceId获取 -->
+    <select id="findByDeviceId" parameterType="String" resultMap="deviceMap">
+        SELECT
+          *
+        from
+          airm_device AS a
+        WHERE
+          a.device_id = #{deviceId}
+    </select>
+
+    <!-- 设备列表 -->
+    <select id="findList" resultMap="deviceMap" parameterType="device">
+      SELECT
+        *
+      FROM
+        airm_device AS a
+      WHERE
+        1 = 1
+        <if test="name != null and name !=''">
+            AND a.name LIKE CONCAT('%', #{name}, '%')
+        </if>
+        <if test="page.orderBy !=null and page.orderBy!=''">
+            ORDER BY ${page.orderBy}
+        </if>
+    </select>
+
+    <!-- 保存 -->
+    <insert id="save" parameterType="device">
+        INSERT INTO airm_device
+          (id,
+          device_id,
+          imei,
+          lon,
+          lat,
+          status,
+          station,
+          sensor_name1,
+          sensor_unit1,
+          sensor_name2,
+          sensor_unit2,
+          sensor_name3,
+          sensor_unit3,
+          sensor_name4,
+          sensor_unit4,
+          sensor_name5,
+          sensor_unit5,
+          sensor_name6,
+          sensor_unit6,
+          create_date
+          )
+        VALUES
+          (#{id},
+          #{deviceId},
+          #{imei},
+          #{lon},
+          #{lat},
+          #{status},
+          #{station},
+          #{sensorName1},
+          #{sensorUnit1},
+          #{sensorName2},
+          #{sensorUnit2},
+          #{sensorName3},
+          #{sensorUnit3},
+          #{sensorName4},
+          #{sensorUnit4},
+          #{sensorName5},
+          #{sensorUnit5},
+          #{sensorName6},
+          #{sensorUnit6},
+          now()
+          )
+    </insert>
+
+    <!-- 修改 -->
+    <update id="update" parameterType="device">
+        UPDATE airm_device
+        SET
+          name = #{name},
+          device_id = #{deviceId},
+          imei = #{imei},
+          lon = #{lon},
+          lat = #{lat},
+          status = #{status},
+          station = #{station},
+          sensor_name1 = #{sensorName1},
+          sensor_unit1 = #{sensorUnit1},
+          sensor_name2 = #{sensorName2},
+          sensor_unit2 = #{sensorUnit2},
+          sensor_name3 = #{sensorName3},
+          sensor_unit3 = #{sensorUnit3},
+          sensor_name4 = #{sensorName4},
+          sensor_unit4 = #{sensorUnit4},
+          sensor_name5 = #{sensorName5},
+          sensor_unit5 = #{sensorUnit5},
+          sensor_name6 = #{sensorName6},
+          sensor_unit6 = #{sensorUnit6},
+          update_date = now()
+        where
+          id = #{id}
+    </update>
+</mapper>

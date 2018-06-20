@@ -2,8 +2,9 @@ DROP TABLE IF EXISTS airm_device;
 CREATE TABLE airm_device
 (
   id VARCHAR (64) NOT NULL COMMENT '编号',
+  name VARCHAR (64) COMMENT '设备名称',
   device_id VARCHAR(64) NOT NULL COMMENT '设备ID',
-  ime VARCHAR(64) COMMENT '设备ime号',
+  imei VARCHAR(64) COMMENT '设备imei号',
   lon DECIMAL (8, 2) COMMENT '经度',
   lat DECIMAL (8, 2) COMMENT '纬度',
   status CHAR (1) COMMENT '状态：1-正常；2-告警；3-离线',
@@ -24,6 +25,7 @@ CREATE TABLE airm_device
   update_date DATETIME COMMENT '更新时间',
   remarks varchar(255) COMMENT '备注信息',
   del_flag CHAR(1) DEFAULT '0' NOT NULL COMMENT '删除标记',
+  UNIQUE KEY (device_id),
   PRIMARY KEY (id)
 ) COMMENT = '设备表';
 
