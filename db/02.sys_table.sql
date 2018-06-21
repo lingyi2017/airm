@@ -277,6 +277,10 @@ INSERT INTO `sys_menu` VALUES ('205', '201', '0,1,200,201,', '门限配置', '/a
 INSERT INTO `sys_menu` VALUES ('206', '202', '0,1,200,201,205,', '查看', null, null, null, '20', '0', '0', 'airm:latchConfig:view', '1', now(), '1', now(), null, '0');
 INSERT INTO `sys_menu` VALUES ('207', '202', '0,1,200,201,205,', '配置', null, null, null, '20', '0', '0', 'airm:latchConfig:edit', '1', now(), '1', now(), null, '0');
 
+INSERT INTO `sys_menu` VALUES ('208', '201', '0,1,200,201,', '传感器管理', '/airm/sensor/list', null, 'th-list', '20', '1', '0', null, '1', now(), '1', now(), null, '0');
+INSERT INTO `sys_menu` VALUES ('209', '208', '0,1,200,201,208,', '查看', null, null, null, '20', '0', '0', 'airm:sensor:view', '1', now(), '1', now(), null, '0');
+INSERT INTO `sys_menu` VALUES ('210', '208', '0,1,200,201,208,', '修改', null, null, null, '20', '0', '0', 'airm:sensor:edit', '1', now(), '1', now(), null, '0');
+
 -- 报表统计
 INSERT INTO `sys_menu` VALUES ('300', '1', '0,1,', '报表统计', null, null, 'list', '100', '1', '0', '', null, now(), 'admin', null, null, '0');
 INSERT INTO `sys_menu` VALUES ('301', '300', '0,1,300,', '报表统计', null, null, null, '100', '1', '0', null, '1', now(), '1', now(), null, '0');
