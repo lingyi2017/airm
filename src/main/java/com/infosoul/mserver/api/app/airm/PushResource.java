@@ -9,6 +9,8 @@ import com.infosoul.mserver.dto.airm.DevicePushDTO;
 import com.infosoul.mserver.dto.airm.GeoPushDTO;
 import com.infosoul.mserver.dto.airm.RecordPushDTO;
 import com.infosoul.mserver.dto.airm.StatusPushDTO;
+import com.infosoul.mserver.jpush.JClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.infosoul.mserver.api.BaseResource;
@@ -26,6 +28,9 @@ import com.infosoul.mserver.common.web.MediaTypes;
 @Produces(MediaTypes.JSON_UTF_8)
 @Component
 public class PushResource extends BaseResource {
+
+    @Autowired
+    private JClient client;
 
     /**
      * 设备信息
@@ -56,6 +61,7 @@ public class PushResource extends BaseResource {
     public ResponseRest record(RecordPushDTO dto) {
         try {
 
+            // client.initMessage().push();
             return success();
         } catch (Exception e) {
             logger.error("推送设备历史记录异常", e);
