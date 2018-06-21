@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.infosoul.mserver.repository.mybatis.airm.IRecordDao">
+
+    <resultMap id="recordMap" type="record">
+        <id column="id" property="id"/>
+        <result column="device_id" property="deviceId"/>
+        <result column="status" property="status"/>
+        <result column="sensor_val1" property="sensorVal1"/>
+        <result column="sensor_status1" property="sensorStatus1"/>
+        <result column="sensor_val2" property="sensorVal2"/>
+        <result column="sensor_status2" property="sensorStatus2"/>
+        <result column="sensor_val3" property="sensorVal3"/>
+        <result column="sensor_status3" property="sensorStatus3"/>
+        <result column="sensor_val4" property="sensorVal4"/>
+        <result column="sensor_status4" property="sensorStatus4"/>
+        <result column="sensor_val5" property="sensorVal5"/>
+        <result column="sensor_status5" property="sensorStatus5"/>
+        <result column="sensor_val6" property="sensorVal6"/>
+        <result column="sensor_status6" property="sensorStatus6"/>
+        <result column="sensor_val7" property="sensorVal7"/>
+        <result column="sensor_status7" property="sensorStatus7"/>
+        <result column="sensor_val8" property="sensorVal8"/>
+        <result column="sensor_status8" property="sensorStatus8"/>
+        <result column="sensor_val9" property="sensorVal9"/>
+        <result column="sensor_status9" property="sensorStatus9"/>
+        <result column="sensor_val10" property="sensorVal10"/>
+        <result column="sensor_status10" property="sensorStatus10"/>
+        <result column="sensor_val11" property="sensorVal11"/>
+        <result column="sensor_status11" property="sensorStatus11"/>
+        <result column="sensor_val12" property="sensorVal12"/>
+        <result column="sensor_status12" property="sensorStatus12"/>
+        <result column="create_date" property="createDate"/>
+    </resultMap>
+
+    <!-- 通过id获取 -->
+    <select id="findById" parameterType="String" resultMap="recordMap">
+        SELECT
+          *
+        from
+          airm_record AS a
+        WHERE
+          a.id = #{id}
+    </select>
+
+    <!-- 历史记录列表 -->
+    <select id="findList" resultMap="recordMap" parameterType="record">
+      SELECT
+        *
+      FROM
+        airm_record AS a
+      WHERE
+        1 = 1
+        <if test="name != null and name !=''">
+            AND a.name LIKE CONCAT('%', #{name}, '%')
+        </if>
+        <if test="deviceId != null and deviceId !=''">
+            AND a.device_id = #{deviceId}
+        </if>
+        <if test="page.orderBy !=null and page.orderBy!=''">
+            ORDER BY ${page.orderBy}
+        </if>
+    </select>
+
+    <!-- 保存 -->
+    <insert id="save" parameterType="record">
+        INSERT INTO airm_record
+          (id,
+          device_id,
+          status,
+          sensor_val1,
+          sensor_status1,
+          sensor_val2,
+          sensor_status2,
+          sensor_val3,
+          sensor_status3,
+          sensor_val4,
+          sensor_status4,
+          sensor_val5,
+          sensor_status5,
+          sensor_val6,
+          sensor_status6,
+          sensor_val7,
+          sensor_status7,
+          sensor_val8,
+          sensor_status8,
+          sensor_val9,
+          sensor_status9,
+          sensor_val10,
+          sensor_status10,
+          sensor_val11,
+          sensor_status11,
+          sensor_val12,
+          sensor_status12,
+          create_date
+          )
+        VALUES
+          (#{id},
+          #{deviceId},
+          #{status},
+          #{sensorVal1},
+          #{sensorStatus1},
+          #{sensorVal2},
+          #{sensorStatus2},
+          #{sensorVal3},
+          #{sensorStatus3},
+          #{sensorVal4},
+          #{sensorStatus4},
+          #{sensorVal5},
+          #{sensorStatus5},
+          #{sensorVal6},
+          #{sensorStatus6},
+          #{sensorVal7},
+          #{sensorStatus7},
+          #{sensorVal8},
+          #{sensorStatus8},
+          #{sensorVal9},
+          #{sensorStatus9},
+          #{sensorVal10},
+          #{sensorStatus10},
+          #{sensorVal11},
+          #{sensorStatus11},
+          #{sensorVal12},
+          #{sensorStatus12},
+          now()
+          )
+    </insert>
+</mapper>
