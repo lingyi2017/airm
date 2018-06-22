@@ -36,6 +36,12 @@
         </div>
     </div>
     <div class="control-group">
+        <label class="control-label">设备地址:</label>
+        <div class="controls">
+            <form:input path="address" htmlEscape="false" maxlength="256" class="required"/>
+        </div>
+    </div>
+    <div class="control-group">
         <label class="control-label">IMEI号:</label>
         <div class="controls">
             <label class="lbl">${device.imei}</label>

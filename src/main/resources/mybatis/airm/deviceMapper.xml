@@ -11,6 +11,7 @@
         <result column="lat" property="lat"/>
         <result column="status" property="status"/>
         <result column="station" property="station"/>
+        <result column="address" property="address"/>
         <result column="sensor_name1" property="sensorName1"/>
         <result column="sensor_unit1" property="sensorUnit1"/>
         <result column="sensor_name2" property="sensorName2"/>
@@ -73,6 +74,7 @@
           lat,
           status,
           station,
+          address,
           sensor_name1,
           sensor_unit1,
           sensor_name2,
@@ -95,6 +97,7 @@
           #{lat},
           #{status},
           #{station},
+          #{address},
           #{sensorName1},
           #{sensorUnit1},
           #{sensorName2},
@@ -122,6 +125,7 @@
           lat = #{lat},
           status = #{status},
           station = #{station},
+          address = #{address},
           sensor_name1 = #{sensorName1},
           sensor_unit1 = #{sensorUnit1},
           sensor_name2 = #{sensorName2},

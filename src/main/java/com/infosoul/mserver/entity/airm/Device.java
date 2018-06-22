@@ -50,6 +50,11 @@ public class Device extends IdEntity<Device> {
     private String station;
 
     /**
+     * 设备地址（人为录入或逆地址解析）
+     */
+    private String address;
+
+    /**
      * 传感器1名称
      */
     private String sensorName1;
@@ -163,6 +168,14 @@ public class Device extends IdEntity<Device> {
 
     public void setStation(String station) {
         this.station = station;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getSensorName1() {
