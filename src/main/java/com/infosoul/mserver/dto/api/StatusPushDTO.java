@@ -1,4 +1,4 @@
-package com.infosoul.mserver.dto.airm;
+package com.infosoul.mserver.dto.api;
 
 import java.io.Serializable;
 

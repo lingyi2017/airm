@@ -5,10 +5,10 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import com.infosoul.mserver.dto.airm.DevicePushDTO;
-import com.infosoul.mserver.dto.airm.GeoPushDTO;
-import com.infosoul.mserver.dto.airm.RecordPushDTO;
-import com.infosoul.mserver.dto.airm.StatusPushDTO;
+import com.infosoul.mserver.dto.api.DevicePushDTO;
+import com.infosoul.mserver.dto.api.GeoPushDTO;
+import com.infosoul.mserver.dto.api.RecordPushDTO;
+import com.infosoul.mserver.dto.api.StatusPushDTO;
 import com.infosoul.mserver.jpush.JClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

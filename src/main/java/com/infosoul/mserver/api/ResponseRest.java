@@ -35,7 +35,7 @@ public class ResponseRest implements Serializable {
     /**
      * 总记录数
      */
-    private Integer total;
+    private Long total;
 
     public enum Status {
 
@@ -121,7 +121,7 @@ public class ResponseRest implements Serializable {
         this.errorMsg = status.getMsg();
     }
 
-    private ResponseRest(Boolean success, Status status, Object content, Integer total) {
+    private ResponseRest(Boolean success, Status status, Object content, Long total) {
         this.success = success;
         this.content = content;
         this.errorCode = status.getCode();
@@ -137,7 +137,7 @@ public class ResponseRest implements Serializable {
         return new ResponseRest(true, Status.OK, content);
     }
 
-    public static ResponseRest success(Object content, Integer total) {
+    public static ResponseRest success(Object content, Long total) {
         return new ResponseRest(true, Status.OK, content, total);
     }
 
@@ -181,11 +181,11 @@ public class ResponseRest implements Serializable {
         this.errorMsg = errorMsg;
     }
 
-    public Integer getTotal() {
+    public Long getTotal() {
         return total;
     }
 
-    public void setTotal(Integer total) {
+    public void setTotal(Long total) {
         this.total = total;
     }
 }

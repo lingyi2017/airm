@@ -2,6 +2,7 @@ package com.infosoul.mserver.service.airm;
 
 import java.util.List;
 
+import com.infosoul.mserver.dto.api.DeviceListRqDTO;
 import com.infosoul.mserver.entity.airm.Device;
 import com.infosoul.mserver.repository.mybatis.airm.IDeviceDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,30 @@ public class DeviceService extends BaseService {
         List<Device> list = deviceDao.findList(entity);
         page.setList(list);
         return page;
+    }
+
+    /**
+     * APP端设备列表
+     * 
+     * @param dto
+     * @return
+     */
+    public Page<Device> findAppList(DeviceListRqDTO dto) {
+        Page<Device> page = new Page<>();
+        Device entity = new Device();
+        if (null != dto) {
+            if (null != dto.getPageNo() && null != dto.getPageSize()) {
+                page.setPageNo(dto.getPageNo());
+                page.setPageSize(dto.getPageSize());
+            }
+            if (StringUtils.isNotEmpty(dto.getName())) {
+                entity.setName(dto.getName());
+            }
+            if (StringUtils.isNotEmpty(dto.getAddress())) {
+                entity.setAddress(dto.getAddress());
+            }
+        }
+        return this.findList(page, entity);
     }
 
     /**

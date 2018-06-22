@@ -1,17 +1,17 @@
-package com.infosoul.mserver.dto.airm;
+package com.infosoul.mserver.dto.api;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * 推送设备地理位置DTO
+ * APP端设备列表响应信息
  *
  * @author longxy
- * @date 2018-06-22 0:30
+ * @date 2018-06-22 23:01
  */
-public class GeoPushDTO implements Serializable {
+public class DeviceListRpDTO implements Serializable {
 
-    private static final long serialVersionUID = 2804606281593278840L;
+    private static final long serialVersionUID = -1233456395648210094L;
 
     /**
      * 经度
@@ -22,6 +22,11 @@ public class GeoPushDTO implements Serializable {
      * 纬度
      */
     private BigDecimal lat;
+
+    /**
+     * 状态：1-正常；2-告警；3-离线
+     */
+    private String status;
 
     public BigDecimal getLon() {
         return lon;
@@ -37,5 +42,13 @@ public class GeoPushDTO implements Serializable {
 
     public void setLat(BigDecimal lat) {
         this.lat = lat;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

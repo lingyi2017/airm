@@ -21,7 +21,7 @@ public abstract class BaseResource {
         return ResponseRest.success(content);
     }
 
-    protected ResponseRest success(Object content, Integer total) {
+    protected ResponseRest success(Object content, Long total) {
         return ResponseRest.success(content, total);
     }
 
