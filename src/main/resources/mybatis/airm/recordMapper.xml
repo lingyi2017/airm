@@ -52,15 +52,24 @@
         airm_record AS a
       WHERE
         1 = 1
-        <if test="name != null and name !=''">
-            AND a.name LIKE CONCAT('%', #{name}, '%')
-        </if>
         <if test="deviceId != null and deviceId !=''">
             AND a.device_id = #{deviceId}
         </if>
         <if test="page.orderBy !=null and page.orderBy!=''">
             ORDER BY ${page.orderBy}
         </if>
+    </select>
+
+    <!-- 设备最近一条历史记录 -->
+    <select id="findLatestByDeviceId" resultMap="recordMap" parameterType="string">
+        SELECT
+        *
+        FROM
+        airm_record AS a
+        WHERE
+        a.device_id = #{deviceId}
+        ORDER BY a.create_date DESC
+        LIMIT 1
     </select>
 
     <!-- 保存 -->

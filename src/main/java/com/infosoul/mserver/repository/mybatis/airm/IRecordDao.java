@@ -9,5 +9,11 @@ import com.infosoul.mserver.entity.airm.Record;
  */
 @MyBatisRepository
 public interface IRecordDao extends BaseMybatisDao<Record> {
-
+    /**
+     * 设备最近一条历史记录
+     * 
+     * @param deviceId
+     * @return
+     */
+    Record findLatestByDeviceId(String deviceId);
 }

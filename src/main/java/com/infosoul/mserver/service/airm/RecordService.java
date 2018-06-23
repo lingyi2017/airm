@@ -47,6 +47,16 @@ public class RecordService extends BaseService {
     }
 
     /**
+     * 设备最近一条历史记录
+     * 
+     * @param deviceId
+     * @return
+     */
+    public Record findLatestByDeviceId(String deviceId) {
+        return recordDao.findLatestByDeviceId(deviceId);
+    }
+
+    /**
      * 保存
      * 
      * @param entity

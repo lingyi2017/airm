@@ -1,5 +1,6 @@
 /**
- * Copyright &copy; 2012-2013 <a href="https://github.com/free lance/infosys">infosys</a> All rights reserved.
+ * Copyright &copy; 2012-2013 <a href="https://github.com/free lance/infosys">infosys</a> All rights
+ * reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -21,8 +22,8 @@ import org.apache.commons.lang3.time.DateFormatUtils;
  */
 public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
-    private static String[] parsePatterns = { "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy/MM/dd",
-            "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm" };
+    private static String[] parsePatterns = {"yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy/MM/dd",
+            "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm"};
 
     /**
      * 得到当前日期字符串 格式（yyyy-MM-dd）
@@ -101,9 +102,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 日期型字符串转化为日期 格式
-     * { "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm",
-     * "yyyy/MM/dd", "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm" }
+     * 日期型字符串转化为日期 格式 { "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy/MM/dd",
+     * "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm" }
      */
     public static Date parseDate(Object str) {
         if (str == null) {
@@ -187,11 +187,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * 
      * 将字符串按指定的格式转换为日期类型
      * 
-     * @param str
-     *            日期字符串
+     * @param str 日期字符串
      * 
-     * @param format
-     *            指定格式
+     * @param format 指定格式
      * 
      * @return 格式化后的日期对象
      */
@@ -212,15 +210,16 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * 
      * 将日期格式化为<字符串类型>
      * 
-     * @param 要格式化的日期
+     * @param date 要格式化的日期
      * 
-     * @param dateFormat
-     *            日期格式
+     * @param dateFormat 日期格式
      * 
      * @return 当前日期<字符串类型>
      */
-
-    public static String dataToStr(Date date, String dateFormat) {
+    public static String dateToStr(Date date, String dateFormat) {
+        if (null == date || StringUtils.isEmpty(dateFormat)) {
+            return null;
+        }
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
         return sdf.format(date);
     }
@@ -229,14 +228,11 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * 
      * 对格式为20080101类型的字符串进行日期格式化
      * 
-     * @param dateStr
-     *            要格式化的字符串
+     * @param dateStr 要格式化的字符串
      * 
-     * @param formatChar
-     *            连接字符
+     * @param formatChar 连接字符
      * 
-     * @param dateFormat
-     *            日期格式
+     * @param dateFormat 日期格式
      * 
      * @return 格式后的日期对象
      */
@@ -256,10 +252,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * 
      * 将一个日期转换为指定格式的日期类型
      * 
-     * @param date
-     *            要转换的日期
-     * @param dateFormat
-     *            日期格式
+     * @param date 要转换的日期
+     * @param dateFormat 日期格式
      * @return 转换后的日期对象
      */
 
@@ -302,8 +296,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
         return formatDate2(cal.getTime(), "yyyy-MM-dd");
     }
-    
-    
+
+
 
     /**
      * @param args
@@ -326,7 +320,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * 得到min分钟后的时间
      *
      * @param date
-     * @param min  可以为负数
+     * @param min 可以为负数
      * @return
      */
     public static long addMin(Date date, int min) {
