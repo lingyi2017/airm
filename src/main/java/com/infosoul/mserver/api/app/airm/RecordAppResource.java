@@ -114,8 +114,7 @@ public class RecordAppResource extends BaseResource {
             for (Record record : records) {
                 RecordAlarmListRpDTO rp = new RecordAlarmListRpDTO();
                 BeanUtils.copyProperties(record, rp);
-                rp.setAqi(60);
-                rp.setPollutionDegree("优");
+                rp.setPollutionDegree("1");
                 rp.setCreateDate(DateUtils.dateToStr(record.getCreateDate(), "yyyy-MM-dd HH:mm:ss"));
                 rps.add(rp);
             }
@@ -123,6 +122,31 @@ public class RecordAppResource extends BaseResource {
         } catch (Exception e) {
             logger.error("APP端获取告警列表异常", e.getMessage());
             return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "APP端获取告警列表异常");
+        }
+    }
+
+    /**
+     * 告警详情
+     *
+     * @param dto
+     * @return
+     */
+    @POST
+    @Path("/alarm/detail")
+    public ResponseRest recordAlarmDetail(RecordAlarmDetailRqDTO dto) {
+        if (null == dto || StringUtils.isEmpty(dto.getId())) {
+            return error(ResponseRest.Status.BAD_REQUEST, "告警ID不能为空");
+        }
+        try {
+            Record record = recordService.get(dto.getId());
+            RecordAlarmDetailRpDTO rp = new RecordAlarmDetailRpDTO();
+            BeanUtils.copyProperties(record, rp);
+            rp.setAqi(60);
+            rp.setPollutionDegree("1");
+            return success(rp);
+        } catch (Exception e) {
+            logger.error("APP端告警详情", e.getMessage());
+            return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "APP端告警详情");
         }
     }
 }
