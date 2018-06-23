@@ -23,6 +23,11 @@ public class Record extends IdEntity<Record> {
     private String status;
 
     /**
+     * 告警是否读取：0-未读；1-已读
+     */
+    private String read;
+
+    /**
      * 传感器1采样值
      */
     private Double sensorVal1;
@@ -156,6 +161,14 @@ public class Record extends IdEntity<Record> {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getRead() {
+        return read;
+    }
+
+    public void setRead(String read) {
+        this.read = read;
     }
 
     public Double getSensorVal1() {
