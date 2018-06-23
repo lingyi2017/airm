@@ -3,6 +3,7 @@ package com.infosoul.mserver.api.app.airm;
 import javax.ws.rs.*;
 
 import com.infosoul.mserver.common.utils.DateUtils;
+import com.infosoul.mserver.common.utils.StringUtils;
 import com.infosoul.mserver.dto.api.RecordLatestRpDTO;
 import com.infosoul.mserver.dto.api.RecordLatestRqDTO;
 import com.infosoul.mserver.entity.airm.Record;
@@ -29,9 +30,6 @@ import com.infosoul.mserver.service.airm.DeviceService;
 public class RecordAppResource extends BaseResource {
 
     @Autowired
-    private DeviceService deviceService;
-
-    @Autowired
     private RecordService recordService;
 
     /**
@@ -43,6 +41,9 @@ public class RecordAppResource extends BaseResource {
     @POST
     @Path("/latest")
     public ResponseRest latestRecord(RecordLatestRqDTO dto) {
+        if (null == dto || StringUtils.isEmpty(dto.getDeviceId())) {
+            return error(ResponseRest.Status.BAD_REQUEST, "设备ID不能为空");
+        }
         try {
             Record record = recordService.findLatestByDeviceId(dto.getDeviceId());
             RecordLatestRpDTO rp = new RecordLatestRpDTO();

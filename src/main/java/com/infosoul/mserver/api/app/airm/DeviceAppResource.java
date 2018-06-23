@@ -5,6 +5,9 @@ import java.util.List;
 import javax.ws.rs.*;
 
 import com.google.common.collect.Lists;
+import com.infosoul.mserver.common.utils.StringUtils;
+import com.infosoul.mserver.dto.api.DeviceInfoRpDTO;
+import com.infosoul.mserver.dto.api.DeviceInfoRqDTO;
 import com.infosoul.mserver.dto.api.DeviceListRpDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +61,29 @@ public class DeviceAppResource extends BaseResource {
         } catch (Exception e) {
             logger.error("APP端获取设备列表异常", e.getMessage());
             return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "APP端获取设备列表异常");
+        }
+    }
+
+    /**
+     * 设备信息
+     * 
+     * @param dto
+     * @return
+     */
+    @POST
+    @Path("/info")
+    public ResponseRest deviceInfo(DeviceInfoRqDTO dto) {
+        if (null == dto || StringUtils.isEmpty(dto.getDeviceId())) {
+            return error(ResponseRest.Status.BAD_REQUEST, "设备ID不能为空");
+        }
+        try {
+            Device device = deviceService.findByDeviceId(dto.getDeviceId());
+            DeviceInfoRpDTO rp = new DeviceInfoRpDTO();
+            BeanUtils.copyProperties(device, rp);
+            return success(rp);
+        } catch (Exception e) {
+            logger.error("APP端获取设备信息异常", e.getMessage());
+            return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "APP端获取设备信息异常");
         }
     }
 }
