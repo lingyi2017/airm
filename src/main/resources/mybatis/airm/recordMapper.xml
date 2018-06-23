@@ -80,6 +80,7 @@
         INSERT INTO airm_record
           (id,
           device_id,
+          device_name,
           status,
           `read`,
           sensor_val1,
@@ -111,6 +112,7 @@
         VALUES
           (#{id},
           #{deviceId},
+          #{deviceName},
           #{status},
           0,
           #{sensorVal1},

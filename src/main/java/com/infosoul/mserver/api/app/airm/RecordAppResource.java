@@ -4,12 +4,11 @@ import javax.ws.rs.*;
 
 import com.google.common.collect.Lists;
 import com.infosoul.mserver.common.persistence.Page;
+import com.infosoul.mserver.common.utils.Constant;
 import com.infosoul.mserver.common.utils.DateUtils;
 import com.infosoul.mserver.common.utils.StringUtils;
-import com.infosoul.mserver.dto.api.RecordLatestRpDTO;
-import com.infosoul.mserver.dto.api.RecordLatestRqDTO;
-import com.infosoul.mserver.dto.api.RecordListRpDTO;
-import com.infosoul.mserver.dto.api.RecordListRqDTO;
+import com.infosoul.mserver.dto.BaseRqDTO;
+import com.infosoul.mserver.dto.api.*;
 import com.infosoul.mserver.entity.airm.Record;
 import com.infosoul.mserver.service.airm.RecordService;
 import com.sun.org.apache.regexp.internal.RE;
@@ -85,13 +84,45 @@ public class RecordAppResource extends BaseResource {
             for (Record record : records) {
                 RecordListRpDTO rp = new RecordListRpDTO();
                 BeanUtils.copyProperties(record, rp);
-                rp.setCreateDate(DateUtils.dateToStr(record.getCreateDate(), "yyyy-MM-dd HH:mm:ss"));
+                rp.setCreateDate(DateUtils.dateToStr(record.getCreateDate(), Constant.FORMAT));
                 rps.add(rp);
             }
             return success(rps, page.getCount());
         } catch (Exception e) {
             logger.error("APP端获取设备历史记录列表异常", e.getMessage());
             return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "APP端获取设备历史记录列表异常");
+        }
+    }
+
+    /**
+     * 告警记录列表
+     *
+     * @param dto
+     * @return
+     */
+    @POST
+    @Path("/alarm/list")
+    public ResponseRest recordAlarmList(RecordListRqDTO dto) {
+        try {
+            dto.setDeviceId(null);
+            Page<Record> page = recordService.findAlarmAppList(dto);
+            if (null == page.getList()) {
+                return success(null, 0L);
+            }
+            List<Record> records = page.getList();
+            List<RecordAlarmListRpDTO> rps = Lists.newArrayList();
+            for (Record record : records) {
+                RecordAlarmListRpDTO rp = new RecordAlarmListRpDTO();
+                BeanUtils.copyProperties(record, rp);
+                rp.setAqi(60);
+                rp.setPollutionDegree("优");
+                rp.setCreateDate(DateUtils.dateToStr(record.getCreateDate(), "yyyy-MM-dd HH:mm:ss"));
+                rps.add(rp);
+            }
+            return success(rps, page.getCount());
+        } catch (Exception e) {
+            logger.error("APP端获取告警列表异常", e.getMessage());
+            return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "APP端获取告警列表异常");
         }
     }
 }

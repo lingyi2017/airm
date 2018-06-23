@@ -24,6 +24,16 @@ public class Constant {
     /**
      * 默认日期格式
      */
-    public final static String FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    /**
+     * 记录告警
+     */
+    public static final String RECORD_ALARM = "2";
+
+    /**
+     * 记录已读
+     */
+    public static final String record_read = "1";
 
 }

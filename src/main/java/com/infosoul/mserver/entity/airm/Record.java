@@ -18,6 +18,11 @@ public class Record extends IdEntity<Record> {
     private String deviceId;
 
     /**
+     * 设备名称
+     */
+    private String deviceName;
+
+    /**
      * 状态：1-正常；2-告警
      */
     private String status;
@@ -153,6 +158,14 @@ public class Record extends IdEntity<Record> {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
 
     public String getStatus() {

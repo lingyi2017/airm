@@ -2,6 +2,8 @@ package com.infosoul.mserver.service.airm;
 
 import java.util.List;
 
+import com.infosoul.mserver.common.utils.Constant;
+import com.infosoul.mserver.dto.BaseRqDTO;
 import com.infosoul.mserver.dto.api.RecordListRqDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +50,7 @@ public class RecordService extends BaseService {
     }
 
     /**
-     * APP端设备列表
+     * APP端历史记录列表
      *
      * @param dto
      * @return
@@ -57,6 +59,23 @@ public class RecordService extends BaseService {
         Page<Record> page = new Page<>();
         Record entity = new Record();
         entity.setDeviceId(dto.getDeviceId());
+        if (null != dto.getPageNo() && null != dto.getPageSize()) {
+            page.setPageNo(dto.getPageNo());
+            page.setPageSize(dto.getPageSize());
+        }
+        return this.findList(page, entity);
+    }
+
+    /**
+     * APP端告警记录列表
+     *
+     * @param dto
+     * @return
+     */
+    public Page<Record> findAlarmAppList(RecordListRqDTO dto) {
+        Page<Record> page = new Page<>();
+        Record entity = new Record();
+        entity.setStatus(Constant.RECORD_ALARM);
         if (null != dto.getPageNo() && null != dto.getPageSize()) {
             page.setPageNo(dto.getPageNo());
             page.setPageSize(dto.getPageSize());

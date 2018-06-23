@@ -35,6 +35,7 @@ CREATE TABLE airm_record
 (
   id VARCHAR (64) NOT NULL COMMENT '编号',
   device_id VARCHAR (16) NOT NULL COMMENT '设备ID',
+  device_name VARCHAR (64) COMMENT '设备名称',
   status CHAR (1) COMMENT '状态：1-正常；2-告警',
   read CHAR (1) COMMENT '状态：0-未读；1-已读',
   sensor_val1 DOUBLE (6, 2) COMMENT '传感器1采样值',
