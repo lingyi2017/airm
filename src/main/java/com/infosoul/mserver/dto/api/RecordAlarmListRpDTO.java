@@ -1,6 +1,7 @@
 package com.infosoul.mserver.dto.api;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 告警列表响应 DTO
@@ -37,7 +38,7 @@ public class RecordAlarmListRpDTO implements Serializable {
     /**
      * 创建日期
      */
-    protected String createDate;
+    protected Date createDate;
 
     public String getId() {
         return id;
@@ -79,11 +80,11 @@ public class RecordAlarmListRpDTO implements Serializable {
         this.read = read;
     }
 
-    public String getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 }

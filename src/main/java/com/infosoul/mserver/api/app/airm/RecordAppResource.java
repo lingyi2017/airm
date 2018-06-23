@@ -7,10 +7,14 @@ import com.infosoul.mserver.common.persistence.Page;
 import com.infosoul.mserver.common.utils.Constant;
 import com.infosoul.mserver.common.utils.DateUtils;
 import com.infosoul.mserver.common.utils.StringUtils;
+import com.infosoul.mserver.common.utils.UserUtils;
 import com.infosoul.mserver.dto.BaseRqDTO;
 import com.infosoul.mserver.dto.api.*;
 import com.infosoul.mserver.entity.airm.Record;
+import com.infosoul.mserver.entity.airm.UserRecord;
+import com.infosoul.mserver.entity.sys.User;
 import com.infosoul.mserver.service.airm.RecordService;
+import com.infosoul.mserver.service.airm.UserRecordService;
 import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +41,9 @@ public class RecordAppResource extends BaseResource {
 
     @Autowired
     private RecordService recordService;
+
+    @Autowired
+    private UserRecordService userRecordService;
 
     /**
      * 设备最近一条记录
@@ -84,7 +91,6 @@ public class RecordAppResource extends BaseResource {
             for (Record record : records) {
                 RecordListRpDTO rp = new RecordListRpDTO();
                 BeanUtils.copyProperties(record, rp);
-                rp.setCreateDate(DateUtils.dateToStr(record.getCreateDate(), Constant.FORMAT));
                 rps.add(rp);
             }
             return success(rps, page.getCount());
@@ -114,8 +120,8 @@ public class RecordAppResource extends BaseResource {
             for (Record record : records) {
                 RecordAlarmListRpDTO rp = new RecordAlarmListRpDTO();
                 BeanUtils.copyProperties(record, rp);
+                rp.setRead(buildRead(record));
                 rp.setPollutionDegree("1");
-                rp.setCreateDate(DateUtils.dateToStr(record.getCreateDate(), "yyyy-MM-dd HH:mm:ss"));
                 rps.add(rp);
             }
             return success(rps, page.getCount());
@@ -148,5 +154,12 @@ public class RecordAppResource extends BaseResource {
             logger.error("APP端告警详情", e.getMessage());
             return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "APP端告警详情");
         }
+    }
+
+    private String buildRead(Record record) {
+        UserRecord userRecord = new UserRecord();
+        userRecord.setUserId(UserUtils.getUser().getId());
+        userRecord.setRecordId(record.getId());
+        return userRecordService.getStatus(userRecord);
     }
 }

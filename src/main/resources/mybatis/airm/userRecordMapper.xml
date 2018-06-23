@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.infosoul.mserver.repository.mybatis.airm.IUserRecordDao">
+
+    <resultMap id="userRecordMap" type="record">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="record_id" property="recordId"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <!-- 获取记录阅读状态 -->
+    <select id="getStatus" resultType="string" parameterType="userRecord">
+        SELECT
+          status
+        FROM
+        airm_user_record AS a
+        WHERE
+        a.user_id = #{userId} AND a.record_id = #{recordId}
+        LIMIT 1
+    </select>
+
+    <!-- 保存 -->
+    <insert id="save" parameterType="userRecord">
+        INSERT INTO airm_user_record
+          (id,
+          user_id,
+          record_id,
+          status
+          )
+        VALUES
+          (#{id},
+          #{userId},
+          #{recordId},
+          0
+          )
+    </insert>
+
+    <!-- 更新记录阅读状态 -->
+    <update id="updateStatus" parameterType="userRecord">
+        UPDATE airm_user_record
+          SET status = #{status}
+        WHERE
+          user_id = #{userId} AND record_id = #{recordId}
+    </update>
+</mapper>

@@ -91,19 +91,19 @@ CREATE TABLE airm_latch_config
 ) COMMENT = '门限配置';
 
 DROP TABLE IF EXISTS airm_record_read;
-CREATE TABLE airm_record_read
+CREATE TABLE airm_user_record
 (
   id VARCHAR (64) NOT NULL COMMENT '编号',
   user_id VARCHAR (64) COMMENT '用户ID',
   record_id VARCHAR (64) COMMENT '设备记录ID',
-  status CHAR (1) COMMENT '状态：0-未读；1-已读',
+  status CHAR (1) DEFAULT '0' COMMENT '状态：0-未读；1-已读',
   PRIMARY KEY (id)
-) COMMENT = '用户-设备告警记录阅读情况表';
+) COMMENT = '用户-设备告警记录表';
 
 -- 创建索引
 CREATE INDEX airm_device_device_id ON airm_device (device_id ASC);
 CREATE INDEX airm_record_device_id ON airm_record(device_id ASC);
-CREATE INDEX airm_record_read_user_id ON airm_record_read(user_id ASC);
-CREATE INDEX airm_record_read_record_id ON airm_record_read(record_id ASC);
+CREATE INDEX airm_user_record_user_id ON airm_user_record(user_id ASC);
+CREATE INDEX airm_user_record_record_id ON airm_user_record(record_id ASC);
 
 -- 初始化传感器数据
