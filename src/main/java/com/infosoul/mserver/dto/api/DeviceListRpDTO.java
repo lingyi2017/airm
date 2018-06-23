@@ -14,6 +14,16 @@ public class DeviceListRpDTO implements Serializable {
     private static final long serialVersionUID = -1233456395648210094L;
 
     /**
+     * 设备名称
+     */
+    private String name;
+
+    /**
+     * 设备ID
+     */
+    private String deviceId;
+
+    /**
      * 经度
      */
     private BigDecimal lon;
@@ -27,6 +37,22 @@ public class DeviceListRpDTO implements Serializable {
      * 状态：1-正常；2-告警；3-离线
      */
     private String status;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
 
     public BigDecimal getLon() {
         return lon;
