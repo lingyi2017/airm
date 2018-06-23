@@ -25,7 +25,7 @@ public class RecordAlarmListRpDTO implements Serializable {
     private String deviceName;
 
     /**
-     * 空气污染等级：1-优级；2-良好；3-轻度污染；4-中度污染；5-重度污染
+     * 空气污染等级：1-优级；2-良好；3-轻度污染；4-中度污染；5-重度污染；6-严重污染
      */
     private String pollutionDegree;
 
@@ -45,6 +45,14 @@ public class RecordAlarmListRpDTO implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public String getDeviceName() {
