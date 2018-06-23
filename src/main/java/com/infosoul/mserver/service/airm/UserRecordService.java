@@ -47,6 +47,7 @@ public class UserRecordService extends BaseService {
      * 
      * @param userRecord
      */
+    @Transactional(readOnly = false)
     public void updateStatus(UserRecord userRecord) {
         userRecordDao.updateStatus(userRecord);
     }

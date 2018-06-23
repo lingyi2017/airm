@@ -34,6 +34,6 @@ public class Constant {
     /**
      * 记录已读
      */
-    public static final String record_read = "1";
+    public static final String RECORD_READ = "1";
 
 }

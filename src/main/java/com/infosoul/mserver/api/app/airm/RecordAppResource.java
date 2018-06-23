@@ -156,6 +156,31 @@ public class RecordAppResource extends BaseResource {
         }
     }
 
+    /**
+     * 点击阅读
+     *
+     * @param dto
+     * @return
+     */
+    @POST
+    @Path("/alarm/read")
+    public ResponseRest recordAlarmRead(RecordAlarmReadRqDTO dto) {
+        if (null == dto || StringUtils.isEmpty(dto.getId())) {
+            return error(ResponseRest.Status.BAD_REQUEST, "告警ID不能为空");
+        }
+        try {
+            UserRecord userRecord = new UserRecord();
+            userRecord.setUserId(UserUtils.getUser().getId());
+            userRecord.setRecordId(dto.getId());
+            userRecord.setStatus(Constant.RECORD_READ);
+            userRecordService.updateStatus(userRecord);
+            return success();
+        } catch (Exception e) {
+            logger.error("APP端点击阅读", e.getMessage());
+            return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "点击阅读异常");
+        }
+    }
+
     private String buildRead(Record record) {
         UserRecord userRecord = new UserRecord();
         userRecord.setUserId(UserUtils.getUser().getId());
