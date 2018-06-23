@@ -2,6 +2,7 @@ package com.infosoul.mserver.service.airm;
 
 import java.util.List;
 
+import com.infosoul.mserver.dto.api.RecordListRqDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +45,23 @@ public class RecordService extends BaseService {
         List<Record> list = recordDao.findList(entity);
         page.setList(list);
         return page;
+    }
+
+    /**
+     * APP端设备列表
+     *
+     * @param dto
+     * @return
+     */
+    public Page<Record> findAppList(RecordListRqDTO dto) {
+        Page<Record> page = new Page<>();
+        Record entity = new Record();
+        entity.setDeviceId(dto.getDeviceId());
+        if (null != dto.getPageNo() && null != dto.getPageSize()) {
+            page.setPageNo(dto.getPageNo());
+            page.setPageSize(dto.getPageSize());
+        }
+        return this.findList(page, entity);
     }
 
     /**

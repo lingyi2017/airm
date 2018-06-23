@@ -3,12 +3,12 @@ package com.infosoul.mserver.dto.api;
 import java.io.Serializable;
 
 /**
- * 设备最近一条记录响应 DTO
+ * 历史记录响应 DTO
  *
  * @author longxy
  * @date 2018-06-23 13:11
  */
-public class RecordLatestRpDTO implements Serializable {
+public class RecordListRpDTO implements Serializable {
 
     private static final long serialVersionUID = 7907571347233771721L;
 

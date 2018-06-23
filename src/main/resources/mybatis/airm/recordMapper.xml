@@ -55,6 +55,9 @@
         <if test="deviceId != null and deviceId !=''">
             AND a.device_id = #{deviceId}
         </if>
+        <if test="status != null and status !=''">
+            AND a.status = #{status}
+        </if>
         <if test="page.orderBy !=null and page.orderBy!=''">
             ORDER BY ${page.orderBy}
         </if>

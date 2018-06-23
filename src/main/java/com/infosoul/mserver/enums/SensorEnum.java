@@ -6,7 +6,7 @@ package com.infosoul.mserver.enums;
  * @author longxy
  * @date 2018-06-14 22:54
  */
-public enum DefaultSensorEnum {
+public enum SensorEnum {
 
     CO2("CO2", "PPM"), PM1("PM1.0", "μg/m3"), PM25("PM2.5", "μg/m3"), PM10("PM10", "μg/m3"), TEM("温度", "℃"), HUM("湿度",
             "%RH");
@@ -21,7 +21,7 @@ public enum DefaultSensorEnum {
      */
     private String unit;
 
-    DefaultSensorEnum(String name, String unit) {
+    SensorEnum(String name, String unit) {
         this.name = name;
         this.unit = unit;
     }

@@ -2,12 +2,17 @@ package com.infosoul.mserver.api.app.airm;
 
 import javax.ws.rs.*;
 
+import com.google.common.collect.Lists;
+import com.infosoul.mserver.common.persistence.Page;
 import com.infosoul.mserver.common.utils.DateUtils;
 import com.infosoul.mserver.common.utils.StringUtils;
 import com.infosoul.mserver.dto.api.RecordLatestRpDTO;
 import com.infosoul.mserver.dto.api.RecordLatestRqDTO;
+import com.infosoul.mserver.dto.api.RecordListRpDTO;
+import com.infosoul.mserver.dto.api.RecordListRqDTO;
 import com.infosoul.mserver.entity.airm.Record;
 import com.infosoul.mserver.service.airm.RecordService;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,6 +21,8 @@ import com.infosoul.mserver.api.BaseResource;
 import com.infosoul.mserver.api.ResponseRest;
 import com.infosoul.mserver.common.web.MediaTypes;
 import com.infosoul.mserver.service.airm.DeviceService;
+
+import java.util.List;
 
 /**
  * APP端历史记录RESTFull接口
@@ -53,6 +60,38 @@ public class RecordAppResource extends BaseResource {
         } catch (Exception e) {
             logger.error("APP端获取最近一条历史记录异常", e.getMessage());
             return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "APP端获取最近一条历史记录异常");
+        }
+    }
+
+    /**
+     * 历史记录列表
+     *
+     * @param dto
+     * @return
+     */
+    @POST
+    @Path("/list")
+    public ResponseRest recordList(RecordListRqDTO dto) {
+        if (null == dto || StringUtils.isEmpty(dto.getDeviceId())) {
+            return error(ResponseRest.Status.BAD_REQUEST, "设备ID不能为空");
+        }
+        try {
+            Page<Record> page = recordService.findAppList(dto);
+            if (null == page.getList()) {
+                return success(null, 0L);
+            }
+            List<Record> records = page.getList();
+            List<RecordListRpDTO> rps = Lists.newArrayList();
+            for (Record record : records) {
+                RecordListRpDTO rp = new RecordListRpDTO();
+                BeanUtils.copyProperties(record, rp);
+                rp.setCreateDate(DateUtils.dateToStr(record.getCreateDate(), "yyyy-MM-dd HH:mm:ss"));
+                rps.add(rp);
+            }
+            return success(rps, page.getCount());
+        } catch (Exception e) {
+            logger.error("APP端获取设备历史记录列表异常", e.getMessage());
+            return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "APP端获取设备历史记录列表异常");
         }
     }
 }
