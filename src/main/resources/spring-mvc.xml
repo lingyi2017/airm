@@ -7,34 +7,40 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<description>SpringMVC配置</description>
-	<!-- 自动扫描且只扫描@Controller -->
-	<context:component-scan base-package="com.infosoul.mserver" use-default-filters="false">
-		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
-		<!-- <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" /> -->
-	</context:component-scan>
-	
+    <description>SpringMVC配置</description>
+
+    <context:property-placeholder location="classpath:application.properties" ignore-unresolvable="true"
+                                  file-encoding="UTF-8"/>
+
+    <!-- 自动扫描且只扫描@Controller -->
+    <context:component-scan base-package="com.infosoul.mserver" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <!-- <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" /> -->
+    </context:component-scan>
+
     <!-- 开启注解驱动 -->
     <!-- 这样可以使用@Controller这些注解 -->
     <!-- content-negotiation-manager属性就是指定内容协商管理器的bean -->
-	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager">
-		<mvc:message-converters register-defaults="true">
-			<!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
-			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
-				<constructor-arg value="UTF-8" />
-			</bean>
-			<!-- 将Jackson2HttpMessageConverter的默认格式化输出设为true -->
-			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+    <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager">
+        <mvc:message-converters register-defaults="true">
+            <!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8"/>
+            </bean>
+            <!-- 将Jackson2HttpMessageConverter的默认格式化输出设为true -->
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="supportedMediaTypes">
-                	<list><value>application/json;charset=UTF-8</value></list>
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
                 </property>
-				<property name="prettyPrint" value="true" />
-				<property name="objectMapper">  
-                    <bean class="com.infosoul.mserver.common.mapper.JsonMapper"></bean>  
+                <property name="prettyPrint" value="true"/>
+                <property name="objectMapper">
+                    <bean class="com.infosoul.mserver.common.mapper.JsonMapper"></bean>
                 </property>
-   			</bean>
-			
-			<!-- 使用XML格式输出数据 -->
+            </bean>
+
+            <!-- 使用XML格式输出数据 -->
             <bean class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
                 <constructor-arg>
                     <bean class="org.springframework.oxm.xstream.XStreamMarshaller">
@@ -50,96 +56,97 @@
                 </constructor-arg>
                 <property name="supportedMediaTypes" value="application/xml"></property>
             </bean>
-		</mvc:message-converters>
-		<!-- 自定义参数转换器 -->
-		<mvc:argument-resolvers>
+        </mvc:message-converters>
+        <!-- 自定义参数转换器 -->
+        <mvc:argument-resolvers>
             <bean class="com.infosoul.mserver.common.web.SecureModelAttributeMethodArgumentResolver">
                 <constructor-arg value="false"/>
             </bean>
         </mvc:argument-resolvers>
-	</mvc:annotation-driven>
+    </mvc:annotation-driven>
 
-	<!-- REST中根据URL后缀自动判定Content-Type及相应的View -->
-	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
-	    <property name="mediaTypes" >
-	        <map> 
-                <entry key="xml" value="application/xml"/> 
-                <entry key="json" value="application/json"/> 
+    <!-- REST中根据URL后缀自动判定Content-Type及相应的View -->
+    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="mediaTypes">
+            <map>
+                <entry key="xml" value="application/xml"/>
+                <entry key="json" value="application/json"/>
             </map>
-	    </property>
+        </property>
         <property name="ignoreAcceptHeader" value="true"/>
         <property name="favorPathExtension" value="true"/>
-	</bean>
+    </bean>
 
-	<!-- 定义JSP文件的位置 -->
-	<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="viewClass"  value="org.springframework.web.servlet.view.JstlView" />
-		<property name="prefix" value="/WEB-INF/views/" />
-		<property name="suffix" value=".jsp" />
-	</bean>
+    <!-- 定义JSP文件的位置 -->
+    <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
 
-	<!-- 容器默认的DefaultServletHandler处理 所有静态内容与无RequestMapping处理的URL -->
+    <!-- 容器默认的DefaultServletHandler处理 所有静态内容与无RequestMapping处理的URL -->
     <!-- 开启默认处理 -->
     <!-- 这样静态资源就可以访问了 -->
-	<mvc:default-servlet-handler />
+    <mvc:default-servlet-handler/>
 
-	<!-- 定义无需Controller的url<->view直接映射 -->
-	<!-- 表示当访问主页时自动转发到index控制器 -->
-	<!-- 默认访问跳转到登录页面  -->
-	<mvc:view-controller path="/" view-name="redirect:/login" />
-	
-	<!-- i18n国际化-->
-	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+    <!-- 定义无需Controller的url<->view直接映射 -->
+    <!-- 表示当访问主页时自动转发到index控制器 -->
+    <!-- 默认访问跳转到登录页面  -->
+    <mvc:view-controller path="/" view-name="redirect:/login"/>
+
+    <!-- i18n国际化-->
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <!-- 国际化信息所在的文件名，messages是properties文件的通用名，如messages_en_US.properties -->
-        <property name="basename" value="classpath:i18n/messages" />
+        <property name="basename" value="classpath:i18n/messages"/>
         <property name="defaultEncoding" value="UTF-8"/>
         <!-- 如果在国际化资源文件中找不到对应key的信息，就用这个key作为名称  -->
-        <property name="useCodeAsDefaultMessage" value="true" />
+        <property name="useCodeAsDefaultMessage" value="true"/>
     </bean>
     <!-- #国际化:en_US/zh_CN -->
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
-        <property name="defaultLocale" value="zh_CN" />
-        <property name="cookieName" value="myAppLocaleCookie" />
+        <property name="defaultLocale" value="zh_CN"/>
+        <property name="cookieName" value="myAppLocaleCookie"/>
         <!-- 设置最大有效时间，如果是-1，则不存储，浏览器关闭后即失效，默认为Integer.MAX_INT-->
-        <property name="cookieMaxAge" value="100000" />
+        <property name="cookieMaxAge" value="100000"/>
     </bean>
     <mvc:interceptors>
         <!-- 国际化操作拦截器 如果采用基于（请求/Session/Cookie）则必需配置 -->
         <!-- 默认的参数名为locale，参数为:en_US，zh_CN等，在页面上加一句<a href="?locale=zh_CN">简体中文</a> -->
-        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
     </mvc:interceptors>
 
-	<!-- 将Controller抛出的异常转到特定View, 保持SiteMesh的装饰效果  -->
-	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-		<property name="exceptionMappings">
-			<props>
-				<prop key="org.apache.shiro.authz.UnauthorizedException">error/403</prop>
-				<prop key="java.lang.Throwable">error/500</prop>
-			</props>
-		</property>
-	</bean>
-	
-	<!-- 拦截器配置 -->
-    <mvc:interceptors>
-        <bean class="com.infosoul.mserver.interceptor.LogInterceptor" />
-    </mvc:interceptors>
-	
-    <!-- 上传下载设置 -->
-    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="defaultEncoding" value="UTF-8" /> <!-- 默认编码 (ISO-8859-1) -->
-        <property name="maxInMemorySize" value="10240" /> <!-- 最大内存大小 (10240) -->
-        <property name="uploadTempDir" value="/upload/" /> <!-- 上传后的目录名 (WebUtils#TEMP_DIR_CONTEXT_ATTRIBUTE) -->
-        <property name="maxUploadSize" value="10485760" /> <!-- 最大文件大小，-1为无限止(-1) -->
+    <!-- 将Controller抛出的异常转到特定View, 保持SiteMesh的装饰效果  -->
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="org.apache.shiro.authz.UnauthorizedException">error/403</prop>
+                <prop key="java.lang.Throwable">error/500</prop>
+            </props>
+        </property>
     </bean>
 
-	<!-- 支持 Shiro对Controller的方法级AOP安全控制 begin -->
-	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
-		<property name="proxyTargetClass" value="true" />
-	</bean>
+    <!-- 拦截器配置 -->
+    <mvc:interceptors>
+        <bean class="com.infosoul.mserver.interceptor.LogInterceptor"/>
+    </mvc:interceptors>
 
-	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-		<property name="securityManager" ref="securityManager" />
-	</bean>
-	<!-- end -->
+    <!-- 上传下载设置 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8"/> <!-- 默认编码 (ISO-8859-1) -->
+        <property name="maxInMemorySize" value="10240"/> <!-- 最大内存大小 (10240) -->
+        <property name="uploadTempDir" value="/upload/"/> <!-- 上传后的目录名 (WebUtils#TEMP_DIR_CONTEXT_ATTRIBUTE) -->
+        <property name="maxUploadSize" value="10485760"/> <!-- 最大文件大小，-1为无限止(-1) -->
+    </bean>
+
+    <!-- 支持 Shiro对Controller的方法级AOP安全控制 begin -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor">
+        <property name="proxyTargetClass" value="true"/>
+    </bean>
+
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+    <!-- end -->
 
 </beans>
