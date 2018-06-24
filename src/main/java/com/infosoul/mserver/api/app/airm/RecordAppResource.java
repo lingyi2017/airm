@@ -61,7 +61,6 @@ public class RecordAppResource extends BaseResource {
             Record record = recordService.findLatestByDeviceId(dto.getDeviceId());
             RecordLatestRpDTO rp = new RecordLatestRpDTO();
             BeanUtils.copyProperties(record, rp);
-            rp.setCreateDate(DateUtils.dateToStr(record.getCreateDate(), "HH:mm:ss"));
             return success(rp);
         } catch (Exception e) {
             logger.error("APP端获取最近一条历史记录异常", e.getMessage());

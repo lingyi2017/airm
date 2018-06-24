@@ -14,6 +14,11 @@ public class GeoPushDTO implements Serializable {
     private static final long serialVersionUID = 2804606281593278840L;
 
     /**
+     * 设备ID
+     */
+    private String deviceId;
+
+    /**
      * 经度
      */
     private BigDecimal lon;
@@ -22,6 +27,14 @@ public class GeoPushDTO implements Serializable {
      * 纬度
      */
     private BigDecimal lat;
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
 
     public BigDecimal getLon() {
         return lon;

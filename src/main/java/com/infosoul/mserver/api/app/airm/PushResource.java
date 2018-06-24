@@ -39,7 +39,7 @@ public class PushResource extends BaseResource {
      * @return
      */
     @POST
-    @Path("/deviceInfo")
+    @Path("/device/info")
     public ResponseRest deviceInfo(DevicePushDTO dto) {
         try {
 
@@ -51,13 +51,13 @@ public class PushResource extends BaseResource {
     }
 
     /**
-     * 历史记录
+     * 设备记录
      * 
      * @param dto
      * @return
      */
     @POST
-    @Path("/record")
+    @Path("/device/record")
     public ResponseRest record(RecordPushDTO dto) {
         try {
 
@@ -76,7 +76,7 @@ public class PushResource extends BaseResource {
      * @return
      */
     @POST
-    @Path("/status")
+    @Path("/device/status")
     public ResponseRest status(StatusPushDTO dto) {
         try {
 
@@ -94,7 +94,7 @@ public class PushResource extends BaseResource {
      * @return
      */
     @POST
-    @Path("/geo")
+    @Path("/device/geo")
     public ResponseRest geo(GeoPushDTO dto) {
         try {
 

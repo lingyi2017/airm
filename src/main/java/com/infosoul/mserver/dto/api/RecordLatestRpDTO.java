@@ -1,6 +1,7 @@
 package com.infosoul.mserver.dto.api;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 设备最近一条记录响应 DTO
@@ -75,7 +76,7 @@ public class RecordLatestRpDTO implements Serializable {
     /**
      * 创建日期
      */
-    protected String createDate;
+    protected Date createDate;
 
     public Double getSensorVal1() {
         return sensorVal1;
@@ -173,11 +174,11 @@ public class RecordLatestRpDTO implements Serializable {
         this.sensorVal12 = sensorVal12;
     }
 
-    public String getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 }
