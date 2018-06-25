@@ -67,6 +67,14 @@
         </if>
     </select>
 
+    <!-- 所有设备 -->
+    <select id="findAll" resultMap="deviceMap" parameterType="device">
+        SELECT
+          *
+        FROM
+          airm_device
+    </select>
+
     <!-- 保存 -->
     <insert id="save" parameterType="device">
         INSERT INTO airm_device

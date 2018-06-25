@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="${ctx}/static/styles/map/jquery.mCustomScrollbar.css">
     <link rel="stylesheet" href="${ctx}/static/styles/map/map.css">
     <script src="${ctx}/static/jquery/jquery-1.11.0.js"></script>
-    <script src="${ctx}/static/scripts/global.js"></script>
+    <script src="${ctx}/static/js/global.js"></script>
     <script src="${ctx}/static/artDialog/artDialog.js?skin=blue"></script>
     <script src="${ctx}/static/artDialog/plugins/iframeTools.js"></script>
     <script type="text/javascript" src="${map.mapUrl}" charset="utf-8"></script>
@@ -71,14 +71,18 @@
     // 地图初始化
     var map = new BMap.Map("allmap");
     map.centerAndZoom("${map.mapCenter}", ${map.mapZoom});
+    map.enableScrollWheelZoom();
 
     // 页面加载完执行
     $(function () {
         //mapInit();  // 鼠标右键和控件初始化
-        //wsInit();  // WEBSOCKET初始化
+        wsInit();  // WEB SOCKET初始化
     });
 </script>
 
-<script src="${ctx}/static/scripts/map/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="${ctx}/static/js/map/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="${ctx}/static/js/map/m_global.js?d=<%=new java.util.Date() %>"></script>
+<%--<script src="${ctx}/static/js/map/m_map.js?d=<%=new java.util.Date() %>"></script>--%>
+<script src="${ctx}/static/js/map/m_ws.js?d=<%=new java.util.Date() %>"></script>
 </body>
 </html>

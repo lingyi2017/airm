@@ -30,6 +30,7 @@
         <commons-fileupload.version>1.3.1</commons-fileupload.version>
         <commons-beanutils.version>1.9.2</commons-beanutils.version>
         <jackson.version>2.5.3</jackson.version>
+        <fastjson.version>1.2.7</fastjson.version>
         <xstream.version>1.4.7</xstream.version>
         <ant.version>1.9.4</ant.version>
         <guava.version>18.0</guava.version>
@@ -444,6 +445,13 @@
             <artifactId>jackson-jaxrs-json-provider</artifactId>
             <version>${jackson.version}</version>
             <scope>runtime</scope>
+        </dependency>
+
+        <!-- fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
         </dependency>
 
         <!-- jersey start -->

@@ -60,6 +60,16 @@ public class DeviceService extends BaseService {
     }
 
     /**
+     * 所有设备
+     * 
+     * @param entity
+     * @return
+     */
+    public List<Device> findAll(Device entity) {
+        return deviceDao.findAll(entity);
+    }
+
+    /**
      * APP端设备列表
      * 
      * @param dto
