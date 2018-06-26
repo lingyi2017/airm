@@ -26,15 +26,10 @@ socket.connect = (function (url) {
     // 收到服务端消息
     ws.onmessage = function (event) {
         var datas = $.parseJSON(event.data);
-
-        console.log("==收到客户端消息==" + datas);
-
-        // 服务端返回数据为空不执行
         if (datas.length == 0) {
             return;
         }
-
-        //cityUI(datas);
+        initDeviceMarker(datas);
     };
 
     // 关闭连接
@@ -49,76 +44,35 @@ socket.connect = (function (url) {
 });
 
 /**
- * 市界面地图展示
+ * 初始化设备标注
  *
  * @param datas
  */
-function cityUI(datas) {
-    var id;
-    var status;
+function initDeviceMarker(datas) {
     $.each(datas, function (i) {
-        if (i >= 2) {  // 第一组数据为区域类型，第二组数据为区域名称
-            id = datas[i].id;
-            status = datas[i].status;
-            if (city.isInit == false) {  // 标注未初始化
-                addStationMarker4WS(datas[i], status);
-            } else if (city.isInit == true) {  // 已初始化
-                if ((city.statusMap[id] == '1' && status == '0') ||
-                    (city.statusMap[id] == '0' && status == '1')) {  // 之前告警但当前已经恢复或者之前没有告警现在有告警
-                    // 更新标注
-                    map.removeOverlay(city.markerMap[id]);
-                    addStationMarker4WS(datas[i], status);
-                }
-            }
-        } else if (!city.isInit && i == 1) {
-            updateHistoryParam(historyParam.areaName, datas[i].cityName);
-        }
+        addDeviceMarker(datas[i]);
     });
 }
 
 /**
- * 添加发射站标注
+ * 添加设备标注
  *
  * @param data
- * @param status
  */
-function addStationMarker4WS(data, status) {
+function addDeviceMarker(data) {
     var point = new BMap.Point(data.lon, data.lat);
-    var myIcon;
-    if (status == '2') {  // 在地图上直接添加的标注
-        myIcon = new BMap.Icon(getFszIcon(status), new BMap.Size(60, 30));
-    } else {
-        myIcon = new BMap.Icon(getFszIcon(status), new BMap.Size(30, 30));
-    }
+    var myIcon = new BMap.Icon(getDeviceIcon(data.status), new BMap.Size(30, 60));
 
-    var marker = new BMap.Marker(point, {icon: myIcon}); // 创建标注
-    marker.disableMassClear();
-    //marker.enableDragging();  // 开启拖拽
+    // 创建标注
+    var marker = new BMap.Marker(point, {icon: myIcon});
+    // 将标注添加到地图中
+    map.addOverlay(marker);
 
-    map.addOverlay(marker); // 将标注添加到地图中
+    // 给发射站标注添加事件
+    addEventForDeviceMarker(marker, data);
 
-    initInfoWindow(marker, data);  // 初始化信息窗口
-
-    addEventForStationMarker(marker, data);  // 给发射站标注添加事件
-
-    city.statusMap[data.id] = status;  // 保存状态
-    city.markerMap[data.id] = marker;  // 保存标注
-}
-
-/**
- * 初始化信息窗口
- * 说明：用于解决第一次点击信息窗口滚动控件失效的问题
- *
- * @param marker
- * @param data
- */
-function initInfoWindow(marker, data) {
-    var html = '<div class="info">' +
-        '<div class="content_alertInfo mCustomScrollbar light" data-mcs-theme="minimal-dark">' +
-        '<ul class="select_info"></ul></div></div>';
-    new BMap.InfoWindow(html);  // 创建信息窗口对象
-    $(".content_alertInfo").mCustomScrollbar();  // 激活滚动条控件
-    $('#mCSB_1').css("max-height", "351.5px");
+    //city.statusMap[data.id] = status;  // 保存状态
+    //city.markerMap[data.id] = marker;  // 保存标注
 }
 
 /**

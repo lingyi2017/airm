@@ -82,6 +82,7 @@
 
 <script src="${ctx}/static/js/map/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="${ctx}/static/js/map/m_global.js?d=<%=new java.util.Date() %>"></script>
+<script src="${ctx}/static/js/map/m_commonFun.js?d=<%=new java.util.Date() %>"></script>
 <%--<script src="${ctx}/static/js/map/m_map.js?d=<%=new java.util.Date() %>"></script>--%>
 <script src="${ctx}/static/js/map/m_ws.js?d=<%=new java.util.Date() %>"></script>
 </body>
