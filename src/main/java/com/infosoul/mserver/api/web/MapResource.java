@@ -2,6 +2,8 @@ package com.infosoul.mserver.api.web;
 
 import javax.ws.rs.*;
 
+import com.infosoul.mserver.common.utils.Constant;
+import com.infosoul.mserver.common.utils.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +58,7 @@ public class MapResource extends BaseResource {
             Record record = recordService.findLatestByDeviceId(deviceId);
             RecordLatestRpDTO data = new RecordLatestRpDTO();
             BeanUtils.copyProperties(record, data);
+            data.setAddDate(DateUtils.formatDate(record.getCreateDate(), "HH:mm"));
 
             return success(new MapRecordLatestDTO(header, data));
         } catch (Exception e) {

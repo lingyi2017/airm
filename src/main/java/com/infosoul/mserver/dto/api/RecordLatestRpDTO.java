@@ -76,7 +76,12 @@ public class RecordLatestRpDTO implements Serializable {
     /**
      * 创建日期
      */
-    protected Date createDate;
+    private Date createDate;
+
+    /**
+     * 添加时间
+     */
+    private String addDate;
 
     public Double getSensorVal1() {
         return sensorVal1;
@@ -180,5 +185,13 @@ public class RecordLatestRpDTO implements Serializable {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public String getAddDate() {
+        return addDate;
+    }
+
+    public void setAddDate(String addDate) {
+        this.addDate = addDate;
     }
 }

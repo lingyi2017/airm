@@ -20,16 +20,15 @@ function addEventForDeviceMarker(marker, data) {
 
     // 鼠标移开
     marker.addEventListener("mouseout", function () {
-
+        // 关闭信息窗口
+        //marker.closeInfoWindow();
     });
 
     // 单击显示发射机列表
-    /*marker.addEventListener("click", function(){
-     getInfoWindow(marker, data);  // 添加信息窗口
-     });*/
-
-    // 右键菜单
-    //markerRightMenu(marker, data);
+    marker.addEventListener("click", function () {
+        marker.closeInfoWindow();
+        getRecordList(data.deviceId);
+    });
 }
 
 /**
@@ -40,6 +39,7 @@ function addEventForDeviceMarker(marker, data) {
  */
 function openInfoWindow(marker, data) {
     var recordHTM = "";
+    var addDate = "";
     $.ajax({
         url: restUrl + "record/latest",
         data: {
@@ -52,6 +52,7 @@ function openInfoWindow(marker, data) {
             if (datas.success) {
                 var header = datas.content.header;
                 var data = datas.content.data;
+                addDate = data.addDate;
                 recordHTM += "<table id='contentTable' class='table' style='width: 110%;margin-top: 5px;'>" +
                     "<tr>" +
                     "<td>" + header.sensorName1 + "</td>" +
@@ -95,13 +96,24 @@ function openInfoWindow(marker, data) {
         }
     });
 
+    var titleHTM = "<span style='margin-right: 115px'>设备最近记录</span>" + addDate;
     var opts = {
         width: 280,     // 信息窗口宽度
         height: 180,     // 信息窗口高度
-        title: "设备最近记录"  // 信息窗口标题
+        title: titleHTM  // 信息窗口标题
     }
     var infoWindow = new BMap.InfoWindow(recordHTM, opts);  // 创建信息窗口对象
     marker.openInfoWindow(infoWindow);
+}
+
+/**
+ * 设备历史记录
+ *
+ * @param deviceId
+ */
+function getRecordList(deviceId) {
+    var url = webUrl + "/record/list?deviceId=" + deviceId + "&pageNo=1&pageSize=10";
+    art.dialog.open(url, {title: '历史记录', width: '60%', height: '60%', lock: true, background: '#C3C2C0', id: 'id'});
 }
 
 /**

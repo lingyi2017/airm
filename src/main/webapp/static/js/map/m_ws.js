@@ -71,8 +71,8 @@ function addDeviceMarker(data) {
     // 给发射站标注添加事件
     addEventForDeviceMarker(marker, data);
 
-    //city.statusMap[data.id] = status;  // 保存状态
-    //city.markerMap[data.id] = marker;  // 保存标注
+    device.statusMap[data.deviceId] = data.status;  // 保存状态
+    device.markerMap[data.deviceId] = marker;  // 保存标注
 }
 
 /**
