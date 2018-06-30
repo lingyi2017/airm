@@ -18,11 +18,6 @@ public class DevicePushDTO implements Serializable {
     private String deviceId;
 
     /**
-     * 设备imei号
-     */
-    private String imei;
-
-    /**
      * 传感器1名称编号
      */
     private Integer sensorNameNum1;
@@ -88,14 +83,6 @@ public class DevicePushDTO implements Serializable {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
-    }
-
-    public String getImei() {
-        return imei;
-    }
-
-    public void setImei(String imei) {
-        this.imei = imei;
     }
 
     public Integer getSensorNameNum1() {

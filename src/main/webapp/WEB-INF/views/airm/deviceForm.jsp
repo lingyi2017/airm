@@ -42,12 +42,6 @@
         </div>
     </div>
     <div class="control-group">
-        <label class="control-label">IMEI号:</label>
-        <div class="controls">
-            <label class="lbl">${device.imei}</label>
-        </div>
-    </div>
-    <div class="control-group">
         <label class="control-label">状态:</label>
         <div class="controls">
             <label class="lbl">${fns:getDictLabel(device.status, 'device_status', '无')}</label>

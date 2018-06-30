@@ -4,7 +4,7 @@ CREATE TABLE airm_device
   id VARCHAR (64) NOT NULL COMMENT '编号',
   name VARCHAR (64) COMMENT '设备名称',
   device_id VARCHAR(64) NOT NULL COMMENT '设备ID',
-  imei VARCHAR(64) COMMENT '设备imei号',
+  register CHAR (1) DEFAULT '0' COMMENT '设备是否注册：0-未注册；1-注册',
   lon DECIMAL (9, 6) COMMENT '经度',
   lat DECIMAL (9, 6) COMMENT '纬度',
   status VARCHAR (1) COMMENT '状态：1-正常；2-告警；3-离线',

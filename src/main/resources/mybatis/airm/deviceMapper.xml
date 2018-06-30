@@ -6,7 +6,7 @@
     <resultMap id="deviceMap" type="device">
         <id column="id" property="id"/>
         <result column="device_id" property="deviceId"/>
-        <result column="imei" property="imei"/>
+        <result column="register" property="register"/>
         <result column="lon" property="lon"/>
         <result column="lat" property="lat"/>
         <result column="status" property="status"/>
@@ -80,7 +80,7 @@
         INSERT INTO airm_device
           (id,
           device_id,
-          imei,
+          register,
           lon,
           lat,
           status,
@@ -103,7 +103,7 @@
         VALUES
           (#{id},
           #{deviceId},
-          #{imei},
+          #{register},
           #{lon},
           #{lat},
           #{status},
@@ -131,7 +131,7 @@
         SET
           name = #{name},
           device_id = #{deviceId},
-          imei = #{imei},
+          register = #{register},
           lon = #{lon},
           lat = #{lat},
           status = #{status},

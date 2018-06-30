@@ -67,7 +67,6 @@
     <thead>
     <tr>
         <th class="sort a.name">名称</th>
-        <th>IMEI号</th>
         <th>状态</th>
         <th>检测站</th>
         <shiro:hasPermission name="airm:device:edit">
@@ -79,7 +78,6 @@
     <c:forEach items="${page.list}" var="device">
         <tr>
             <td>${device.name}</td>
-            <td>${device.imei}</td>
             <td>${fns:getDictLabel(device.status, 'device_status', '无')}</td>
             <td>${device.station}</td>
             <shiro:hasPermission name="airm:device:edit">

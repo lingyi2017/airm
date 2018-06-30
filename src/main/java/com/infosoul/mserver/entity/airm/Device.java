@@ -25,9 +25,9 @@ public class Device extends IdEntity<Device> {
     private String deviceId;
 
     /**
-     * 设备imei号
+     * 设备是否注册：0-未注册；1-注册
      */
-    private String imei;
+    private String register;
 
     /**
      * 经度
@@ -130,12 +130,12 @@ public class Device extends IdEntity<Device> {
         this.deviceId = deviceId;
     }
 
-    public String getImei() {
-        return imei;
+    public String getRegister() {
+        return register;
     }
 
-    public void setImei(String imei) {
-        this.imei = imei;
+    public void setRegister(String register) {
+        this.register = register;
     }
 
     public BigDecimal getLon() {
