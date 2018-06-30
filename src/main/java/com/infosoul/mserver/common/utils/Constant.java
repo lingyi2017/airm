@@ -41,4 +41,14 @@ public class Constant {
      */
     public static final String WEB_SERVER_ID = "aaaaaa";
 
+    /**
+     * 设备未注册
+     */
+    public static final String DEVICE_UNREGISTERED = "0";
+
+    /**
+     * 设备注册
+     */
+    public static final String DEVICE_REGISTER = "1";
+
 }

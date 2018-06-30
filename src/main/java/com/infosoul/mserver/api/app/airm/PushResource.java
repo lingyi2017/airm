@@ -6,7 +6,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import com.infosoul.mserver.dto.api.DevicePushDTO;
-import com.infosoul.mserver.dto.api.GeoPushDTO;
+import com.infosoul.mserver.dto.api.DeviceGeoDTO;
 import com.infosoul.mserver.dto.api.RecordPushDTO;
 import com.infosoul.mserver.dto.api.StatusPushDTO;
 import com.infosoul.mserver.jpush.JClient;
@@ -96,7 +96,7 @@ public class PushResource extends BaseResource {
     @POST
     @Path("/device/geo")
     @Deprecated
-    public ResponseRest geo(GeoPushDTO dto) {
+    public ResponseRest geo(DeviceGeoDTO dto) {
         try {
 
             return success();
