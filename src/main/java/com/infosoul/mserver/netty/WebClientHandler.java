@@ -1,6 +1,6 @@
 package com.infosoul.mserver.netty;
 
-import com.infosoul.mserver.common.utils.NettyUtil;
+import com.infosoul.mserver.common.utils.NettyUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
@@ -16,7 +16,7 @@ public class WebClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-
+        NettyUtils.login();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class WebClientHandler extends ChannelInboundHandlerAdapter {
                 ctx.close();
                 // 都空闲
             } else if (event.state().equals(IdleState.ALL_IDLE)) {
-                NettyUtil.sendHeartBeat(ctx);
+                NettyUtils.sendHeartBeat(ctx);
             }
         } else {
             super.userEventTriggered(ctx, evt);

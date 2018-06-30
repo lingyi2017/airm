@@ -2,6 +2,7 @@ package com.infosoul.mserver.service.airm;
 
 import java.util.List;
 
+import com.infosoul.mserver.common.utils.DeviceCacheUtils;
 import com.infosoul.mserver.dto.api.DeviceListRqDTO;
 import com.infosoul.mserver.entity.airm.Device;
 import com.infosoul.mserver.repository.mybatis.airm.IDeviceDao;
@@ -103,6 +104,7 @@ public class DeviceService extends BaseService {
     public void save(Device entity) throws Exception {
         entity.setId(IdGen.uuid());
         deviceDao.save(entity);
+        DeviceCacheUtils.clear();
     }
 
     /**
@@ -114,5 +116,6 @@ public class DeviceService extends BaseService {
     @Transactional(readOnly = false)
     public void update(Device entity) throws Exception {
         deviceDao.update(entity);
+        DeviceCacheUtils.clear();
     }
 }

@@ -1,6 +1,6 @@
 package com.infosoul.mserver.netty;
 
-import com.infosoul.mserver.common.utils.NettyUtil;
+import com.infosoul.mserver.common.utils.NettyUtils;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,7 @@ public class WebClientLogin implements ApplicationListener<ContextRefreshedEvent
     public void onApplicationEvent(ContextRefreshedEvent event) {
         // 设置在 root application context 初始化完执行
         if (event.getApplicationContext().getParent() == null) {
-            NettyUtil.login();
+            NettyUtils.login();
         }
     }
 }

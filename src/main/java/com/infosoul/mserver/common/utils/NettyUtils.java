@@ -18,7 +18,7 @@ import io.netty.channel.ChannelHandlerContext;
  * @author xiangyi.long
  * @date 2018-06-20 11:03
  */
-public class NettyUtil {
+public class NettyUtils {
 
     /**
      * web server 登录

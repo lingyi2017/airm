@@ -1,6 +1,6 @@
 package com.infosoul.mserver.netty.codec;
 
-import com.infosoul.mserver.common.utils.NettyUtil;
+import com.infosoul.mserver.common.utils.NettyUtils;
 import com.infosoul.mserver.dto.netty.FrameDTO;
 import com.infosoul.mserver.enums.FrameTypeEnum;
 import io.netty.buffer.ByteBuf;
@@ -19,9 +19,9 @@ public class WebClientEncoder extends MessageToByteEncoder<FrameDTO> {
     public void encode(ChannelHandlerContext ctx, FrameDTO msg, ByteBuf out) {
         if (FrameTypeEnum.LOGIN == msg.getFrameType() || FrameTypeEnum.SENSOR_INFO == msg.getFrameType()
                 || FrameTypeEnum.SENSOR_DATA == msg.getFrameType()) {
-            NettyUtil.stringEncode(msg, out);
+            NettyUtils.stringEncode(msg, out);
         } else if (FrameTypeEnum.HEARTBEAT == msg.getFrameType()) {
-            NettyUtil.byteEncode(msg, out);
+            NettyUtils.byteEncode(msg, out);
         } else if (FrameTypeEnum.DEVICE_GEO == msg.getFrameType()) {
 
         }

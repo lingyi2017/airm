@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.infosoul.mserver.common.beanvalidator.BeanValidators;
 import com.infosoul.mserver.common.persistence.Page;
 import com.infosoul.mserver.common.utils.DateUtils;
+import com.infosoul.mserver.common.utils.DeviceCacheUtils;
 import com.infosoul.mserver.common.utils.UserUtils;
 import com.infosoul.mserver.common.utils.excel.ExportExcel;
 import com.infosoul.mserver.common.utils.excel.ImportExcel;
@@ -52,6 +53,9 @@ public class UserController extends BaseController {
     @RequiresPermissions("sys:user:view")
     @RequestMapping({"list", ""})
     public String list(User user, HttpServletRequest request, HttpServletResponse response, Model model) {
+
+        DeviceCacheUtils.isRegister("");
+
         Page<User> page = systemService.findUser(new Page<>(request, response), user);
         model.addAttribute("page", page);
         return "/sys/userList";
