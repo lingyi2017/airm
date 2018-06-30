@@ -91,7 +91,7 @@ public class NettyClient {
                 protected void initChannel(SocketChannel ch) throws Exception {
                     ChannelPipeline pipeline = ch.pipeline();
                     pipeline.addLast("clientEncoder", new WebClientEncoder());
-                    pipeline.addLast("heartbeat", new IdleStateHandler(120, 90, 30, TimeUnit.SECONDS));
+                    pipeline.addLast("heartbeat", new IdleStateHandler(120, 90, 60, TimeUnit.SECONDS));
                     pipeline.addLast("clientHandler", new WebClientHandler());
                 }
             });

@@ -130,11 +130,11 @@ public class NettyUtils {
 
     /**
      * 读传感器信息
-     *
+     * 
+     * @param deviceId
      */
-    public static void sensorInfo() {
+    public static void sensorInfo(String deviceId) {
         FrameDTO dto = new FrameDTO();
-        String deviceId = "sn123456987665767";
         dto.setFrameType(FrameTypeEnum.SENSOR_INFO);
         dto.setDataLength(deviceId.length());
         dto.setData(deviceId);
@@ -144,11 +144,11 @@ public class NettyUtils {
 
     /**
      * 读传感器数据
-     *
+     * 
+     * @param deviceId
      */
-    public static void sensorData() {
+    public static void sensorData(String deviceId) {
         FrameDTO dto = new FrameDTO();
-        String deviceId = "da123456987665767";
         dto.setFrameType(FrameTypeEnum.SENSOR_DATA);
         dto.setDataLength(deviceId.length());
         dto.setData(deviceId);
