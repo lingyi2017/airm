@@ -18,7 +18,7 @@ import io.netty.channel.ChannelHandlerContext;
  * @author xiangyi.long
  * @date 2018-06-20 11:03
  */
-public class NettyUtils {
+public class NettyUtil {
 
     /**
      * web server 登录
@@ -34,12 +34,12 @@ public class NettyUtils {
     }
 
     /**
-     * 登录编码
+     * 数据为字符串的编码
      *
      * @param dto
      * @param out
      */
-    public static void loginEncode(FrameDTO dto, ByteBuf out) {
+    public static void stringEncode(FrameDTO dto, ByteBuf out) {
         ByteBuf buf = Unpooled.buffer();
         // 开头字节
         buf.writeByte(dto.getStart());
@@ -57,12 +57,12 @@ public class NettyUtils {
     }
 
     /**
-     * 登录解码
+     * 数据为字符串的解码
      *
      * @param in
      * @param out
      */
-    public static void loginDecode(ByteBuf in, List<Object> out) {
+    public static void stringDecode(ByteBuf in, List<Object> out) {
         FrameDTO dto = new FrameDTO();
         // 数据长度
         int dataLength = in.readByte();
@@ -89,12 +89,12 @@ public class NettyUtils {
     }
 
     /**
-     * 心跳编码
+     * 数据为byte编码
      *
      * @param dto
      * @param out
      */
-    public static void heartBeatEncode(FrameDTO dto, ByteBuf out) {
+    public static void byteEncode(FrameDTO dto, ByteBuf out) {
         ByteBuf buf = Unpooled.buffer();
         // 开头字节
         buf.writeByte(dto.getStart());
@@ -112,12 +112,12 @@ public class NettyUtils {
     }
 
     /**
-     * 登录解码
+     * 数据为byte解码
      *
      * @param in
      * @param out
      */
-    public static void heartBeatDecode(ByteBuf in, List<Object> out) {
+    public static void byteDecode(ByteBuf in, List<Object> out) {
         FrameDTO dto = new FrameDTO();
         // 数据长度
         int dataLength = in.readByte();
@@ -126,6 +126,34 @@ public class NettyUtils {
         dto.setDataLength(dataLength);
         dto.setData(data);
         out.add(dto);
+    }
+
+    /**
+     * 读传感器信息
+     *
+     */
+    public static void sensorInfo() {
+        FrameDTO dto = new FrameDTO();
+        String deviceId = "sn123456987665767";
+        dto.setFrameType(FrameTypeEnum.SENSOR_INFO);
+        dto.setDataLength(deviceId.length());
+        dto.setData(deviceId);
+        System.out.println("==读传感器信息协议帧==" + JSON.toJSONString(dto));
+        NettyClient.send(dto);
+    }
+
+    /**
+     * 读传感器数据
+     *
+     */
+    public static void sensorData() {
+        FrameDTO dto = new FrameDTO();
+        String deviceId = "da123456987665767";
+        dto.setFrameType(FrameTypeEnum.SENSOR_DATA);
+        dto.setDataLength(deviceId.length());
+        dto.setData(deviceId);
+        System.out.println("==读传感器数据协议帧==" + JSON.toJSONString(dto));
+        NettyClient.send(dto);
     }
 
 }

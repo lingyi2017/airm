@@ -1,10 +1,6 @@
 package com.infosoul.mserver.netty;
 
-import com.alibaba.fastjson.JSON;
-import com.infosoul.mserver.common.utils.Constant;
-import com.infosoul.mserver.common.utils.NettyUtils;
-import com.infosoul.mserver.dto.netty.FrameDTO;
-import com.infosoul.mserver.enums.FrameTypeEnum;
+import com.infosoul.mserver.common.utils.NettyUtil;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -22,7 +18,7 @@ public class WebClientLogin implements ApplicationListener<ContextRefreshedEvent
     public void onApplicationEvent(ContextRefreshedEvent event) {
         // 设置在 root application context 初始化完执行
         if (event.getApplicationContext().getParent() == null) {
-            NettyUtils.login();
+            NettyUtil.login();
         }
     }
 }
