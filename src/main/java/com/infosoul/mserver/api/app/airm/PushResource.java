@@ -95,6 +95,7 @@ public class PushResource extends BaseResource {
      */
     @POST
     @Path("/device/geo")
+    @Deprecated
     public ResponseRest geo(GeoPushDTO dto) {
         try {
 

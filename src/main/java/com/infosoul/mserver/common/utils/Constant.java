@@ -36,4 +36,9 @@ public class Constant {
      */
     public static final String RECORD_READ = "1";
 
+    /**
+     * 和socket server 通信时的 web server id
+     */
+    public static final String WEB_SERVER_ID = "aaaaaa";
+
 }
