@@ -7,16 +7,20 @@ import javax.ws.rs.Produces;
 
 import com.infosoul.mserver.common.utils.Constant;
 import com.infosoul.mserver.common.utils.SensorCacheUtils;
+import com.infosoul.mserver.common.utils.StringUtils;
 import com.infosoul.mserver.constant.SensorConsts;
 import com.infosoul.mserver.dto.api.DevicePushDTO;
 import com.infosoul.mserver.dto.api.DeviceGeoDTO;
 import com.infosoul.mserver.dto.api.RecordPushDTO;
 import com.infosoul.mserver.dto.api.StatusPushDTO;
 import com.infosoul.mserver.entity.airm.Device;
+import com.infosoul.mserver.entity.airm.Record;
 import com.infosoul.mserver.jpush.JClient;
 import com.infosoul.mserver.service.airm.DeviceService;
+import com.infosoul.mserver.service.airm.RecordService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import com.infosoul.mserver.api.BaseResource;
@@ -41,6 +45,9 @@ public class PushResource extends BaseResource {
     @Autowired
     private DeviceService deviceService;
 
+    @Autowired
+    private RecordService recordService;
+
     /**
      * 设备信息
      *
@@ -51,6 +58,9 @@ public class PushResource extends BaseResource {
     @Path("/device/info")
     public ResponseRest deviceInfo(DevicePushDTO dto) {
         try {
+            if (null == dto || StringUtils.isEmpty(dto.getDeviceId())) {
+                return error(ResponseRest.Status.BAD_REQUEST, "设备ID不能为空");
+            }
             Device device = deviceService.findByDeviceId(dto.getDeviceId());
             if (null == device) {
                 saveDevice(dto);
@@ -74,9 +84,17 @@ public class PushResource extends BaseResource {
     @Path("/device/record")
     public ResponseRest record(RecordPushDTO dto) {
         try {
-            // client.initMessage().push();
+            /// client.initMessage().push();
+            /// 推WEB
+            if (null == dto || StringUtils.isEmpty(dto.getDeviceId())) {
+                return error(ResponseRest.Status.BAD_REQUEST, "设备ID不能为空");
+            }
+            Record record = new Record();
+            BeanUtils.copyProperties(dto, record);
+            recordService.save(record);
             return success();
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("推送设备历史记录异常", e);
             return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "推送设备历史记录发生异常");
         }
