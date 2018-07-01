@@ -118,4 +118,15 @@ public class DeviceService extends BaseService {
         deviceDao.update(entity);
         DeviceCacheUtils.clear();
     }
+
+    /**
+     * 更新设备状态
+     * 
+     * @param entity
+     * @throws Exception
+     */
+    @Transactional(readOnly = false)
+    public void updateStatus(Device entity) throws Exception {
+        deviceDao.update(entity);
+    }
 }

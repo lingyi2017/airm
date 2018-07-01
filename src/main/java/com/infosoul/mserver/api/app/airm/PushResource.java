@@ -110,6 +110,12 @@ public class PushResource extends BaseResource {
     @Path("/device/status")
     public ResponseRest status(StatusPushDTO dto) {
         try {
+            if (null == dto || StringUtils.isEmpty(dto.getDeviceId())) {
+                return error(ResponseRest.Status.BAD_REQUEST, "设备ID不能为空");
+            }
+            Device device = new Device();
+            BeanUtils.copyProperties(dto, device);
+            deviceService.update(device);
             return success();
         } catch (Exception e) {
             logger.error("推送设备状态异常", e);

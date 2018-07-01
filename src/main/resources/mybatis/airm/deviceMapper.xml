@@ -50,11 +50,11 @@
 
     <!-- 设备列表 -->
     <select id="findList" resultMap="deviceMap" parameterType="device">
-      SELECT
+        SELECT
         *
-      FROM
+        FROM
         airm_device AS a
-      WHERE
+        WHERE
         1 = 1
         <if test="name != null and name !=''">
             AND a.name LIKE CONCAT('%', #{name}, '%')
@@ -152,5 +152,14 @@
           update_date = now()
         where
           id = #{id}
+    </update>
+
+    <!-- 修改 -->
+    <update id="updateStatus" parameterType="device">
+        UPDATE airm_device
+        SET
+          status = #{status}
+        where
+          device_id = #{deviceId}
     </update>
 </mapper>
