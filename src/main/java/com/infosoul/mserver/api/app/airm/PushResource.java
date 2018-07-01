@@ -5,6 +5,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import com.alibaba.fastjson.JSON;
 import com.infosoul.mserver.common.utils.Constant;
 import com.infosoul.mserver.common.utils.SensorCacheUtils;
 import com.infosoul.mserver.common.utils.StringUtils;
@@ -49,6 +50,37 @@ public class PushResource extends BaseResource {
     private RecordService recordService;
 
     /**
+     * 设备上线
+     *
+     * @param dto
+     * @return
+     */
+    @POST
+    @Path("/device/status")
+    public ResponseRest status(StatusPushDTO dto) {
+        try {
+            System.out.println("==设备上线成功==" + JSON.toJSONString(dto));
+            if (null == dto || StringUtils.isEmpty(dto.getDeviceId())) {
+                return error(ResponseRest.Status.BAD_REQUEST, "设备ID不能为空");
+            }
+            Device device = deviceService.findByDeviceId(dto.getDeviceId());
+            if (null == device) {
+                device = new Device();
+                BeanUtils.copyProperties(dto, device);
+                deviceService.save(device);
+            } else {
+                device.setStatus(dto.getStatus());
+                // 告警推送
+                deviceService.updateStatus(device);
+            }
+            return success();
+        } catch (Exception e) {
+            logger.error("设备上线异常", e);
+            return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "设备上线异常");
+        }
+    }
+
+    /**
      * 设备信息
      *
      * @param dto
@@ -58,15 +90,12 @@ public class PushResource extends BaseResource {
     @Path("/device/info")
     public ResponseRest deviceInfo(DevicePushDTO dto) {
         try {
+            System.out.println("==获取到设备信息==" + JSON.toJSONString(dto));
             if (null == dto || StringUtils.isEmpty(dto.getDeviceId())) {
                 return error(ResponseRest.Status.BAD_REQUEST, "设备ID不能为空");
             }
             Device device = deviceService.findByDeviceId(dto.getDeviceId());
-            if (null == device) {
-                saveDevice(dto);
-            } else {
-                updateDevice(device, dto);
-            }
+            updateDevice(device, dto);
             return success();
         } catch (Exception e) {
             logger.error("推送设备信息异常", e);
@@ -101,29 +130,6 @@ public class PushResource extends BaseResource {
     }
 
     /**
-     * 设备状态
-     * 
-     * @param dto
-     * @return
-     */
-    @POST
-    @Path("/device/status")
-    public ResponseRest status(StatusPushDTO dto) {
-        try {
-            if (null == dto || StringUtils.isEmpty(dto.getDeviceId())) {
-                return error(ResponseRest.Status.BAD_REQUEST, "设备ID不能为空");
-            }
-            Device device = new Device();
-            BeanUtils.copyProperties(dto, device);
-            deviceService.update(device);
-            return success();
-        } catch (Exception e) {
-            logger.error("推送设备状态异常", e);
-            return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "推送设备状态发生异常");
-        }
-    }
-
-    /**
      * 设备位置
      * 
      * @param dto
@@ -139,15 +145,6 @@ public class PushResource extends BaseResource {
             logger.error("推送设备位置异常", e);
             return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "推送设备位置发生异常");
         }
-    }
-
-    private void saveDevice(DevicePushDTO dto) throws Exception {
-        Device device = new Device();
-        device.setDeviceId(dto.getDeviceId());
-        device.setRegister(Constant.DEVICE_REGISTER);
-        device.setStatus("1");
-        buildDevice(device, dto);
-        deviceService.save(device);
     }
 
     private void updateDevice(Device device, DevicePushDTO dto) throws Exception {

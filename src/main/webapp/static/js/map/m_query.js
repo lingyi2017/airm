@@ -287,7 +287,7 @@ $(function(){
         $("#select_quyu").removeClass("a_click");
         $("#select_shebei").addClass("a_click");
         $(".arrow-wrap").animate({"left":"178px"});
-        $('#select_by').attr("placeholder","请输入设备名称、IP地址、序列号或安装地址");
+        $('#select_by').attr("placeholder","请输入设备名称");
         $('#select_by').val(devVal);
         $('#select_result').children().remove();   //清空select_result里面的查询所有内容
         $('#select_content_result').children().remove();
@@ -313,7 +313,7 @@ $(function(){
         $("#select_shebei").removeClass("a_click");
         $("#select_quyu").addClass("a_click");
         $(".arrow-wrap").animate({"left":"0"});
-        $('#select_by').attr("placeholder","请输入区域名称");
+        $('#select_by').attr("placeholder","请输入设备地址");
         $('#select_by').val(areaVal);
         $('#select_result').children().remove();   //清空select_result里面的查询所有内容
         $('#select_content_result').children().remove();
@@ -421,7 +421,7 @@ $(function(){
  */
 function addDeviceMarker(device){
 	var point = new BMap.Point(device.lon, device.lat);
-    var myIcon = new BMap.Icon(getFsjIcon(device.status), new BMap.Size(26, 26));
+    var myIcon = new BMap.Icon(getDeviceIcon(device.status), new BMap.Size(26, 26));
     var marker = new BMap.Marker(point, {icon: myIcon}); // 创建标注
     map.addOverlay(marker); // 将标注添加到地图中
     query.markerMap[device.id] = marker;
@@ -436,7 +436,7 @@ function addDeviceMarker(device){
 		label.setStyle({
 		    display:"block"  // 显示标签
 		});
-		var newIcon = new BMap.Icon(getFsjIcon("4"), new BMap.Size(26, 26));
+		var newIcon = new BMap.Icon(getDeviceIcon("4"), new BMap.Size(26, 26));
 		marker.setIcon(newIcon);
     });
 	

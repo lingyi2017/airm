@@ -19,8 +19,8 @@ public class SensorConsts {
     static {
         UNIT.put(0x00, "%LEL");
         UNIT.put(0x01, "%VOL");
-        UNIT.put(0x02, "ppm");
-        UNIT.put(0x03, "ppb");
+        UNIT.put(0x02, "PPM");
+        UNIT.put(0x03, "PPB");
     }
 
     public static String getUnit(Integer sensorUnitNum) {

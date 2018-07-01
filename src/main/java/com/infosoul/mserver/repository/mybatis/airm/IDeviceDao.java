@@ -17,4 +17,11 @@ public interface IDeviceDao extends BaseMybatisDao<Device> {
      * @return
      */
     Device findByDeviceId(String deviceId);
+
+    /**
+     * 更新设备状态
+     * 
+     * @param device
+     */
+    void updateStatus(Device device);
 }

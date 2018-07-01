@@ -32,7 +32,7 @@
         <ul id="select_title" class="select_title">
             <li class="select_title_li ">
                 <div class="icon_content quyu_icon"><img class="quyu_img" src="${ctx }/static/pictures/map/quyu.png"><a
-                        id="select_quyu" class="a_click" name="1">区域</a></div>
+                        id="select_quyu" class="a_click" name="1">地址</a></div>
             </li>
             <li class="select_title_li title_click">
                 <div class="icon_content shebei_icon"><img class="shebei_img"
@@ -42,7 +42,7 @@
             <div class="arrow-wrap"></div>
         </ul>
         <div class="select_content">
-            <input id="select_by" class="select_by_css focus" type="text" autocomplete="off" placeholder="请输入区域名称"
+            <input id="select_by" class="select_by_css focus" type="text" autocomplete="off" placeholder="请输入设备地址"
                    maxlength="16"/>
             <div class="input_clear"></div>
         </div>
@@ -83,7 +83,8 @@
 <script src="${ctx}/static/js/map/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="${ctx}/static/js/map/m_global.js?d=<%=new java.util.Date() %>"></script>
 <script src="${ctx}/static/js/map/m_commonFun.js?d=<%=new java.util.Date() %>"></script>
-<%--<script src="${ctx}/static/js/map/m_map.js?d=<%=new java.util.Date() %>"></script>--%>
+<script src="${ctx}/static/js/map/m_map.js?d=<%=new java.util.Date() %>"></script>
 <script src="${ctx}/static/js/map/m_ws.js?d=<%=new java.util.Date() %>"></script>
+<%--<script src="${ctx}/static/js/map/m_query.js?d=<%=new java.util.Date() %>"></script>--%>
 </body>
 </html>

@@ -16,7 +16,7 @@ public class WebClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        NettyUtils.login();
+        // NettyUtils.login();
     }
 
     @Override

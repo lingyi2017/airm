@@ -127,6 +127,6 @@ public class DeviceService extends BaseService {
      */
     @Transactional(readOnly = false)
     public void updateStatus(Device entity) throws Exception {
-        deviceDao.update(entity);
+        deviceDao.updateStatus(entity);
     }
 }

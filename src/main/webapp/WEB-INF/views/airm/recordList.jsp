@@ -54,10 +54,10 @@
     <input id="orderBy" name="orderBy" type="hidden" value="${page.orderBy}"/>
 
     <div style="margin-top:8px;">
-        <label>开始时间：</label><input id="beginDate" name="beginDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
-                                                                   value="${sqlMap.beginDate}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
-        <label>结束时间：</label><input id="endDate" name="endDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
-                                                                 value="${sqlMap.endDate}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>&nbsp;
+        <label>开始时间：</label><input id="beginDate" name="sqlMap.beginDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
+                                                                   value="${beginDate}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+        <label>结束时间：</label><input id="endDate" name="sqlMap.endDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
+                                                                 value="${endDate}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>&nbsp;
         <input id="btnSubmit" class="btn btn-primary" type="submit" value="<spring:message code='query' />"
                onclick="return page();"/>
     </div>

@@ -147,6 +147,16 @@ public class Record extends IdEntity<Record> {
      */
     private String sensorStatus12;
 
+    /**
+     * 开始时间（endDate）
+     */
+    private String beginDate;
+
+    /**
+     * 结束时间（endDate）
+     */
+    private String endDate;
+
     public String getDeviceId() {
         return deviceId;
     }
@@ -361,5 +371,21 @@ public class Record extends IdEntity<Record> {
 
     public void setSensorStatus12(String sensorStatus12) {
         this.sensorStatus12 = sensorStatus12;
+    }
+
+    public String getBeginDate() {
+        return beginDate;
+    }
+
+    public void setBeginDate(String beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 }

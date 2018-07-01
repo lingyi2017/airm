@@ -60,6 +60,9 @@ function initDeviceMarker(datas) {
  * @param data
  */
 function addDeviceMarker(data) {
+    if(undefined == data.lon || undefined == data.lat){
+        return;
+    }
     var point = new BMap.Point(data.lon, data.lat);
     var myIcon = new BMap.Icon(getDeviceIcon(data.status), new BMap.Size(30, 60));
 
