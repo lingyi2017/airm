@@ -53,9 +53,6 @@ public class UserController extends BaseController {
     @RequiresPermissions("sys:user:view")
     @RequestMapping({"list", ""})
     public String list(User user, HttpServletRequest request, HttpServletResponse response, Model model) {
-
-        DeviceCacheUtils.isRegister("");
-
         Page<User> page = systemService.findUser(new Page<>(request, response), user);
         model.addAttribute("page", page);
         return "/sys/userList";
