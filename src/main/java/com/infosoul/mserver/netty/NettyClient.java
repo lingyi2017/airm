@@ -1,5 +1,6 @@
 package com.infosoul.mserver.netty;
 
+import com.infosoul.mserver.common.config.Global;
 import com.infosoul.mserver.dto.netty.FrameDTO;
 import com.infosoul.mserver.netty.codec.WebClientEncoder;
 import io.netty.bootstrap.Bootstrap;
@@ -26,6 +27,10 @@ public class NettyClient {
     private static ChannelFuture future;
 
     private static final int RETRY = 3;
+
+    private static final String HOST = Global.getConfig("web.socket.server.host");
+
+    private static final int PORT = Integer.parseInt(Global.getConfig("web.socket.server.port"));
 
     /**
      * 发送消息
@@ -96,7 +101,7 @@ public class NettyClient {
                 }
             });
 
-            future = b.connect("localhost", 8081).sync();
+            future = b.connect(HOST, PORT).sync();
         } catch (Exception e) {
             LOGGER.error("netty client 连接异常", e);
         }
