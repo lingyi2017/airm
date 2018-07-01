@@ -22,7 +22,7 @@ public class DeviceCacheUtils extends BaseService {
     /**
      * 未注册设备缓存
      */
-    public static final List<String> UNREGISTERED_CACHE = Lists.newArrayList();
+    private static final List<String> UNREGISTERED_CACHE = Lists.newArrayList();
 
     /**
      * 设备是否注册：false-未注册；true-注册
@@ -31,6 +31,9 @@ public class DeviceCacheUtils extends BaseService {
      * @return
      */
     public static Boolean isRegister(String deviceId) {
+        if (StringUtils.isEmpty(deviceId)) {
+            return false;
+        }
         if (CollectionUtils.isEmpty(UNREGISTERED_CACHE)) {
             init();
         }

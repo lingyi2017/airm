@@ -14,12 +14,22 @@ public class SensorConsts {
     /**
      * 传感器单位
      */
-    public static final Map<Integer, String> unit = new ConcurrentHashMap<>();
+    public static final Map<Integer, String> UNIT = new ConcurrentHashMap<>();
 
     static {
-        unit.put(0x00, "%LEL");
-        unit.put(0x01, "%VOL");
-        unit.put(0x02, "ppm");
-        unit.put(0x03, "ppb");
+        UNIT.put(0x00, "%LEL");
+        UNIT.put(0x01, "%VOL");
+        UNIT.put(0x02, "ppm");
+        UNIT.put(0x03, "ppb");
+    }
+
+    public static String getUnit(Integer sensorUnitNum) {
+        if (null == sensorUnitNum) {
+            return null;
+        }
+        if (UNIT.containsKey(sensorUnitNum)) {
+            return UNIT.get(sensorUnitNum);
+        }
+        return null;
     }
 }

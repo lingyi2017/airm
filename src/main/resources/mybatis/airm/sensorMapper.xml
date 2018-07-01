@@ -35,6 +35,16 @@
         </if>
     </select>
 
+    <!-- 所有传感器 -->
+    <select id="findAll" resultMap="sensorMap" parameterType="sensor">
+        SELECT
+          *
+        FROM
+          airm_sensor
+        WHERE
+          del_flag = '0'
+    </select>
+
     <!-- 保存 -->
     <insert id="save" parameterType="sensor">
         INSERT INTO airm_sensor

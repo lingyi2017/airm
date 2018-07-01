@@ -2,6 +2,7 @@ package com.infosoul.mserver.service.airm;
 
 import java.util.List;
 
+import com.infosoul.mserver.common.utils.SensorCacheUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +48,16 @@ public class SensorService extends BaseService {
     }
 
     /**
+     * 所有传感器
+     *
+     * @param entity
+     * @return
+     */
+    public List<Sensor> findAll(Sensor entity) {
+        return sensorDao.findAll(entity);
+    }
+
+    /**
      * 保存
      * 
      * @param entity
@@ -56,6 +67,7 @@ public class SensorService extends BaseService {
     public void save(Sensor entity) throws Exception {
         entity.setId(IdGen.uuid());
         sensorDao.save(entity);
+        SensorCacheUtils.clear();
     }
 
     /**
@@ -66,6 +78,7 @@ public class SensorService extends BaseService {
     @Transactional(readOnly = false)
     public void delete(String id) throws Exception {
         sensorDao.deleteById(id);
+        SensorCacheUtils.clear();
     }
 
     /**
@@ -77,5 +90,6 @@ public class SensorService extends BaseService {
     @Transactional(readOnly = false)
     public void update(Sensor entity) throws Exception {
         sensorDao.update(entity);
+        SensorCacheUtils.clear();
     }
 }

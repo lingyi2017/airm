@@ -1,18 +1,11 @@
 package com.infosoul.mserver.controller.sys;
 
-import com.google.common.collect.Lists;
-import com.infosoul.mserver.common.beanvalidator.BeanValidators;
-import com.infosoul.mserver.common.persistence.Page;
-import com.infosoul.mserver.common.utils.DateUtils;
-import com.infosoul.mserver.common.utils.DeviceCacheUtils;
-import com.infosoul.mserver.common.utils.UserUtils;
-import com.infosoul.mserver.common.utils.excel.ExportExcel;
-import com.infosoul.mserver.common.utils.excel.ImportExcel;
-import com.infosoul.mserver.controller.BaseController;
-import com.infosoul.mserver.entity.sys.Office;
-import com.infosoul.mserver.entity.sys.Role;
-import com.infosoul.mserver.entity.sys.User;
-import com.infosoul.mserver.service.sys.SystemService;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresUser;
@@ -23,10 +16,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
-import java.util.List;
+import com.google.common.collect.Lists;
+import com.infosoul.mserver.common.beanvalidator.BeanValidators;
+import com.infosoul.mserver.common.persistence.Page;
+import com.infosoul.mserver.common.utils.DateUtils;
+import com.infosoul.mserver.common.utils.UserUtils;
+import com.infosoul.mserver.common.utils.excel.ExportExcel;
+import com.infosoul.mserver.common.utils.excel.ImportExcel;
+import com.infosoul.mserver.controller.BaseController;
+import com.infosoul.mserver.entity.sys.Office;
+import com.infosoul.mserver.entity.sys.Role;
+import com.infosoul.mserver.entity.sys.User;
+import com.infosoul.mserver.service.sys.SystemService;
 
 /**
  * 用户Controller
