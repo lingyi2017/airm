@@ -36,6 +36,8 @@
                 }
                 page();
             });
+
+            initTableHeader();
         });
         function page(n, s) {
             $("#pageNo").val(n);
@@ -43,6 +45,43 @@
             $("#searchForm").submit();
             return false;
         }
+
+        function initTableHeader() {
+            var deviceId = $("#deviceId").val();
+            $.ajax({
+                url: "/airm/rs/device/info",
+                data: {
+                    deviceId: deviceId
+                },
+                type: "GET",
+                dataType: "JSON",
+                async: false,
+                success: function (datas) {
+                    if (datas.success) {
+                        var header = datas.content;
+                        if (header) {
+                            var headerHTML = "<tr>";
+                            headerHTML += "<th>" + header.sensorName1 + "</th>";
+                            headerHTML += "<th>" + header.sensorName2 + "</th>";
+                            headerHTML += "<th>" + header.sensorName3 + "</th>";
+                            headerHTML += "<th>" + header.sensorName4 + "</th>";
+                            headerHTML += "<th>" + header.sensorName5 + "</th>";
+                            headerHTML += "<th>" + header.sensorName6 + "</th>";
+                            headerHTML += "<th>" + header.sensorName7 + "</th>";
+                            headerHTML += "<th>" + header.sensorName8 + "</th>";
+                            headerHTML += "<th>" + header.sensorName9 + "</th>";
+                            headerHTML += "<th>" + header.sensorName10 + "</th>";
+                            headerHTML += "<th>" + header.sensorName11 + "</th>";
+                            headerHTML += "<th>" + header.sensorName12 + "</th>";
+                            headerHTML += "<tr>"
+                            $("#js-head").html(headerHTML);
+                        }
+                    }
+
+                }
+            });
+        }
+
     </script>
 </head>
 <body>
@@ -52,32 +91,22 @@
     <input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
     <input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
     <input id="orderBy" name="orderBy" type="hidden" value="${page.orderBy}"/>
+    <input id="deviceId" name="deviceId" type="hidden" value="${deviceId}"/>
 
     <div style="margin-top:8px;">
-        <label>开始时间：</label><input id="beginDate" name="sqlMap.beginDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
-                                                                   value="${beginDate}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
-        <label>结束时间：</label><input id="endDate" name="sqlMap.endDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
-                                                                 value="${endDate}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>&nbsp;
+        <label>开始时间：</label><input id="beginDate" name="beginDate" type="text" readonly="readonly" maxlength="20"
+                                   class="input-small Wdate"
+                                   value="${beginDate}"
+                                   onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+        <label>结束时间：</label><input id="endDate" name="endDate" type="text" readonly="readonly" maxlength="20"
+                                   class="input-small Wdate"
+                                   value="${endDate}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>&nbsp;
         <input id="btnSubmit" class="btn btn-primary" type="submit" value="<spring:message code='query' />"
                onclick="return page();"/>
     </div>
 </form:form>
 <table id="contentTable" class="table table-striped table-bordered table-condensed">
-    <thead>
-    <tr>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-    </tr>
+    <thead id="js-head">
     </thead>
     <tbody>
     <c:forEach items="${page.list}" var="record">

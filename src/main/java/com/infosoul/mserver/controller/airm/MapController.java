@@ -65,8 +65,15 @@ public class MapController extends BaseController {
      */
     @RequestMapping(value = "record/list")
     public String findRecordList(Record entity, HttpServletRequest request, HttpServletResponse response, Model model) {
-        Page<Record> page = recordService.findList(new Page<>(request, response), entity);
+        String beginDate = entity.getBeginDate();
+        String endDate = entity.getEndDate();
+        Page queryPage = new Page<>(request, response);
+        queryPage.setPageSize(10);
+        Page<Record> page = recordService.findList(queryPage, entity);
         model.addAttribute("page", page);
+        model.addAttribute("beginDate", beginDate);
+        model.addAttribute("endDate", endDate);
+        model.addAttribute("deviceId", entity.getDeviceId());
         return "/airm/recordList";
     }
 }

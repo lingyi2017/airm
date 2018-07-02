@@ -112,8 +112,8 @@ function openInfoWindow(marker, data) {
  * @param deviceId
  */
 function getRecordList(deviceId) {
-    var url = webUrl + "/record/list?deviceId=" + deviceId + "&pageNo=1&pageSize=10";
-    art.dialog.open(url, {title: '历史记录', width: '60%', height: '60%', lock: true, background: '#C3C2C0', id: 'id'});
+    var url = webUrl + "/record/list?deviceId=" + deviceId;
+    art.dialog.open(url, {title: '历史记录', width: '70%', height: '75%', lock: true, background: '#C3C2C0', id: 'id'});
 }
 
 /**

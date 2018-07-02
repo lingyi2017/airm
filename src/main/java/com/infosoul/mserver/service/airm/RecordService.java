@@ -40,6 +40,10 @@ public class RecordService extends BaseService {
      * @return
      */
     public Page<Record> findList(Page<Record> page, Record entity) {
+        if (StringUtils.isNotEmpty(entity.getBeginDate()) && StringUtils.isNotEmpty(entity.getEndDate())) {
+            entity.setBeginDate(entity.getBeginDate() + " 00:00:00");
+            entity.setEndDate(entity.getEndDate() + " 23:59:59");
+        }
         if (StringUtils.isEmpty(page.getOrderBy())) {
             page.setOrderBy("a.create_date DESC");
         }
