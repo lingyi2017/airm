@@ -2,19 +2,18 @@ package com.infosoul.mserver.service.airm;
 
 import java.util.List;
 
-import com.infosoul.mserver.common.utils.DeviceCacheUtils;
-import com.infosoul.mserver.dto.api.DeviceListRqDTO;
-import com.infosoul.mserver.entity.airm.Device;
-import com.infosoul.mserver.repository.mybatis.airm.IDeviceDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.infosoul.mserver.common.persistence.Page;
+import com.infosoul.mserver.common.utils.DeviceCacheUtils;
 import com.infosoul.mserver.common.utils.IdGen;
 import com.infosoul.mserver.common.utils.StringUtils;
-import com.infosoul.mserver.entity.airm.LatchConfig;
-import com.infosoul.mserver.repository.mybatis.airm.ILatchConfigDao;
+import com.infosoul.mserver.dto.api.DeviceListRqDTO;
+import com.infosoul.mserver.dto.web.DeviceMapSearchDTO;
+import com.infosoul.mserver.entity.airm.Device;
+import com.infosoul.mserver.repository.mybatis.airm.IDeviceDao;
 import com.infosoul.mserver.service.BaseService;
 
 /**
@@ -92,6 +91,16 @@ public class DeviceService extends BaseService {
             }
         }
         return this.findList(page, entity);
+    }
+
+    /**
+     * 地图搜索提示
+     * 
+     * @param keyword
+     * @return
+     */
+    public List<DeviceMapSearchDTO> mapSearchTips(String keyword) {
+        return deviceDao.mapSearchTips(keyword);
     }
 
     /**

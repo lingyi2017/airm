@@ -162,4 +162,16 @@
         where
           device_id = #{deviceId}
     </update>
+
+    <!-- 地图搜索提示 -->
+    <select id="mapSearchTips" resultMap="deviceMap" parameterType="string">
+        SELECT
+          *
+        FROM
+        airm_device AS a
+        WHERE
+        a.name LIKE CONCAT('%', #{keyword}, '%')
+        OR a.address LIKE CONCAT('%', #{keyword}, '%')
+        LIMIT 10
+    </select>
 </mapper>

@@ -4,6 +4,7 @@ import javax.ws.rs.*;
 
 import com.infosoul.mserver.common.utils.Constant;
 import com.infosoul.mserver.common.utils.DateUtils;
+import com.infosoul.mserver.dto.web.DeviceMapDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,51 @@ public class MapResource extends BaseResource {
         } catch (Exception e) {
             logger.error("地图获取最近一条历史记录异常", e.getMessage());
             return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "地图获取最近一条历史记录异常");
+        }
+    }
+
+    /**
+     * 地图搜索提示
+     * 
+     * @param keyword
+     * @return
+     */
+    @GET
+    @Path("/device/list")
+    public ResponseRest deviceList(@QueryParam(value = "keyword") String keyword) {
+        if (StringUtils.isBlank(keyword)) {
+            return error(ResponseRest.Status.BAD_REQUEST, "查询内容不能为空");
+        }
+        try {
+            return success(deviceService.mapSearchTips(keyword));
+        } catch (Exception e) {
+            logger.error("地图搜索提示查询异常", e.getMessage());
+            return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "地图搜索提示查询异常");
+        }
+    }
+
+    /**
+     * 通过ID查询设备
+     *
+     * @param deviceId
+     * @return
+     */
+    @GET
+    @Path("/device")
+    public ResponseRest getById(@QueryParam(value = "deviceId") String deviceId) {
+        if (StringUtils.isBlank(deviceId)) {
+            return error(ResponseRest.Status.BAD_REQUEST, "设备ID不能为空");
+        }
+        try {
+            Device device = deviceService.findByDeviceId(deviceId);
+            DeviceMapDTO dto = new DeviceMapDTO();
+            if (null != device) {
+                BeanUtils.copyProperties(device, dto);
+            }
+            return success(dto);
+        } catch (Exception e) {
+            logger.error("地图搜索通过ID查询设备异常", e.getMessage());
+            return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "地图搜索通过ID查询设备异常");
         }
     }
 }

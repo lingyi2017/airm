@@ -9,7 +9,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
     <link rel="stylesheet" href="${ctx}/static/styles/map/jquery.mCustomScrollbar.css">
-    <link rel="stylesheet" href="${ctx}/static/styles/map/map.css">
+    <link rel="stylesheet" href="${ctx}/static/styles/map/map.css?d=<%=new java.util.Date() %>">
     <script src="${ctx}/static/jquery/jquery-1.11.0.js"></script>
     <script src="${ctx}/static/js/global.js"></script>
     <script src="${ctx}/static/artDialog/artDialog.js?skin=blue"></script>
@@ -31,18 +31,12 @@
     <div class="select">
         <ul id="select_title" class="select_title">
             <li class="select_title_li ">
-                <div class="icon_content quyu_icon"><img class="quyu_img" src="${ctx }/static/pictures/map/quyu.png"><a
-                        id="select_quyu" class="a_click" name="1">地址</a></div>
+                <div class="icon_content quyu_icon"><img class="quyu_img" src="${ctx }/static/pictures/map/quyu.png">
+                    <a id="select_quyu" class="a_click" name="1">设备搜索</a></div>
             </li>
-            <li class="select_title_li title_click">
-                <div class="icon_content shebei_icon"><img class="shebei_img"
-                                                           src="${ctx }/static/pictures/map/keyword2.png"><a
-                        id="select_shebei" name="0">设备</a></div>
-            </li>
-            <div class="arrow-wrap"></div>
         </ul>
         <div class="select_content">
-            <input id="select_by" class="select_by_css focus" type="text" autocomplete="off" placeholder="请输入设备地址"
+            <input id="select_by" class="select_by_css focus" type="text" autocomplete="off" placeholder="请输入设备名称或地址"
                    maxlength="16"/>
             <div class="input_clear"></div>
         </div>
@@ -54,12 +48,6 @@
             <ul id="select_content_result" class="select_content_result ">
             </ul>
         </div>
-    </div>
-</div>
-<div class="alert_info">
-    <div class="alert_arrow-wrap"></div>
-    <div class="content">
-        <span>清除查询</span>
     </div>
 </div>
 
@@ -85,6 +73,6 @@
 <script src="${ctx}/static/js/map/m_commonFun.js?d=<%=new java.util.Date() %>"></script>
 <script src="${ctx}/static/js/map/m_map.js?d=<%=new java.util.Date() %>"></script>
 <script src="${ctx}/static/js/map/m_ws.js?d=<%=new java.util.Date() %>"></script>
-<%--<script src="${ctx}/static/js/map/m_query.js?d=<%=new java.util.Date() %>"></script>--%>
+<script src="${ctx}/static/js/map/m_query.js?d=<%=new java.util.Date() %>"></script>
 </body>
 </html>
