@@ -5,13 +5,20 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.alibaba.fastjson.JSON;
+import com.infosoul.mserver.api.BaseResource;
+import com.infosoul.mserver.api.ResponseRest;
 import com.infosoul.mserver.common.utils.Constant;
 import com.infosoul.mserver.common.utils.SensorCacheUtils;
 import com.infosoul.mserver.common.utils.StringUtils;
+import com.infosoul.mserver.common.web.MediaTypes;
 import com.infosoul.mserver.constant.SensorConsts;
-import com.infosoul.mserver.dto.api.DevicePushDTO;
 import com.infosoul.mserver.dto.api.DeviceGeoDTO;
+import com.infosoul.mserver.dto.api.DevicePushDTO;
 import com.infosoul.mserver.dto.api.RecordPushDTO;
 import com.infosoul.mserver.dto.api.StatusPushDTO;
 import com.infosoul.mserver.entity.airm.Device;
@@ -19,14 +26,6 @@ import com.infosoul.mserver.entity.airm.Record;
 import com.infosoul.mserver.jpush.JClient;
 import com.infosoul.mserver.service.airm.DeviceService;
 import com.infosoul.mserver.service.airm.RecordService;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-
-import com.infosoul.mserver.api.BaseResource;
-import com.infosoul.mserver.api.ResponseRest;
-import com.infosoul.mserver.common.web.MediaTypes;
 
 /**
  * 数据推送 RESTFull接口
@@ -59,7 +58,7 @@ public class PushResource extends BaseResource {
     @Path("/device/status")
     public ResponseRest status(StatusPushDTO dto) {
         try {
-            System.out.println("==设备上线成功==" + JSON.toJSONString(dto));
+            System.out.println("==设备登录成功==" + JSON.toJSONString(dto));
             if (null == dto || StringUtils.isEmpty(dto.getDeviceId())) {
                 return error(ResponseRest.Status.BAD_REQUEST, "设备ID不能为空");
             }
@@ -90,7 +89,6 @@ public class PushResource extends BaseResource {
     @Path("/device/info")
     public ResponseRest deviceInfo(DevicePushDTO dto) {
         try {
-            System.out.println("==获取到设备信息==" + JSON.toJSONString(dto));
             if (null == dto || StringUtils.isEmpty(dto.getDeviceId())) {
                 return error(ResponseRest.Status.BAD_REQUEST, "设备ID不能为空");
             }

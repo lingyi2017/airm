@@ -29,7 +29,6 @@ public class NettyUtils {
         dto.setFrameType(FrameTypeEnum.LOGIN);
         dto.setDataLength(0x06);
         dto.setData(Constant.WEB_SERVER_ID);
-        System.out.println("==登录协议帧==" + JSON.toJSONString(dto));
         NettyClient.send(dto);
     }
 
@@ -85,7 +84,6 @@ public class NettyUtils {
         dto.setDataLength(0x01);
         dto.setData(0x30);
         ctx.writeAndFlush(dto);
-        System.out.println("==心跳协议帧==" + JSON.toJSONString(dto));
     }
 
     /**
@@ -106,7 +104,6 @@ public class NettyUtils {
         buf.writeByte((int) dto.getData());
         // CRC16位校验和
         int crc16 = CRC16M.getCRC16(buf.array());
-        System.out.println("==心跳crc16==" + crc16);
         buf.writeShort(crc16);
         out.writeBytes(buf);
     }
@@ -138,7 +135,6 @@ public class NettyUtils {
         dto.setFrameType(FrameTypeEnum.SENSOR_INFO);
         dto.setDataLength(deviceId.length());
         dto.setData(deviceId);
-        System.out.println("==读传感器信息协议帧==" + JSON.toJSONString(dto));
         NettyClient.send(dto);
     }
 
@@ -152,7 +148,6 @@ public class NettyUtils {
         dto.setFrameType(FrameTypeEnum.SENSOR_DATA);
         dto.setDataLength(deviceId.length());
         dto.setData(deviceId);
-        System.out.println("==读传感器数据协议帧==" + JSON.toJSONString(dto));
         NettyClient.send(dto);
     }
 
