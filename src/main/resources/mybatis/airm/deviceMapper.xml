@@ -14,16 +14,22 @@
         <result column="address" property="address"/>
         <result column="sensor_name1" property="sensorName1"/>
         <result column="sensor_unit1" property="sensorUnit1"/>
+        <result column="sensor_decimal1" property="sensorDecimal1"/>
         <result column="sensor_name2" property="sensorName2"/>
         <result column="sensor_unit2" property="sensorUnit2"/>
+        <result column="sensor_decimal2" property="sensorDecimal2"/>
         <result column="sensor_name3" property="sensorName3"/>
         <result column="sensor_unit3" property="sensorUnit3"/>
+        <result column="sensor_decimal3" property="sensorDecimal3"/>
         <result column="sensor_name4" property="sensorName4"/>
         <result column="sensor_unit4" property="sensorUnit4"/>
+        <result column="sensor_decimal4" property="sensorDecimal4"/>
         <result column="sensor_name5" property="sensorName5"/>
         <result column="sensor_unit5" property="sensorUnit5"/>
+        <result column="sensor_decimal5" property="sensorDecimal5"/>
         <result column="sensor_name6" property="sensorName6"/>
         <result column="sensor_unit6" property="sensorUnit6"/>
+        <result column="sensor_decimal6" property="sensorDecimal6"/>
         <result column="create_date" property="createDate"/>
         <result column="update_date" property="updateDate"/>
     </resultMap>
@@ -88,16 +94,22 @@
           address,
           sensor_name1,
           sensor_unit1,
+          sensor_decimal1,
           sensor_name2,
           sensor_unit2,
+          sensor_decimal2,
           sensor_name3,
           sensor_unit3,
+          sensor_decimal3,
           sensor_name4,
           sensor_unit4,
+          sensor_decimal4,
           sensor_name5,
           sensor_unit5,
+          sensor_decimal5,
           sensor_name6,
           sensor_unit6,
+          sensor_decimal6,
           create_date
           )
         VALUES
@@ -111,16 +123,22 @@
           #{address},
           #{sensorName1},
           #{sensorUnit1},
+          #{sensorDecimal1},
           #{sensorName2},
           #{sensorUnit2},
+          #{sensorDecimal2},
           #{sensorName3},
           #{sensorUnit3},
+          #{sensorDecimal3},
           #{sensorName4},
           #{sensorUnit4},
+          #{sensorDecimal4},
           #{sensorName5},
           #{sensorUnit5},
+          #{sensorDecimal5},
           #{sensorName6},
           #{sensorUnit6},
+          #{sensorDecimal6},
           now()
           )
     </insert>
@@ -139,16 +157,22 @@
           address = #{address},
           sensor_name1 = #{sensorName1},
           sensor_unit1 = #{sensorUnit1},
+          sensor_decimal1 = #{sensorDecimal1},
           sensor_name2 = #{sensorName2},
           sensor_unit2 = #{sensorUnit2},
+          sensor_decimal2 = #{sensorDecimal2},
           sensor_name3 = #{sensorName3},
           sensor_unit3 = #{sensorUnit3},
+          sensor_decimal3 = #{sensorDecimal3},
           sensor_name4 = #{sensorName4},
           sensor_unit4 = #{sensorUnit4},
+          sensor_decimal4 = #{sensorDecimal4},
           sensor_name5 = #{sensorName5},
           sensor_unit5 = #{sensorUnit5},
+          sensor_decimal5 = #{sensorDecimal5},
           sensor_name6 = #{sensorName6},
           sensor_unit6 = #{sensorUnit6},
+          sensor_decimal6 = #{sensorDecimal6},
           update_date = now()
         where
           id = #{id}

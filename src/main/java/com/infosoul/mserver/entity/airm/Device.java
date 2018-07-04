@@ -65,6 +65,11 @@ public class Device extends IdEntity<Device> {
     private String sensorUnit1;
 
     /**
+     * 传感器1小数位（0:无小数位; 1:1位小数; 2:2位小数; 3:3位小数; 4:4位小数）
+     */
+    private Integer sensorDecimal1;
+
+    /**
      * 传感器2名称
      */
     private String sensorName2;
@@ -73,6 +78,11 @@ public class Device extends IdEntity<Device> {
      * 传感器2单位
      */
     private String sensorUnit2;
+
+    /**
+     * 传感器2小数位
+     */
+    private Integer sensorDecimal2;
 
     /**
      * 传感器3名称
@@ -85,6 +95,11 @@ public class Device extends IdEntity<Device> {
     private String sensorUnit3;
 
     /**
+     * 传感器3小数位
+     */
+    private Integer sensorDecimal3;
+
+    /**
      * 传感器4名称
      */
     private String sensorName4;
@@ -93,6 +108,11 @@ public class Device extends IdEntity<Device> {
      * 传感器4单位
      */
     private String sensorUnit4;
+
+    /**
+     * 传感器4小数位
+     */
+    private Integer sensorDecimal4;
 
     /**
      * 传感器5名称
@@ -105,6 +125,11 @@ public class Device extends IdEntity<Device> {
     private String sensorUnit5;
 
     /**
+     * 传感器5小数位
+     */
+    private Integer sensorDecimal5;
+
+    /**
      * 传感器6名称
      */
     private String sensorName6;
@@ -113,6 +138,11 @@ public class Device extends IdEntity<Device> {
      * 传感器6单位
      */
     private String sensorUnit6;
+
+    /**
+     * 传感器6小数位
+     */
+    private Integer sensorDecimal6;
 
     public String getName() {
         return name;
@@ -194,6 +224,14 @@ public class Device extends IdEntity<Device> {
         this.sensorUnit1 = sensorUnit1;
     }
 
+    public Integer getSensorDecimal1() {
+        return sensorDecimal1;
+    }
+
+    public void setSensorDecimal1(Integer sensorDecimal1) {
+        this.sensorDecimal1 = sensorDecimal1;
+    }
+
     public String getSensorName2() {
         return sensorName2;
     }
@@ -208,6 +246,14 @@ public class Device extends IdEntity<Device> {
 
     public void setSensorUnit2(String sensorUnit2) {
         this.sensorUnit2 = sensorUnit2;
+    }
+
+    public Integer getSensorDecimal2() {
+        return sensorDecimal2;
+    }
+
+    public void setSensorDecimal2(Integer sensorDecimal2) {
+        this.sensorDecimal2 = sensorDecimal2;
     }
 
     public String getSensorName3() {
@@ -226,6 +272,14 @@ public class Device extends IdEntity<Device> {
         this.sensorUnit3 = sensorUnit3;
     }
 
+    public Integer getSensorDecimal3() {
+        return sensorDecimal3;
+    }
+
+    public void setSensorDecimal3(Integer sensorDecimal3) {
+        this.sensorDecimal3 = sensorDecimal3;
+    }
+
     public String getSensorName4() {
         return sensorName4;
     }
@@ -240,6 +294,14 @@ public class Device extends IdEntity<Device> {
 
     public void setSensorUnit4(String sensorUnit4) {
         this.sensorUnit4 = sensorUnit4;
+    }
+
+    public Integer getSensorDecimal4() {
+        return sensorDecimal4;
+    }
+
+    public void setSensorDecimal4(Integer sensorDecimal4) {
+        this.sensorDecimal4 = sensorDecimal4;
     }
 
     public String getSensorName5() {
@@ -258,6 +320,14 @@ public class Device extends IdEntity<Device> {
         this.sensorUnit5 = sensorUnit5;
     }
 
+    public Integer getSensorDecimal5() {
+        return sensorDecimal5;
+    }
+
+    public void setSensorDecimal5(Integer sensorDecimal5) {
+        this.sensorDecimal5 = sensorDecimal5;
+    }
+
     public String getSensorName6() {
         return sensorName6;
     }
@@ -272,5 +342,13 @@ public class Device extends IdEntity<Device> {
 
     public void setSensorUnit6(String sensorUnit6) {
         this.sensorUnit6 = sensorUnit6;
+    }
+
+    public Integer getSensorDecimal6() {
+        return sensorDecimal6;
+    }
+
+    public void setSensorDecimal6(Integer sensorDecimal6) {
+        this.sensorDecimal6 = sensorDecimal6;
     }
 }

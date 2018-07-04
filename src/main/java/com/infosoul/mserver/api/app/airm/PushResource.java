@@ -93,9 +93,12 @@ public class PushResource extends BaseResource {
                 return error(ResponseRest.Status.BAD_REQUEST, "设备ID不能为空");
             }
             Device device = deviceService.findByDeviceId(dto.getDeviceId());
-            updateDevice(device, dto);
+            if (null != device) {
+                updateDevice(device, dto);
+            }
             return success();
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("推送设备信息异常", e);
             return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "推送设备信息发生异常");
         }
@@ -147,28 +150,8 @@ public class PushResource extends BaseResource {
 
     private void updateDevice(Device device, DevicePushDTO dto) throws Exception {
         device.setRegister(Constant.DEVICE_REGISTER);
-        buildDevice(device, dto);
+        BeanUtils.copyProperties(dto, device);
         deviceService.update(device);
     }
 
-    private Device buildDevice(Device device, DevicePushDTO dto) {
-        device.setSensorName1(SensorCacheUtils.getName(dto.getSensorNameNum1()));
-        device.setSensorUnit1(SensorConsts.getUnit(dto.getSensorUnitNum1()));
-
-        device.setSensorName2(SensorCacheUtils.getName(dto.getSensorNameNum2()));
-        device.setSensorUnit2(SensorConsts.getUnit(dto.getSensorUnitNum2()));
-
-        device.setSensorName3(SensorCacheUtils.getName(dto.getSensorNameNum3()));
-        device.setSensorUnit3(SensorConsts.getUnit(dto.getSensorUnitNum3()));
-
-        device.setSensorName4(SensorCacheUtils.getName(dto.getSensorNameNum4()));
-        device.setSensorUnit4(SensorConsts.getUnit(dto.getSensorUnitNum4()));
-
-        device.setSensorName5(SensorCacheUtils.getName(dto.getSensorNameNum5()));
-        device.setSensorUnit5(SensorConsts.getUnit(dto.getSensorUnitNum5()));
-
-        device.setSensorName6(SensorCacheUtils.getName(dto.getSensorNameNum6()));
-        device.setSensorUnit6(SensorConsts.getUnit(dto.getSensorUnitNum6()));
-        return device;
-    }
 }

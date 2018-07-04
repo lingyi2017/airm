@@ -109,7 +109,7 @@ public class DeviceService extends BaseService {
      * @param entity
      * @throws Exception
      */
-    @Transactional(readOnly = false)
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
     public void save(Device entity) throws Exception {
         entity.setId(IdGen.uuid());
         deviceDao.save(entity);

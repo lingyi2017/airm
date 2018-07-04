@@ -28,6 +28,11 @@ public class DevicePushDTO implements Serializable {
     private Integer sensorUnitNum1;
 
     /**
+     * 传感器1小数位（0:无小数位; 1:1位小数; 2:2位小数; 3:3位小数; 4:4位小数）
+     */
+    private Integer sensorDecimal1;
+
+    /**
      * 传感器2名称编号
      */
     private Integer sensorNameNum2;
@@ -36,6 +41,11 @@ public class DevicePushDTO implements Serializable {
      * 传感器2单位编号
      */
     private Integer sensorUnitNum2;
+
+    /**
+     * 传感器2小数位
+     */
+    private Integer sensorDecimal2;
 
     /**
      * 传感器3名称编号
@@ -48,6 +58,11 @@ public class DevicePushDTO implements Serializable {
     private Integer sensorUnitNum3;
 
     /**
+     * 传感器3小数位
+     */
+    private Integer sensorDecimal3;
+
+    /**
      * 传感器4名称编号
      */
     private Integer sensorNameNum4;
@@ -56,6 +71,11 @@ public class DevicePushDTO implements Serializable {
      * 传感器4单位编号
      */
     private Integer sensorUnitNum4;
+
+    /**
+     * 传感器4小数位
+     */
+    private Integer sensorDecimal4;
 
     /**
      * 传感器5名称编号
@@ -68,6 +88,11 @@ public class DevicePushDTO implements Serializable {
     private Integer sensorUnitNum5;
 
     /**
+     * 传感器5小数位
+     */
+    private Integer sensorDecimal5;
+
+    /**
      * 传感器6名称编号
      */
     private Integer sensorNameNum6;
@@ -76,6 +101,11 @@ public class DevicePushDTO implements Serializable {
      * 传感器6单位编号
      */
     private Integer sensorUnitNum6;
+
+    /**
+     * 传感器6小数位
+     */
+    private Integer sensorDecimal6;
 
     public String getDeviceId() {
         return deviceId;
@@ -101,6 +131,14 @@ public class DevicePushDTO implements Serializable {
         this.sensorUnitNum1 = sensorUnitNum1;
     }
 
+    public Integer getSensorDecimal1() {
+        return sensorDecimal1;
+    }
+
+    public void setSensorDecimal1(Integer sensorDecimal1) {
+        this.sensorDecimal1 = sensorDecimal1;
+    }
+
     public Integer getSensorNameNum2() {
         return sensorNameNum2;
     }
@@ -115,6 +153,14 @@ public class DevicePushDTO implements Serializable {
 
     public void setSensorUnitNum2(Integer sensorUnitNum2) {
         this.sensorUnitNum2 = sensorUnitNum2;
+    }
+
+    public Integer getSensorDecimal2() {
+        return sensorDecimal2;
+    }
+
+    public void setSensorDecimal2(Integer sensorDecimal2) {
+        this.sensorDecimal2 = sensorDecimal2;
     }
 
     public Integer getSensorNameNum3() {
@@ -133,6 +179,14 @@ public class DevicePushDTO implements Serializable {
         this.sensorUnitNum3 = sensorUnitNum3;
     }
 
+    public Integer getSensorDecimal3() {
+        return sensorDecimal3;
+    }
+
+    public void setSensorDecimal3(Integer sensorDecimal3) {
+        this.sensorDecimal3 = sensorDecimal3;
+    }
+
     public Integer getSensorNameNum4() {
         return sensorNameNum4;
     }
@@ -147,6 +201,14 @@ public class DevicePushDTO implements Serializable {
 
     public void setSensorUnitNum4(Integer sensorUnitNum4) {
         this.sensorUnitNum4 = sensorUnitNum4;
+    }
+
+    public Integer getSensorDecimal4() {
+        return sensorDecimal4;
+    }
+
+    public void setSensorDecimal4(Integer sensorDecimal4) {
+        this.sensorDecimal4 = sensorDecimal4;
     }
 
     public Integer getSensorNameNum5() {
@@ -165,6 +227,14 @@ public class DevicePushDTO implements Serializable {
         this.sensorUnitNum5 = sensorUnitNum5;
     }
 
+    public Integer getSensorDecimal5() {
+        return sensorDecimal5;
+    }
+
+    public void setSensorDecimal5(Integer sensorDecimal5) {
+        this.sensorDecimal5 = sensorDecimal5;
+    }
+
     public Integer getSensorNameNum6() {
         return sensorNameNum6;
     }
@@ -179,5 +249,13 @@ public class DevicePushDTO implements Serializable {
 
     public void setSensorUnitNum6(Integer sensorUnitNum6) {
         this.sensorUnitNum6 = sensorUnitNum6;
+    }
+
+    public Integer getSensorDecimal6() {
+        return sensorDecimal6;
+    }
+
+    public void setSensorDecimal6(Integer sensorDecimal6) {
+        this.sensorDecimal6 = sensorDecimal6;
     }
 }
