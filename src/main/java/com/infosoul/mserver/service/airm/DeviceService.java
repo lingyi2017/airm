@@ -1,6 +1,8 @@
 package com.infosoul.mserver.service.airm;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,12 +85,12 @@ public class DeviceService extends BaseService {
                 page.setPageNo(dto.getPageNo());
                 page.setPageSize(dto.getPageSize());
             }
-            if (StringUtils.isNotEmpty(dto.getName())) {
-                entity.setName(dto.getName());
+            if (StringUtils.isNotEmpty(dto.getKeyword())) {
+                Map<String, String> sqlMap = new HashMap<>(16);
+                sqlMap.put("keyword", dto.getKeyword());
+                entity.setSqlMap(sqlMap);
             }
-            if (StringUtils.isNotEmpty(dto.getAddress())) {
-                entity.setAddress(dto.getAddress());
-            }
+
         }
         return this.findList(page, entity);
     }

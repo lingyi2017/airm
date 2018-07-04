@@ -68,6 +68,10 @@
         <if test="address != null and address !=''">
             AND a.address LIKE CONCAT('%', #{address}, '%')
         </if>
+        <if test="sqlMap.keyword != null and sqlMap.keyword !=''">
+            AND (a.name LIKE CONCAT('%', #{sqlMap.keyword}, '%') OR
+            a.address LIKE CONCAT('%', #{sqlMap.keyword}, '%'))
+        </if>
         <if test="page.orderBy !=null and page.orderBy!=''">
             ORDER BY ${page.orderBy}
         </if>

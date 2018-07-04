@@ -13,28 +13,15 @@ public class DeviceListRqDTO extends BaseRqDTO {
     private static final long serialVersionUID = 107794442733805988L;
 
     /**
-     * 设备名称
+     * 设备名称或地址
      */
-    private String name;
+    private String keyword;
 
-    /**
-     * 设备地址
-     */
-    private String address;
-
-    public String getName() {
-        return name;
+    public String getKeyword() {
+        return keyword;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 }

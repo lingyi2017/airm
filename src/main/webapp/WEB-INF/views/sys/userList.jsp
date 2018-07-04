@@ -124,14 +124,6 @@
     </c:forEach>
     </tbody>
 </table>
-<table id="contentTable" class="table">
-    <thead>
-    <tr>
-        <th>测试</th>
-        <th>测试</th>
-    </tr>
-    </thead>
-</table>
 <div class="pagination">${page}</div>
 </body>
 </html>

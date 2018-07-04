@@ -5,6 +5,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import com.infosoul.mserver.common.utils.PpmConversionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -122,6 +123,7 @@ public class PushResource extends BaseResource {
             }
             Record record = new Record();
             BeanUtils.copyProperties(dto, record);
+            buildRecord(record);
             recordService.save(record);
             try {
                 push(record);
@@ -158,6 +160,33 @@ public class PushResource extends BaseResource {
         device.setRegister(Constant.DEVICE_REGISTER);
         BeanUtils.copyProperties(dto, device);
         deviceService.update(device);
+    }
+
+    private void buildRecord(Record record) {
+        Device device = deviceService.findByDeviceId(record.getDeviceId());
+
+        Double sensorVal1 = record.getSensorVal1();
+        sensorVal1 = decimalDeal(sensorVal1, device.getSensorDecimal1());
+    }
+
+    private Double decimalDeal(Double val, Integer decimal) {
+        if (null == val) {
+            return null;
+        }
+        switch (decimal) {
+            case 0:
+                return val;
+            case 1:
+                return val / 10;
+            case 2:
+                return val / 100;
+            case 3:
+                return val / 1000;
+            case 4:
+                return val / 10000;
+            default:
+                return val;
+        }
     }
 
     private void push(Object obj) {
