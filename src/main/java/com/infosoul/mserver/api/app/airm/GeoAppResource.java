@@ -57,9 +57,7 @@ public class GeoAppResource extends BaseResource {
                 device.setRegister(Constant.DEVICE_UNREGISTERED);
                 deviceService.save(device);
             } else { // 设备存在。更新位置信息
-                device.setLon(dto.getLon());
-                device.setLat(dto.getLat());
-                device.setAddress(dto.getAddress());
+                BeanUtils.copyProperties(dto, device);
                 deviceService.update(device);
             }
             return success();
