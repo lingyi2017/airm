@@ -13,10 +13,8 @@ import com.alibaba.fastjson.JSON;
 import com.infosoul.mserver.api.BaseResource;
 import com.infosoul.mserver.api.ResponseRest;
 import com.infosoul.mserver.common.utils.Constant;
-import com.infosoul.mserver.common.utils.SensorCacheUtils;
 import com.infosoul.mserver.common.utils.StringUtils;
 import com.infosoul.mserver.common.web.MediaTypes;
-import com.infosoul.mserver.constant.SensorConsts;
 import com.infosoul.mserver.dto.api.DeviceGeoDTO;
 import com.infosoul.mserver.dto.api.DevicePushDTO;
 import com.infosoul.mserver.dto.api.RecordPushDTO;
@@ -69,8 +67,13 @@ public class PushResource extends BaseResource {
                 deviceService.save(device);
             } else {
                 device.setStatus(dto.getStatus());
-                // 告警推送
                 deviceService.updateStatus(device);
+                try {
+                    // 离线告警推送
+                    push(device);
+                } catch (Exception e) {
+                    logger.error("设备上线推送异常", e);
+                }
             }
             return success();
         } catch (Exception e) {
@@ -114,14 +117,17 @@ public class PushResource extends BaseResource {
     @Path("/device/record")
     public ResponseRest record(RecordPushDTO dto) {
         try {
-            /// client.initMessage().push();
-            /// 推WEB
             if (null == dto || StringUtils.isEmpty(dto.getDeviceId())) {
                 return error(ResponseRest.Status.BAD_REQUEST, "设备ID不能为空");
             }
             Record record = new Record();
             BeanUtils.copyProperties(dto, record);
             recordService.save(record);
+            try {
+                push(record);
+            } catch (Exception e) {
+                logger.error("设备记录推送异常", e);
+            }
             return success();
         } catch (Exception e) {
             e.printStackTrace();
@@ -152,6 +158,10 @@ public class PushResource extends BaseResource {
         device.setRegister(Constant.DEVICE_REGISTER);
         BeanUtils.copyProperties(dto, device);
         deviceService.update(device);
+    }
+
+    private void push(Object obj) {
+        // TODO
     }
 
 }

@@ -122,7 +122,7 @@ public class DeviceService extends BaseService {
      * @param entity
      * @throws Exception
      */
-    @Transactional(readOnly = false)
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
     public void update(Device entity) throws Exception {
         deviceDao.update(entity);
         DeviceCacheUtils.clear();
@@ -134,7 +134,7 @@ public class DeviceService extends BaseService {
      * @param entity
      * @throws Exception
      */
-    @Transactional(readOnly = false)
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
     public void updateStatus(Device entity) throws Exception {
         deviceDao.updateStatus(entity);
     }

@@ -2,6 +2,8 @@ package com.infosoul.mserver.service.airm;
 
 import java.util.List;
 
+import com.infosoul.mserver.common.utils.Constant;
+import com.infosoul.mserver.enums.DeviceStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -32,12 +34,19 @@ public class RecordTaskService extends BaseService {
             List<Device> devices = deviceService.findAll(new Device());
             if (!CollectionUtils.isEmpty(devices)) {
                 for (Device device : devices) {
-                    Boolean register = DeviceCacheUtils.isRegister(device.getDeviceId());
-                    if (register) {
-                        NettyUtils.sensorData(device.getDeviceId());
-                    } else {
-                        NettyUtils.sensorInfo(device.getDeviceId());
+                    if (DeviceStatusEnum.OFF_LINE.getCode().equals(device.getStatus())) {
+                        continue;
                     }
+                    try {
+                        if (Constant.DEVICE_UNREGISTERED.equals(device.getRegister())) {
+                            NettyUtils.sensorInfo(device.getDeviceId());
+                        } else if (Constant.DEVICE_REGISTER.equals(device.getRegister())) {
+                            NettyUtils.sensorData(device.getDeviceId());
+                        }
+                    } catch (Exception e) {
+                        logger.error("设备定时读取异常 device id : " + device.getId(), e);
+                    }
+
                 }
             }
         } catch (Exception e) {
