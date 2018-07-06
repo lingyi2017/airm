@@ -1,6 +1,7 @@
 package com.infosoul.mserver.service.airm;
 
 import java.util.List;
+import java.util.Map;
 
 import com.infosoul.mserver.common.utils.Constant;
 import com.infosoul.mserver.dto.BaseRqDTO;
@@ -107,5 +108,15 @@ public class RecordService extends BaseService {
     public void save(Record entity) throws Exception {
         entity.setId(IdGen.uuid());
         recordDao.save(entity);
+    }
+
+    /**
+     * 获取传感器的平均值
+     * 
+     * @param paramMap
+     * @return
+     */
+    public Double getSensorParamAvg(Map<String, String> paramMap) {
+        return recordDao.getSensorAvg(paramMap);
     }
 }

@@ -1,1 +1,399 @@
-define("echarts/chart/eventRiver",["require","./base","../layout/eventRiver","zrender/shape/Polygon","../component/axis","../component/grid","../component/dataZoom","../config","../util/ecData","../util/date","zrender/tool/util","zrender/tool/color","../chart"],function(e){function t(e,t,n,a,o){i.call(this,e,t,n,a,o);var r=this;r._ondragend=function(){r.isDragend=!0},this.refresh(a)}var i=e("./base"),n=e("../layout/eventRiver"),a=e("zrender/shape/Polygon");e("../component/axis"),e("../component/grid"),e("../component/dataZoom");var o=e("../config");o.eventRiver={zlevel:0,z:2,clickable:!0,legendHoverLink:!0,itemStyle:{normal:{borderColor:"rgba(0,0,0,0)",borderWidth:1,label:{show:!0,position:"inside",formatter:"{b}"}},emphasis:{borderColor:"rgba(0,0,0,0)",borderWidth:1,label:{show:!0}}}};var r=e("../util/ecData"),s=e("../util/date"),l=e("zrender/tool/util"),h=e("zrender/tool/color");return t.prototype={type:o.CHART_TYPE_EVENTRIVER,_buildShape:function(){var e=this.series;this.selectedMap={},this._dataPreprocessing();for(var t=this.component.legend,i=[],a=0;a<e.length;a++)if(e[a].type===this.type){e[a]=this.reformOption(e[a]),this.legendHoverLink=e[a].legendHoverLink||this.legendHoverLink;var o=e[a].name||"";if(this.selectedMap[o]=t?t.isSelected(o):!0,!this.selectedMap[o])continue;this.buildMark(a),i.push(this.series[a])}n(i,this._intervalX,this.component.grid.getArea()),this._drawEventRiver(),this.addShapeList()},_dataPreprocessing:function(){for(var e,t,i=this.series,n=0,a=i.length;a>n;n++)if(i[n].type===this.type){e=this.component.xAxis.getAxis(i[n].xAxisIndex||0);for(var o=0,r=i[n].eventList.length;r>o;o++){t=i[n].eventList[o].evolution;for(var l=0,h=t.length;h>l;l++)t[l].timeScale=e.getCoord(s.getNewDate(t[l].time)-0),t[l].valueScale=Math.pow(t[l].value,.8)}}this._intervalX=Math.round(this.component.grid.getWidth()/40)},_drawEventRiver:function(){for(var e=this.series,t=0;t<e.length;t++){var i=e[t].name||"";if(e[t].type===this.type&&this.selectedMap[i])for(var n=0;n<e[t].eventList.length;n++)this._drawEventBubble(e[t].eventList[n],t,n)}},_drawEventBubble:function(e,t,i){var n=this.series,o=n[t],s=o.name||"",l=o.eventList[i],m=[l,o],V=this.component.legend,U=V?V.getColor(s):this.zr.getColor(t),d=this.deepMerge(m,"itemStyle.normal")||{},p=this.deepMerge(m,"itemStyle.emphasis")||{},c=this.getItemStyleColor(d.color,t,i,l)||U,u=this.getItemStyleColor(p.color,t,i,l)||("string"==typeof c?h.lift(c,-.2):c),y=this._calculateControlPoints(e),g={zlevel:this.getZlevelBase(),z:this.getZBase(),clickable:this.deepQuery(m,"clickable"),style:{pointList:y,smooth:"spline",brushType:"both",lineJoin:"round",color:c,lineWidth:d.borderWidth,strokeColor:d.borderColor},highlightStyle:{color:u,lineWidth:p.borderWidth,strokeColor:p.borderColor},draggable:"vertical",ondragend:this._ondragend};g=new a(g),this.addLabel(g,o,l,e.name),r.pack(g,n[t],t,n[t].eventList[i],i,n[t].eventList[i].name),this.shapeList.push(g)},_calculateControlPoints:function(e){var t=this._intervalX,i=e.y,n=e.evolution,a=n.length;if(!(1>a)){for(var o=[],r=[],s=0;a>s;s++)o.push(n[s].timeScale),r.push(n[s].valueScale);var l=[];l.push([o[0],i]);var s=0;for(s=0;a-1>s;s++)l.push([(o[s]+o[s+1])/2,r[s]/-2+i]);for(l.push([(o[s]+(o[s]+t))/2,r[s]/-2+i]),l.push([o[s]+t,i]),l.push([(o[s]+(o[s]+t))/2,r[s]/2+i]),s=a-1;s>0;s--)l.push([(o[s]+o[s-1])/2,r[s-1]/2+i]);return l}},ondragend:function(e,t){this.isDragend&&e.target&&(t.dragOut=!0,t.dragIn=!0,t.needRefresh=!1,this.isDragend=!1)},refresh:function(e){e&&(this.option=e,this.series=e.series),this.backupShapeList(),this._buildShape()}},l.inherits(t,i),e("../chart").define("eventRiver",t),t}),define("echarts/layout/eventRiver",["require"],function(){function e(e,o,r){function s(e,t){var i=e.importance,n=t.importance;return i>n?-1:n>i?1:0}function l(e,t){if(e.indexOf)return e.indexOf(t);for(var i=0,n=e.length;n>i;i++)if(e[i]===t)return i;return-1}for(var h=5,m=o,V=0;V<e.length;V++){for(var U=0;U<e[V].eventList.length;U++){null==e[V].eventList[U].weight&&(e[V].eventList[U].weight=1);for(var d=0,p=0;p<e[V].eventList[U].evolution.length;p++)d+=e[V].eventList[U].evolution[p].valueScale;e[V].eventList[U].importance=d*e[V].eventList[U].weight}e[V].eventList.sort(s)}for(var V=0;V<e.length;V++){null==e[V].weight&&(e[V].weight=1);for(var d=0,U=0;U<e[V].eventList.length;U++)d+=e[V].eventList[U].weight;e[V].importance=d*e[V].weight}e.sort(s);for(var c=Number.MAX_VALUE,u=0,V=0;V<e.length;V++)for(var U=0;U<e[V].eventList.length;U++)for(var p=0;p<e[V].eventList[U].evolution.length;p++){var y=e[V].eventList[U].evolution[p].timeScale;c=Math.min(c,y),u=Math.max(u,y)}for(var g=i(Math.floor(c),Math.ceil(u)),b=0,V=0;V<e.length;V++)for(var U=0;U<e[V].eventList.length;U++){var f=e[V].eventList[U];f.time=[],f.value=[];for(var p=0;p<e[V].eventList[U].evolution.length;p++)f.time.push(e[V].eventList[U].evolution[p].timeScale),f.value.push(e[V].eventList[U].evolution[p].valueScale);var k=l(f.value,Math.max.apply(Math,f.value)),x=n(g,f.time[k],f.time[k+1]),p=0;for(f.y=x+f.value[k]/2+h,p=0;p<f.time.length-1;p++){var _=n(g,f.time[p],f.time[p+1]);f.y-f.value[p]/2-h<_&&(f.y=_+f.value[p]/2+h)}var _=n(g,f.time[p],f.time[p]+m);for(f.y-f.value[p]/2-h<_&&(f.y=_+f.value[p]/2+h),e[V].y=f.y,b=Math.max(b,f.y+f.value[k]/2),p=0;p<f.time.length-1;p++)a(g,f.time[p],f.time[p+1],f.y+f.value[p]/2);a(g,f.time[p],f.time[p]+m,f.y+f.value[p]/2)}t(e,r,b,h)}function t(e,t,i,n){for(var a=t.y,o=(t.height-n)/i,r=0;r<e.length;r++){e[r].y=e[r].y*o+a;for(var s=e[r].eventList,l=0;l<s.length;l++){s[l].y=s[l].y*o+a;for(var h=s[l].evolution,m=0;m<h.length;m++)h[m].valueScale*=1*o}}}function i(e,t){var n={left:e,right:t,leftChild:null,rightChild:null,maxValue:0};if(t>e+1){var a=Math.round((e+t)/2);n.leftChild=i(e,a),n.rightChild=i(a,t)}return n}function n(e,t,i){if(1>i-t)return 0;var a=Math.round((e.left+e.right)/2),o=0;if(t==e.left&&i==e.right)o=e.maxValue;else if(a>=i&&null!=e.leftChild)o=n(e.leftChild,t,i);else if(t>=a&&null!=e.rightChild)o=n(e.rightChild,t,i);else{var r=0,s=0;null!=e.leftChild&&(r=n(e.leftChild,t,a)),null!=e.rightChild&&(s=n(e.rightChild,a,i)),o=r>s?r:s}return o}function a(e,t,i,n){if(null!=e){var o=Math.round((e.left+e.right)/2);e.maxValue=e.maxValue>n?e.maxValue:n,(Math.floor(10*t)!=Math.floor(10*e.left)||Math.floor(10*i)!=Math.floor(10*e.right))&&(o>=i?a(e.leftChild,t,i,n):t>=o?a(e.rightChild,t,i,n):(a(e.leftChild,t,o,n),a(e.rightChild,o,i,n)))}}return e});
+define('echarts/chart/eventRiver', [
+    'require',
+    './base',
+    '../layout/eventRiver',
+    'zrender/shape/Polygon',
+    '../component/axis',
+    '../component/grid',
+    '../component/dataZoom',
+    '../config',
+    '../util/ecData',
+    '../util/date',
+    'zrender/tool/util',
+    'zrender/tool/color',
+    '../chart'
+], function (require) {
+    var ChartBase = require('./base');
+    var eventRiverLayout = require('../layout/eventRiver');
+    var PolygonShape = require('zrender/shape/Polygon');
+    require('../component/axis');
+    require('../component/grid');
+    require('../component/dataZoom');
+    var ecConfig = require('../config');
+    ecConfig.eventRiver = {
+        zlevel: 0,
+        z: 2,
+        clickable: true,
+        legendHoverLink: true,
+        itemStyle: {
+            normal: {
+                borderColor: 'rgba(0,0,0,0)',
+                borderWidth: 1,
+                label: {
+                    show: true,
+                    position: 'inside',
+                    formatter: '{b}'
+                }
+            },
+            emphasis: {
+                borderColor: 'rgba(0,0,0,0)',
+                borderWidth: 1,
+                label: { show: true }
+            }
+        }
+    };
+    var ecData = require('../util/ecData');
+    var ecDate = require('../util/date');
+    var zrUtil = require('zrender/tool/util');
+    var zrColor = require('zrender/tool/color');
+    function EventRiver(ecTheme, messageCenter, zr, option, myChart) {
+        ChartBase.call(this, ecTheme, messageCenter, zr, option, myChart);
+        var self = this;
+        self._ondragend = function () {
+            self.isDragend = true;
+        };
+        this.refresh(option);
+    }
+    EventRiver.prototype = {
+        type: ecConfig.CHART_TYPE_EVENTRIVER,
+        _buildShape: function () {
+            var series = this.series;
+            this.selectedMap = {};
+            this._dataPreprocessing();
+            var legend = this.component.legend;
+            var eventRiverSeries = [];
+            for (var i = 0; i < series.length; i++) {
+                if (series[i].type === this.type) {
+                    series[i] = this.reformOption(series[i]);
+                    this.legendHoverLink = series[i].legendHoverLink || this.legendHoverLink;
+                    var serieName = series[i].name || '';
+                    this.selectedMap[serieName] = legend ? legend.isSelected(serieName) : true;
+                    if (!this.selectedMap[serieName]) {
+                        continue;
+                    }
+                    this.buildMark(i);
+                    eventRiverSeries.push(this.series[i]);
+                }
+            }
+            eventRiverLayout(eventRiverSeries, this._intervalX, this.component.grid.getArea());
+            this._drawEventRiver();
+            this.addShapeList();
+        },
+        _dataPreprocessing: function () {
+            var series = this.series;
+            var xAxis;
+            var evolutionList;
+            for (var i = 0, iLen = series.length; i < iLen; i++) {
+                if (series[i].type === this.type) {
+                    xAxis = this.component.xAxis.getAxis(series[i].xAxisIndex || 0);
+                    for (var j = 0, jLen = series[i].data.length; j < jLen; j++) {
+                        evolutionList = series[i].data[j].evolution;
+                        for (var k = 0, kLen = evolutionList.length; k < kLen; k++) {
+                            evolutionList[k].timeScale = xAxis.getCoord(ecDate.getNewDate(evolutionList[k].time) - 0);
+                            evolutionList[k].valueScale = Math.pow(evolutionList[k].value, 0.8);
+                        }
+                    }
+                }
+            }
+            this._intervalX = Math.round(this.component.grid.getWidth() / 40);
+        },
+        _drawEventRiver: function () {
+            var series = this.series;
+            for (var i = 0; i < series.length; i++) {
+                var serieName = series[i].name || '';
+                if (series[i].type === this.type && this.selectedMap[serieName]) {
+                    for (var j = 0; j < series[i].data.length; j++) {
+                        this._drawEventBubble(series[i].data[j], i, j);
+                    }
+                }
+            }
+        },
+        _drawEventBubble: function (oneEvent, seriesIndex, dataIndex) {
+            var series = this.series;
+            var serie = series[seriesIndex];
+            var serieName = serie.name || '';
+            var data = serie.data[dataIndex];
+            var queryTarget = [
+                data,
+                serie
+            ];
+            var legend = this.component.legend;
+            var defaultColor = legend ? legend.getColor(serieName) : this.zr.getColor(seriesIndex);
+            var normal = this.deepMerge(queryTarget, 'itemStyle.normal') || {};
+            var emphasis = this.deepMerge(queryTarget, 'itemStyle.emphasis') || {};
+            var normalColor = this.getItemStyleColor(normal.color, seriesIndex, dataIndex, data) || defaultColor;
+            var emphasisColor = this.getItemStyleColor(emphasis.color, seriesIndex, dataIndex, data) || (typeof normalColor === 'string' ? zrColor.lift(normalColor, -0.2) : normalColor);
+            var pts = this._calculateControlPoints(oneEvent);
+            var eventBubbleShape = {
+                zlevel: serie.zlevel,
+                z: serie.z,
+                clickable: this.deepQuery(queryTarget, 'clickable'),
+                style: {
+                    pointList: pts,
+                    smooth: 'spline',
+                    brushType: 'both',
+                    lineJoin: 'round',
+                    color: normalColor,
+                    lineWidth: normal.borderWidth,
+                    strokeColor: normal.borderColor
+                },
+                highlightStyle: {
+                    color: emphasisColor,
+                    lineWidth: emphasis.borderWidth,
+                    strokeColor: emphasis.borderColor
+                },
+                draggable: 'vertical',
+                ondragend: this._ondragend
+            };
+            eventBubbleShape = new PolygonShape(eventBubbleShape);
+            this.addLabel(eventBubbleShape, serie, data, oneEvent.name);
+            ecData.pack(eventBubbleShape, series[seriesIndex], seriesIndex, series[seriesIndex].data[dataIndex], dataIndex, series[seriesIndex].data[dataIndex].name);
+            this.shapeList.push(eventBubbleShape);
+        },
+        _calculateControlPoints: function (oneEvent) {
+            var intervalX = this._intervalX;
+            var posY = oneEvent.y;
+            var evolution = oneEvent.evolution;
+            var n = evolution.length;
+            if (n < 1) {
+                return;
+            }
+            var time = [];
+            var value = [];
+            for (var i = 0; i < n; i++) {
+                time.push(evolution[i].timeScale);
+                value.push(evolution[i].valueScale);
+            }
+            var pts = [];
+            pts.push([
+                time[0],
+                posY
+            ]);
+            var i = 0;
+            for (i = 0; i < n - 1; i++) {
+                pts.push([
+                    (time[i] + time[i + 1]) / 2,
+                    value[i] / -2 + posY
+                ]);
+            }
+            pts.push([
+                (time[i] + (time[i] + intervalX)) / 2,
+                value[i] / -2 + posY
+            ]);
+            pts.push([
+                time[i] + intervalX,
+                posY
+            ]);
+            pts.push([
+                (time[i] + (time[i] + intervalX)) / 2,
+                value[i] / 2 + posY
+            ]);
+            for (i = n - 1; i > 0; i--) {
+                pts.push([
+                    (time[i] + time[i - 1]) / 2,
+                    value[i - 1] / 2 + posY
+                ]);
+            }
+            return pts;
+        },
+        ondragend: function (param, status) {
+            if (!this.isDragend || !param.target) {
+                return;
+            }
+            status.dragOut = true;
+            status.dragIn = true;
+            status.needRefresh = false;
+            this.isDragend = false;
+        },
+        refresh: function (newOption) {
+            if (newOption) {
+                this.option = newOption;
+                this.series = newOption.series;
+            }
+            this.backupShapeList();
+            this._buildShape();
+        }
+    };
+    zrUtil.inherits(EventRiver, ChartBase);
+    require('../chart').define('eventRiver', EventRiver);
+    return EventRiver;
+});define('echarts/layout/eventRiver', ['require'], function (require) {
+    function eventRiverLayout(series, intervalX, area) {
+        var space = 4;
+        var scale = intervalX;
+        function importanceSort(a, b) {
+            var x = a.importance;
+            var y = b.importance;
+            return x > y ? -1 : x < y ? 1 : 0;
+        }
+        function indexOf(array, value) {
+            if (array.indexOf) {
+                return array.indexOf(value);
+            }
+            for (var i = 0, len = array.length; i < len; i++) {
+                if (array[i] === value) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+        for (var i = 0; i < series.length; i++) {
+            for (var j = 0; j < series[i].data.length; j++) {
+                if (series[i].data[j].weight == null) {
+                    series[i].data[j].weight = 1;
+                }
+                var importance = 0;
+                for (var k = 0; k < series[i].data[j].evolution.length; k++) {
+                    importance += series[i].data[j].evolution[k].valueScale;
+                }
+                series[i].data[j].importance = importance * series[i].data[j].weight;
+            }
+            series[i].data.sort(importanceSort);
+        }
+        for (var i = 0; i < series.length; i++) {
+            if (series[i].weight == null) {
+                series[i].weight = 1;
+            }
+            var importance = 0;
+            for (var j = 0; j < series[i].data.length; j++) {
+                importance += series[i].data[j].weight;
+            }
+            series[i].importance = importance * series[i].weight;
+        }
+        series.sort(importanceSort);
+        var minTime = Number.MAX_VALUE;
+        var maxTime = 0;
+        for (var i = 0; i < series.length; i++) {
+            for (var j = 0; j < series[i].data.length; j++) {
+                for (var k = 0; k < series[i].data[j].evolution.length; k++) {
+                    var time = series[i].data[j].evolution[k].timeScale;
+                    minTime = Math.min(minTime, time);
+                    maxTime = Math.max(maxTime, time);
+                }
+            }
+        }
+        minTime = ~~minTime;
+        maxTime = ~~maxTime;
+        var flagForOffset = function () {
+            var length = maxTime - minTime + 1 + ~~intervalX;
+            if (length <= 0) {
+                return [0];
+            }
+            var result = [];
+            while (length--) {
+                result.push(0);
+            }
+            return result;
+        }();
+        var flagForPos = flagForOffset.slice(0);
+        var bubbleData = [];
+        var totalMaxy = 0;
+        var totalOffset = 0;
+        for (var i = 0; i < series.length; i++) {
+            for (var j = 0; j < series[i].data.length; j++) {
+                var e = series[i].data[j];
+                e.time = [];
+                e.value = [];
+                var tmp;
+                var maxy = 0;
+                for (var k = 0; k < series[i].data[j].evolution.length; k++) {
+                    tmp = series[i].data[j].evolution[k];
+                    e.time.push(tmp.timeScale);
+                    e.value.push(tmp.valueScale);
+                    maxy = Math.max(maxy, tmp.valueScale);
+                }
+                bubbleBound(e, intervalX, minTime);
+                e.y = findLocation(flagForPos, e, function (e, index) {
+                    return e.ypx[index];
+                });
+                e._offset = findLocation(flagForOffset, e, function () {
+                    return space;
+                });
+                totalMaxy = Math.max(totalMaxy, e.y + maxy);
+                totalOffset = Math.max(totalOffset, e._offset);
+                bubbleData.push(e);
+            }
+        }
+        scaleY(bubbleData, area, totalMaxy, totalOffset);
+    }
+    function scaleY(bubbleData, area, maxY, offset) {
+        var height = area.height;
+        var offsetScale = offset / height > 0.5 ? 0.5 : 1;
+        var yBase = area.y;
+        var yScale = (area.height - offset) / maxY;
+        for (var i = 0, length = bubbleData.length; i < length; i++) {
+            var e = bubbleData[i];
+            e.y = yBase + yScale * e.y + e._offset * offsetScale;
+            delete e.time;
+            delete e.value;
+            delete e.xpx;
+            delete e.ypx;
+            delete e._offset;
+            var evolutionList = e.evolution;
+            for (var k = 0, klen = evolutionList.length; k < klen; k++) {
+                evolutionList[k].valueScale *= yScale;
+            }
+        }
+    }
+    function line(x0, y0, x1, y1) {
+        if (x0 === x1) {
+            throw new Error('x0 is equal with x1!!!');
+        }
+        if (y0 === y1) {
+            return function () {
+                return y0;
+            };
+        }
+        var k = (y0 - y1) / (x0 - x1);
+        var b = (y1 * x0 - y0 * x1) / (x0 - x1);
+        return function (x) {
+            return k * x + b;
+        };
+    }
+    function bubbleBound(e, intervalX, minX) {
+        var space = ~~intervalX;
+        var length = e.time.length;
+        e.xpx = [];
+        e.ypx = [];
+        var i = 0;
+        var x0 = 0;
+        var x1 = 0;
+        var y0 = 0;
+        var y1 = 0;
+        var newline;
+        for (; i < length; i++) {
+            x0 = ~~e.time[i];
+            y0 = e.value[i] / 2;
+            if (i === length - 1) {
+                x1 = x0 + space;
+                y1 = 0;
+            } else {
+                x1 = ~~e.time[i + 1];
+                y1 = e.value[i + 1] / 2;
+            }
+            newline = line(x0, y0, x1, y1);
+            for (var x = x0; x < x1; x++) {
+                e.xpx.push(x - minX);
+                e.ypx.push(newline(x));
+            }
+        }
+        e.xpx.push(x1 - minX);
+        e.ypx.push(y1);
+    }
+    function findLocation(flags, e, yvalue) {
+        var pos = 0;
+        var length = e.xpx.length;
+        var i = 0;
+        var y;
+        for (; i < length; i++) {
+            y = yvalue(e, i);
+            pos = Math.max(pos, y + flags[e.xpx[i]]);
+        }
+        for (i = 0; i < length; i++) {
+            y = yvalue(e, i);
+            flags[e.xpx[i]] = pos + y;
+        }
+        return pos;
+    }
+    return eventRiverLayout;
+});

@@ -11,8 +11,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+
+import com.google.common.collect.Lists;
 
 /**
  * 日期工具类, 继承org.apache.commons.lang.time.DateUtils类
@@ -297,23 +300,29 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return formatDate2(cal.getTime(), "yyyy-MM-dd");
     }
 
-
-
     /**
-     * @param args
-     * @throws ParseException
+     * 将某一天时间拆分成多段
+     *
+     * @param date 某一天的时间
+     * @param segment 拆分的段数(须能被24整除,如：12)
+     * @return
      */
-    public static void main(String[] args) throws ParseException {
-        System.out.println(formatDate(parseDate("2010/3/6")));
-        System.out.println(getDate("yyyy年MM月dd日 E"));
-        long time = new Date().getTime() - parseDate("2012-11-19").getTime();
-        System.out.println(time / (24 * 60 * 60 * 1000));
-
-        Date date = new Date();
-
-        System.out.println("pastDays=" + pastDays(date));
-        System.out.println("getDateStart=" + formatDate(getDateStart(date), parsePatterns[1]));
-        System.out.println("getDateEnd=" + formatDate(getDateEnd(date), parsePatterns[1]));
+    public static List<String> getHourSegmentByDay(Date date, int segment) {
+        List<String> dateList = Lists.newArrayList();
+        Calendar gc = new GregorianCalendar();
+        // 设置为当天的开始时间
+        gc.setTime(getDateStart(date));
+        dateList.add(formatDateTime(gc.getTime()));
+        int amount = 24 / segment;
+        for (int i = 0; i < segment; i++) {
+            gc.add(Calendar.HOUR_OF_DAY, amount);
+            if (i == segment - 1) {
+                // 减去一秒
+                gc.add(Calendar.SECOND, -1);
+            }
+            dateList.add(formatDateTime(gc.getTime()));
+        }
+        return dateList;
     }
 
     /**
@@ -328,5 +337,14 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         cal.setTime(date);
         cal.add(Calendar.MINUTE, min);
         return cal.getTime().getTime();
+    }
+
+    /**
+     * @param args
+     * @throws ParseException
+     */
+    public static void main(String[] args) throws ParseException {
+        List<String> hours = getHourSegmentByDay(new Date(), 24);
+        System.out.println("====" + hours);
     }
 }

@@ -1,1 +1,325 @@
-define("echarts/chart/k",["require","./base","../util/shape/Candle","../component/axis","../component/grid","../component/dataZoom","../config","../util/ecData","zrender/tool/util","../chart"],function(e){function t(e,t,n,a,o){i.call(this,e,t,n,a,o),this.refresh(a)}var i=e("./base"),n=e("../util/shape/Candle");e("../component/axis"),e("../component/grid"),e("../component/dataZoom");var a=e("../config");a.k={zlevel:0,z:2,clickable:!0,hoverable:!0,legendHoverLink:!1,xAxisIndex:0,yAxisIndex:0,itemStyle:{normal:{color:"#fff",color0:"#00aa11",lineStyle:{width:1,color:"#ff3200",color0:"#00aa11"}},emphasis:{}}};var o=e("../util/ecData"),s=e("zrender/tool/util");return t.prototype={type:a.CHART_TYPE_K,_buildShape:function(){var e=this.series;this.selectedMap={};for(var t,i={top:[],bottom:[]},n=0,o=e.length;o>n;n++)e[n].type===a.CHART_TYPE_K&&(e[n]=this.reformOption(e[n]),this.legendHoverLink=e[n].legendHoverLink||this.legendHoverLink,t=this.component.xAxis.getAxis(e[n].xAxisIndex),t.type===a.COMPONENT_TYPE_AXIS_CATEGORY&&i[t.getPosition()].push(n));for(var s in i)i[s].length>0&&this._buildSinglePosition(s,i[s]);this.addShapeList()},_buildSinglePosition:function(e,t){var i=this._mapData(t),n=i.locationMap,a=i.maxDataLength;if(0!==a&&0!==n.length){this._buildHorizontal(t,a,n);for(var o=0,s=t.length;s>o;o++)this.buildMark(t[o])}},_mapData:function(e){for(var t,i,n=this.series,a=this.component.legend,o=[],s=0,r=0,l=e.length;l>r;r++)t=n[e[r]],i=t.name,this.selectedMap[i]=a?a.isSelected(i):!0,this.selectedMap[i]&&o.push(e[r]),s=Math.max(s,t.data.length);return{locationMap:o,maxDataLength:s}},_buildHorizontal:function(e,t,i){for(var n,a,o,s,r,l,h,d,m,c,p=this.series,u={},V=0,U=i.length;U>V;V++){n=i[V],a=p[n],o=a.xAxisIndex||0,s=this.component.xAxis.getAxis(o),h=a.barWidth||Math.floor(s.getGap()/2),c=a.barMaxWidth,c&&h>c&&(h=c),r=a.yAxisIndex||0,l=this.component.yAxis.getAxis(r),u[n]=[];for(var g=0,y=t;y>g&&null!=s.getNameByIndex(g);g++)d=a.data[g],m=this.getDataFromOption(d,"-"),"-"!==m&&4==m.length&&u[n].push([s.getCoordByIndex(g),h,l.getCoord(m[0]),l.getCoord(m[1]),l.getCoord(m[2]),l.getCoord(m[3]),g,s.getNameByIndex(g)])}this._buildKLine(e,u)},_buildKLine:function(e,t){for(var i,n,o,s,r,l,h,d,m,c,p,u,V,U,g,y,f,b=this.series,_=0,x=e.length;x>_;_++)if(f=e[_],p=b[f],U=t[f],this._isLarge(U)&&(U=this._getLargePointList(U)),p.type===a.CHART_TYPE_K&&null!=U){u=p,i=this.query(u,"itemStyle.normal.lineStyle.width"),n=this.query(u,"itemStyle.normal.lineStyle.color"),o=this.query(u,"itemStyle.normal.lineStyle.color0"),s=this.query(u,"itemStyle.normal.color"),r=this.query(u,"itemStyle.normal.color0"),l=this.query(u,"itemStyle.emphasis.lineStyle.width"),h=this.query(u,"itemStyle.emphasis.lineStyle.color"),d=this.query(u,"itemStyle.emphasis.lineStyle.color0"),m=this.query(u,"itemStyle.emphasis.color"),c=this.query(u,"itemStyle.emphasis.color0");for(var k=0,L=U.length;L>k;k++)g=U[k],V=p.data[g[6]],u=V,y=g[3]<g[2],this.shapeList.push(this._getCandle(f,g[6],g[7],g[0],g[1],g[2],g[3],g[4],g[5],y?this.query(u,"itemStyle.normal.color")||s:this.query(u,"itemStyle.normal.color0")||r,this.query(u,"itemStyle.normal.lineStyle.width")||i,y?this.query(u,"itemStyle.normal.lineStyle.color")||n:this.query(u,"itemStyle.normal.lineStyle.color0")||o,y?this.query(u,"itemStyle.emphasis.color")||m||s:this.query(u,"itemStyle.emphasis.color0")||c||r,this.query(u,"itemStyle.emphasis.lineStyle.width")||l||i,y?this.query(u,"itemStyle.emphasis.lineStyle.color")||h||n:this.query(u,"itemStyle.emphasis.lineStyle.color0")||d||o))}},_isLarge:function(e){return e[0][1]<.5},_getLargePointList:function(e){for(var t=this.component.grid.getWidth(),i=e.length,n=[],a=0;t>a;a++)n[a]=e[Math.floor(i/t*a)];return n},_getCandle:function(e,t,i,a,s,r,l,h,d,m,c,p,u,V,U){var g=this.series,y={zlevel:this.getZlevelBase(),z:this.getZBase(),clickable:this.deepQuery([g[e].data[t],g[e]],"clickable"),hoverable:this.deepQuery([g[e].data[t],g[e]],"hoverable"),style:{x:a,y:[r,l,h,d],width:s,color:m,strokeColor:p,lineWidth:c,brushType:"both"},highlightStyle:{color:u,strokeColor:U,lineWidth:V},_seriesIndex:e};return o.pack(y,g[e],e,g[e].data[t],t,i),y=new n(y)},getMarkCoord:function(e,t){var i=this.series[e],n=this.component.xAxis.getAxis(i.xAxisIndex),a=this.component.yAxis.getAxis(i.yAxisIndex);return["string"!=typeof t.xAxis&&n.getCoordByIndex?n.getCoordByIndex(t.xAxis||0):n.getCoord(t.xAxis||0),"string"!=typeof t.yAxis&&a.getCoordByIndex?a.getCoordByIndex(t.yAxis||0):a.getCoord(t.yAxis||0)]},refresh:function(e){e&&(this.option=e,this.series=e.series),this.backupShapeList(),this._buildShape()},addDataAnimation:function(e){for(var t=this.series,i={},n=0,a=e.length;a>n;n++)i[e[n][0]]=e[n];for(var s,r,l,h,d,m,n=0,a=this.shapeList.length;a>n;n++)if(d=this.shapeList[n]._seriesIndex,i[d]&&!i[d][3]&&"candle"===this.shapeList[n].type){if(m=o.get(this.shapeList[n],"dataIndex"),h=t[d],i[d][2]&&m===h.data.length-1){this.zr.delShape(this.shapeList[n].id);continue}if(!i[d][2]&&0===m){this.zr.delShape(this.shapeList[n].id);continue}r=this.component.xAxis.getAxis(h.xAxisIndex||0).getGap(),s=i[d][2]?r:-r,l=0,this.zr.animate(this.shapeList[n].id,"").when(this.query(this.option,"animationDurationUpdate"),{position:[s,l]}).start()}}},s.inherits(t,i),e("../chart").define("k",t),t});
+define('echarts/chart/k', [
+    'require',
+    './base',
+    '../util/shape/Candle',
+    '../component/axis',
+    '../component/grid',
+    '../component/dataZoom',
+    '../config',
+    '../util/ecData',
+    'zrender/tool/util',
+    '../chart'
+], function (require) {
+    var ChartBase = require('./base');
+    var CandleShape = require('../util/shape/Candle');
+    require('../component/axis');
+    require('../component/grid');
+    require('../component/dataZoom');
+    var ecConfig = require('../config');
+    ecConfig.k = {
+        zlevel: 0,
+        z: 2,
+        clickable: true,
+        hoverable: true,
+        legendHoverLink: false,
+        xAxisIndex: 0,
+        yAxisIndex: 0,
+        itemStyle: {
+            normal: {
+                color: '#fff',
+                color0: '#00aa11',
+                lineStyle: {
+                    width: 1,
+                    color: '#ff3200',
+                    color0: '#00aa11'
+                },
+                label: { show: false }
+            },
+            emphasis: { label: { show: false } }
+        }
+    };
+    var ecData = require('../util/ecData');
+    var zrUtil = require('zrender/tool/util');
+    function K(ecTheme, messageCenter, zr, option, myChart) {
+        ChartBase.call(this, ecTheme, messageCenter, zr, option, myChart);
+        this.refresh(option);
+    }
+    K.prototype = {
+        type: ecConfig.CHART_TYPE_K,
+        _buildShape: function () {
+            var series = this.series;
+            this.selectedMap = {};
+            var _position2sIndexMap = {
+                top: [],
+                bottom: []
+            };
+            var xAxis;
+            for (var i = 0, l = series.length; i < l; i++) {
+                if (series[i].type === ecConfig.CHART_TYPE_K) {
+                    series[i] = this.reformOption(series[i]);
+                    this.legendHoverLink = series[i].legendHoverLink || this.legendHoverLink;
+                    xAxis = this.component.xAxis.getAxis(series[i].xAxisIndex);
+                    if (xAxis.type === ecConfig.COMPONENT_TYPE_AXIS_CATEGORY) {
+                        _position2sIndexMap[xAxis.getPosition()].push(i);
+                    }
+                }
+            }
+            for (var position in _position2sIndexMap) {
+                if (_position2sIndexMap[position].length > 0) {
+                    this._buildSinglePosition(position, _position2sIndexMap[position]);
+                }
+            }
+            this.addShapeList();
+        },
+        _buildSinglePosition: function (position, seriesArray) {
+            var mapData = this._mapData(seriesArray);
+            var locationMap = mapData.locationMap;
+            var maxDataLength = mapData.maxDataLength;
+            if (maxDataLength === 0 || locationMap.length === 0) {
+                return;
+            }
+            this._buildHorizontal(seriesArray, maxDataLength, locationMap);
+            for (var i = 0, l = seriesArray.length; i < l; i++) {
+                this.buildMark(seriesArray[i]);
+            }
+        },
+        _mapData: function (seriesArray) {
+            var series = this.series;
+            var serie;
+            var serieName;
+            var legend = this.component.legend;
+            var locationMap = [];
+            var maxDataLength = 0;
+            for (var i = 0, l = seriesArray.length; i < l; i++) {
+                serie = series[seriesArray[i]];
+                serieName = serie.name;
+                this.selectedMap[serieName] = legend ? legend.isSelected(serieName) : true;
+                if (this.selectedMap[serieName]) {
+                    locationMap.push(seriesArray[i]);
+                }
+                maxDataLength = Math.max(maxDataLength, serie.data.length);
+            }
+            return {
+                locationMap: locationMap,
+                maxDataLength: maxDataLength
+            };
+        },
+        _buildHorizontal: function (seriesArray, maxDataLength, locationMap) {
+            var series = this.series;
+            var seriesIndex;
+            var serie;
+            var xAxisIndex;
+            var categoryAxis;
+            var yAxisIndex;
+            var valueAxis;
+            var pointList = {};
+            var candleWidth;
+            var data;
+            var value;
+            var barMaxWidth;
+            for (var j = 0, k = locationMap.length; j < k; j++) {
+                seriesIndex = locationMap[j];
+                serie = series[seriesIndex];
+                xAxisIndex = serie.xAxisIndex || 0;
+                categoryAxis = this.component.xAxis.getAxis(xAxisIndex);
+                candleWidth = serie.barWidth || Math.floor(categoryAxis.getGap() / 2);
+                barMaxWidth = serie.barMaxWidth;
+                if (barMaxWidth && barMaxWidth < candleWidth) {
+                    candleWidth = barMaxWidth;
+                }
+                yAxisIndex = serie.yAxisIndex || 0;
+                valueAxis = this.component.yAxis.getAxis(yAxisIndex);
+                pointList[seriesIndex] = [];
+                for (var i = 0, l = maxDataLength; i < l; i++) {
+                    if (categoryAxis.getNameByIndex(i) == null) {
+                        break;
+                    }
+                    data = serie.data[i];
+                    value = this.getDataFromOption(data, '-');
+                    if (value === '-' || value.length != 4) {
+                        continue;
+                    }
+                    pointList[seriesIndex].push([
+                        categoryAxis.getCoordByIndex(i),
+                        candleWidth,
+                        valueAxis.getCoord(value[0]),
+                        valueAxis.getCoord(value[1]),
+                        valueAxis.getCoord(value[2]),
+                        valueAxis.getCoord(value[3]),
+                        i,
+                        categoryAxis.getNameByIndex(i)
+                    ]);
+                }
+            }
+            this._buildKLine(seriesArray, pointList);
+        },
+        _buildKLine: function (seriesArray, pointList) {
+            var series = this.series;
+            var nLineWidth;
+            var nLineColor;
+            var nLineColor0;
+            var nColor;
+            var nColor0;
+            var eLineWidth;
+            var eLineColor;
+            var eLineColor0;
+            var eColor;
+            var eColor0;
+            var serie;
+            var queryTarget;
+            var data;
+            var seriesPL;
+            var singlePoint;
+            var candleType;
+            var seriesIndex;
+            for (var sIdx = 0, len = seriesArray.length; sIdx < len; sIdx++) {
+                seriesIndex = seriesArray[sIdx];
+                serie = series[seriesIndex];
+                seriesPL = pointList[seriesIndex];
+                if (this._isLarge(seriesPL)) {
+                    seriesPL = this._getLargePointList(seriesPL);
+                }
+                if (serie.type === ecConfig.CHART_TYPE_K && seriesPL != null) {
+                    queryTarget = serie;
+                    nLineWidth = this.query(queryTarget, 'itemStyle.normal.lineStyle.width');
+                    nLineColor = this.query(queryTarget, 'itemStyle.normal.lineStyle.color');
+                    nLineColor0 = this.query(queryTarget, 'itemStyle.normal.lineStyle.color0');
+                    nColor = this.query(queryTarget, 'itemStyle.normal.color');
+                    nColor0 = this.query(queryTarget, 'itemStyle.normal.color0');
+                    eLineWidth = this.query(queryTarget, 'itemStyle.emphasis.lineStyle.width');
+                    eLineColor = this.query(queryTarget, 'itemStyle.emphasis.lineStyle.color');
+                    eLineColor0 = this.query(queryTarget, 'itemStyle.emphasis.lineStyle.color0');
+                    eColor = this.query(queryTarget, 'itemStyle.emphasis.color');
+                    eColor0 = this.query(queryTarget, 'itemStyle.emphasis.color0');
+                    for (var i = 0, l = seriesPL.length; i < l; i++) {
+                        singlePoint = seriesPL[i];
+                        data = serie.data[singlePoint[6]];
+                        queryTarget = data;
+                        candleType = singlePoint[3] < singlePoint[2];
+                        this.shapeList.push(this._getCandle(seriesIndex, singlePoint[6], singlePoint[7], singlePoint[0], singlePoint[1], singlePoint[2], singlePoint[3], singlePoint[4], singlePoint[5], candleType ? this.query(queryTarget, 'itemStyle.normal.color') || nColor : this.query(queryTarget, 'itemStyle.normal.color0') || nColor0, this.query(queryTarget, 'itemStyle.normal.lineStyle.width') || nLineWidth, candleType ? this.query(queryTarget, 'itemStyle.normal.lineStyle.color') || nLineColor : this.query(queryTarget, 'itemStyle.normal.lineStyle.color0') || nLineColor0, candleType ? this.query(queryTarget, 'itemStyle.emphasis.color') || eColor || nColor : this.query(queryTarget, 'itemStyle.emphasis.color0') || eColor0 || nColor0, this.query(queryTarget, 'itemStyle.emphasis.lineStyle.width') || eLineWidth || nLineWidth, candleType ? this.query(queryTarget, 'itemStyle.emphasis.lineStyle.color') || eLineColor || nLineColor : this.query(queryTarget, 'itemStyle.emphasis.lineStyle.color0') || eLineColor0 || nLineColor0));
+                    }
+                }
+            }
+        },
+        _isLarge: function (singlePL) {
+            return singlePL[0][1] < 0.5;
+        },
+        _getLargePointList: function (singlePL) {
+            var total = this.component.grid.getWidth();
+            var len = singlePL.length;
+            var newList = [];
+            for (var i = 0; i < total; i++) {
+                newList[i] = singlePL[Math.floor(len / total * i)];
+            }
+            return newList;
+        },
+        _getCandle: function (seriesIndex, dataIndex, name, x, width, y0, y1, y2, y3, nColor, nLinewidth, nLineColor, eColor, eLinewidth, eLineColor) {
+            var series = this.series;
+            var serie = series[seriesIndex];
+            var data = serie.data[dataIndex];
+            var queryTarget = [
+                data,
+                serie
+            ];
+            var itemShape = {
+                zlevel: serie.zlevel,
+                z: serie.z,
+                clickable: this.deepQuery(queryTarget, 'clickable'),
+                hoverable: this.deepQuery(queryTarget, 'hoverable'),
+                style: {
+                    x: x,
+                    y: [
+                        y0,
+                        y1,
+                        y2,
+                        y3
+                    ],
+                    width: width,
+                    color: nColor,
+                    strokeColor: nLineColor,
+                    lineWidth: nLinewidth,
+                    brushType: 'both'
+                },
+                highlightStyle: {
+                    color: eColor,
+                    strokeColor: eLineColor,
+                    lineWidth: eLinewidth
+                },
+                _seriesIndex: seriesIndex
+            };
+            itemShape = this.addLabel(itemShape, serie, data, name);
+            ecData.pack(itemShape, serie, seriesIndex, data, dataIndex, name);
+            itemShape = new CandleShape(itemShape);
+            return itemShape;
+        },
+        getMarkCoord: function (seriesIndex, mpData) {
+            var serie = this.series[seriesIndex];
+            var xAxis = this.component.xAxis.getAxis(serie.xAxisIndex);
+            var yAxis = this.component.yAxis.getAxis(serie.yAxisIndex);
+            return [
+                typeof mpData.xAxis != 'string' && xAxis.getCoordByIndex ? xAxis.getCoordByIndex(mpData.xAxis || 0) : xAxis.getCoord(mpData.xAxis || 0),
+                typeof mpData.yAxis != 'string' && yAxis.getCoordByIndex ? yAxis.getCoordByIndex(mpData.yAxis || 0) : yAxis.getCoord(mpData.yAxis || 0)
+            ];
+        },
+        refresh: function (newOption) {
+            if (newOption) {
+                this.option = newOption;
+                this.series = newOption.series;
+            }
+            this.backupShapeList();
+            this._buildShape();
+        },
+        addDataAnimation: function (params, done) {
+            var series = this.series;
+            var aniMap = {};
+            for (var i = 0, l = params.length; i < l; i++) {
+                aniMap[params[i][0]] = params[i];
+            }
+            var x;
+            var dx;
+            var y;
+            var serie;
+            var seriesIndex;
+            var dataIndex;
+            var aniCount = 0;
+            function animationDone() {
+                aniCount--;
+                if (aniCount === 0) {
+                    done && done();
+                }
+            }
+            for (var i = 0, l = this.shapeList.length; i < l; i++) {
+                seriesIndex = this.shapeList[i]._seriesIndex;
+                if (aniMap[seriesIndex] && !aniMap[seriesIndex][3]) {
+                    if (this.shapeList[i].type === 'candle') {
+                        dataIndex = ecData.get(this.shapeList[i], 'dataIndex');
+                        serie = series[seriesIndex];
+                        if (aniMap[seriesIndex][2] && dataIndex === serie.data.length - 1) {
+                            this.zr.delShape(this.shapeList[i].id);
+                            continue;
+                        } else if (!aniMap[seriesIndex][2] && dataIndex === 0) {
+                            this.zr.delShape(this.shapeList[i].id);
+                            continue;
+                        }
+                        dx = this.component.xAxis.getAxis(serie.xAxisIndex || 0).getGap();
+                        x = aniMap[seriesIndex][2] ? dx : -dx;
+                        y = 0;
+                        aniCount++;
+                        this.zr.animate(this.shapeList[i].id, '').when(this.query(this.option, 'animationDurationUpdate'), {
+                            position: [
+                                x,
+                                y
+                            ]
+                        }).done(animationDone).start();
+                    }
+                }
+            }
+            if (!aniCount) {
+                done && done();
+            }
+        }
+    };
+    zrUtil.inherits(K, ChartBase);
+    require('../chart').define('k', K);
+    return K;
+});

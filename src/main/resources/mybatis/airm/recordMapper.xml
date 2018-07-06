@@ -143,4 +143,15 @@
           now()
           )
     </insert>
+
+    <!-- 获取传感器的平均值 -->
+    <select id="getSensorAvg" parameterType="map" resultType="double">
+        SELECT
+        ROUND(AVG(`${sensor}`),2)
+        FROM
+        `airm_record`
+        WHERE
+        device_id = #{deviceId}
+        AND create_date BETWEEN #{beginDate} AND #{endDate}
+    </select>
 </mapper>

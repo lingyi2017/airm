@@ -78,10 +78,14 @@ public class DeviceAppResource extends BaseResource {
         }
         try {
             Device device = deviceService.findByDeviceId(dto.getDeviceId());
+            if(null == device){
+                return success();
+            }
             DeviceInfoRpDTO rp = new DeviceInfoRpDTO();
             BeanUtils.copyProperties(device, rp);
             return success(rp);
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("APP端获取设备信息异常", e.getMessage());
             return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "APP端获取设备信息异常");
         }

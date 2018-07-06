@@ -1,1 +1,746 @@
-define("echarts/chart/pie",["require","./base","zrender/shape/Text","zrender/shape/Ring","zrender/shape/Circle","zrender/shape/Sector","zrender/shape/Polyline","../config","../util/ecData","zrender/tool/util","zrender/tool/math","zrender/tool/color","../chart"],function(e){function t(e,t,n,a,o){i.call(this,e,t,n,a,o);var s=this;s.shapeHandler.onmouseover=function(e){var t=e.target,i=h.get(t,"seriesIndex"),n=h.get(t,"dataIndex"),a=h.get(t,"special"),o=[t.style.x,t.style.y],r=t.style.startAngle,l=t.style.endAngle,d=((l+r)/2+360)%360,m=t.highlightStyle.color,c=s.getLabel(i,n,a,o,d,m,!0);c&&s.zr.addHoverShape(c);var p=s.getLabelLine(i,n,o,t.style.r0,t.style.r,d,m,!0);p&&s.zr.addHoverShape(p)},this.refresh(a)}var i=e("./base"),n=e("zrender/shape/Text"),a=e("zrender/shape/Ring"),o=e("zrender/shape/Circle"),s=e("zrender/shape/Sector"),r=e("zrender/shape/Polyline"),l=e("../config");l.pie={zlevel:0,z:2,clickable:!0,legendHoverLink:!0,center:["50%","50%"],radius:[0,"75%"],clockWise:!0,startAngle:90,minAngle:0,selectedOffset:10,itemStyle:{normal:{borderColor:"rgba(0,0,0,0)",borderWidth:1,label:{show:!0,position:"outer"},labelLine:{show:!0,length:20,lineStyle:{width:1,type:"solid"}}},emphasis:{borderColor:"rgba(0,0,0,0)",borderWidth:1,label:{show:!1},labelLine:{show:!1,length:20,lineStyle:{width:1,type:"solid"}}}}};var h=e("../util/ecData"),d=e("zrender/tool/util"),m=e("zrender/tool/math"),c=e("zrender/tool/color");return t.prototype={type:l.CHART_TYPE_PIE,_buildShape:function(){var e=this.series,t=this.component.legend;this.selectedMap={},this._selected={};var i,n,s;this._selectedMode=!1;for(var r,d=0,m=e.length;m>d;d++)if(e[d].type===l.CHART_TYPE_PIE){if(e[d]=this.reformOption(e[d]),this.legendHoverLink=e[d].legendHoverLink||this.legendHoverLink,r=e[d].name||"",this.selectedMap[r]=t?t.isSelected(r):!0,!this.selectedMap[r])continue;i=this.parseCenter(this.zr,e[d].center),n=this.parseRadius(this.zr,e[d].radius),this._selectedMode=this._selectedMode||e[d].selectedMode,this._selected[d]=[],this.deepQuery([e[d],this.option],"calculable")&&(s={zlevel:this.getZlevelBase(),z:this.getZBase(),hoverable:!1,style:{x:i[0],y:i[1],r0:n[0]<=10?0:n[0]-10,r:n[1]+10,brushType:"stroke",lineWidth:1,strokeColor:e[d].calculableHolderColor||this.ecTheme.calculableHolderColor||l.calculableHolderColor}},h.pack(s,e[d],d,void 0,-1),this.setCalculable(s),s=n[0]<=10?new o(s):new a(s),this.shapeList.push(s)),this._buildSinglePie(d),this.buildMark(d)}this.addShapeList()},_buildSinglePie:function(e){for(var t,i=this.series,n=i[e],a=n.data,o=this.component.legend,s=0,r=0,l=0,h=Number.NEGATIVE_INFINITY,d=[],m=0,c=a.length;c>m;m++)t=a[m].name,this.selectedMap[t]=o?o.isSelected(t):!0,this.selectedMap[t]&&!isNaN(a[m].value)&&(0!==+a[m].value?s++:r++,l+=+a[m].value,h=Math.max(h,+a[m].value));if(0!==l){for(var p,u,V,g,U,y,f=100,b=n.clockWise,_=(n.startAngle.toFixed(2)-0+360)%360,x=n.minAngle||.01,k=360-x*s-.01*r,L=n.roseType,m=0,c=a.length;c>m;m++)if(t=a[m].name,this.selectedMap[t]&&!isNaN(a[m].value)){if(u=o?o.getColor(t):this.zr.getColor(m),f=a[m].value/l,p="area"!=L?b?_-f*k-(0!==f?x:.01):f*k+_+(0!==f?x:.01):b?_-360/c:360/c+_,p=p.toFixed(2)-0,f=(100*f).toFixed(2),V=this.parseCenter(this.zr,n.center),g=this.parseRadius(this.zr,n.radius),U=+g[0],y=+g[1],"radius"===L?y=a[m].value/h*(y-U)*.8+.2*(y-U)+U:"area"===L&&(y=Math.sqrt(a[m].value/h)*(y-U)+U),b){var v;v=_,_=p,p=v}this._buildItem(d,e,m,f,a[m].selected,V,U,y,_,p,u),b||(_=p)}this._autoLabelLayout(d,V,y);for(var m=0,c=d.length;c>m;m++)this.shapeList.push(d[m]);d=null}},_buildItem:function(e,t,i,n,a,o,s,r,l,d,m){var c=this.series,p=((d+l)/2+360)%360,u=this.getSector(t,i,n,a,o,s,r,l,d,m);h.pack(u,c[t],t,c[t].data[i],i,c[t].data[i].name,n),e.push(u);var V=this.getLabel(t,i,n,o,p,m,!1),g=this.getLabelLine(t,i,o,s,r,p,m,!1);g&&(h.pack(g,c[t],t,c[t].data[i],i,c[t].data[i].name,n),e.push(g)),V&&(h.pack(V,c[t],t,c[t].data[i],i,c[t].data[i].name,n),V._labelLine=g,e.push(V))},getSector:function(e,t,i,n,a,o,r,l,h,d){var p=this.series,u=p[e],V=u.data[t],g=[V,u],U=this.deepMerge(g,"itemStyle.normal")||{},y=this.deepMerge(g,"itemStyle.emphasis")||{},f=this.getItemStyleColor(U.color,e,t,V)||d,b=this.getItemStyleColor(y.color,e,t,V)||("string"==typeof f?c.lift(f,-.2):f),_={zlevel:this.getZlevelBase(),z:this.getZBase(),clickable:this.deepQuery(g,"clickable"),style:{x:a[0],y:a[1],r0:o,r:r,startAngle:l,endAngle:h,brushType:"both",color:f,lineWidth:U.borderWidth,strokeColor:U.borderColor,lineJoin:"round"},highlightStyle:{color:b,lineWidth:y.borderWidth,strokeColor:y.borderColor,lineJoin:"round"},_seriesIndex:e,_dataIndex:t};if(n){var x=((_.style.startAngle+_.style.endAngle)/2).toFixed(2)-0;_.style._hasSelected=!0,_.style._x=_.style.x,_.style._y=_.style.y;var k=this.query(u,"selectedOffset");_.style.x+=m.cos(x,!0)*k,_.style.y-=m.sin(x,!0)*k,this._selected[e][t]=!0}else this._selected[e][t]=!1;return this._selectedMode&&(_.onclick=this.shapeHandler.onclick),this.deepQuery([V,u,this.option],"calculable")&&(this.setCalculable(_),_.draggable=!0),(this._needLabel(u,V,!0)||this._needLabelLine(u,V,!0))&&(_.onmouseover=this.shapeHandler.onmouseover),_=new s(_)},getLabel:function(e,t,i,a,o,s,r){var l=this.series,h=l[e],c=h.data[t];if(this._needLabel(h,c,r)){var p,u,V,g=r?"emphasis":"normal",U=d.merge(d.clone(c.itemStyle)||{},h.itemStyle),y=U[g].label,f=y.textStyle||{},b=a[0],_=a[1],x=this.parseRadius(this.zr,h.radius),k="middle";y.position=y.position||U.normal.label.position,"center"===y.position?(p=b,u=_,V="center"):"inner"===y.position||"inside"===y.position?(x=(x[0]+x[1])*(y.distance||.5),p=Math.round(b+x*m.cos(o,!0)),u=Math.round(_-x*m.sin(o,!0)),s="#fff",V="center"):(x=x[1]- -U[g].labelLine.length,p=Math.round(b+x*m.cos(o,!0)),u=Math.round(_-x*m.sin(o,!0)),V=o>=90&&270>=o?"right":"left"),"center"!=y.position&&"inner"!=y.position&&"inside"!=y.position&&(p+="left"===V?20:-20),c.__labelX=p-("left"===V?5:-5),c.__labelY=u;var L=new n({zlevel:this.getZlevelBase(),z:this.getZBase()+1,hoverable:!1,style:{x:p,y:u,color:f.color||s,text:this.getLabelText(e,t,i,g),textAlign:f.align||V,textBaseline:f.baseline||k,textFont:this.getFont(f)},highlightStyle:{brushType:"fill"}});return L._radius=x,L._labelPosition=y.position||"outer",L._rect=L.getRect(L.style),L._seriesIndex=e,L._dataIndex=t,L}},getLabelText:function(e,t,i,n){var a=this.series,o=a[e],s=o.data[t],r=this.deepQuery([s,o],"itemStyle."+n+".label.formatter");return r?"function"==typeof r?r.call(this.myChart,{seriesIndex:e,seriesName:o.name||"",series:o,dataIndex:t,data:s,name:s.name,value:s.value,percent:i}):"string"==typeof r?(r=r.replace("{a}","{a0}").replace("{b}","{b0}").replace("{c}","{c0}").replace("{d}","{d0}"),r=r.replace("{a0}",o.name).replace("{b0}",s.name).replace("{c0}",s.value).replace("{d0}",i)):void 0:s.name},getLabelLine:function(e,t,i,n,a,o,s,l){var h=this.series,c=h[e],p=c.data[t];if(this._needLabelLine(c,p,l)){var u=l?"emphasis":"normal",V=d.merge(d.clone(p.itemStyle)||{},c.itemStyle),g=V[u].labelLine,U=g.lineStyle||{},y=i[0],f=i[1],b=a,_=this.parseRadius(this.zr,c.radius)[1]- -g.length,x=m.cos(o,!0),k=m.sin(o,!0);return new r({zlevel:this.getZlevelBase(),z:this.getZBase()+1,hoverable:!1,style:{pointList:[[y+b*x,f-b*k],[y+_*x,f-_*k],[p.__labelX,p.__labelY]],strokeColor:U.color||s,lineType:U.type,lineWidth:U.width},_seriesIndex:e,_dataIndex:t})}},_needLabel:function(e,t,i){return this.deepQuery([t,e],"itemStyle."+(i?"emphasis":"normal")+".label.show")},_needLabelLine:function(e,t,i){return this.deepQuery([t,e],"itemStyle."+(i?"emphasis":"normal")+".labelLine.show")},_autoLabelLayout:function(e,t,i){for(var n=[],a=[],o=0,s=e.length;s>o;o++)("outer"===e[o]._labelPosition||"outside"===e[o]._labelPosition)&&(e[o]._rect._y=e[o]._rect.y,e[o]._rect.x<t[0]?n.push(e[o]):a.push(e[o]));this._layoutCalculate(n,t,i,-1),this._layoutCalculate(a,t,i,1)},_layoutCalculate:function(e,t,i,n){function a(t,i,n){for(var a=t;i>a;a++)if(e[a]._rect.y+=n,e[a].style.y+=n,e[a]._labelLine&&(e[a]._labelLine.style.pointList[1][1]+=n,e[a]._labelLine.style.pointList[2][1]+=n),a>t&&i>a+1&&e[a+1]._rect.y>e[a]._rect.y+e[a]._rect.height)return void o(a,n/2);o(i-1,n/2)}function o(t,i){for(var n=t;n>=0&&(e[n]._rect.y-=i,e[n].style.y-=i,e[n]._labelLine&&(e[n]._labelLine.style.pointList[1][1]-=i,e[n]._labelLine.style.pointList[2][1]-=i),!(n>0&&e[n]._rect.y>e[n-1]._rect.y+e[n-1]._rect.height));n--);}function s(e,t,i,n,a){for(var o,s,r,l=i[0],h=i[1],d=a>0?t?Number.MAX_VALUE:0:t?Number.MAX_VALUE:0,m=0,c=e.length;c>m;m++)s=Math.abs(e[m]._rect.y-h),r=e[m]._radius-n,o=n+r>s?Math.sqrt((n+r+20)*(n+r+20)-Math.pow(e[m]._rect.y-h,2)):Math.abs(e[m]._rect.x+(a>0?0:e[m]._rect.width)-l),t&&o>=d&&(o=d-10),!t&&d>=o&&(o=d+10),e[m]._rect.x=e[m].style.x=l+o*a,e[m]._labelLine&&(e[m]._labelLine.style.pointList[2][0]=l+(o-5)*a,e[m]._labelLine.style.pointList[1][0]=l+(o-20)*a),d=o}e.sort(function(e,t){return e._rect.y-t._rect.y});for(var r,l=0,h=e.length,d=[],m=[],c=0;h>c;c++)r=e[c]._rect.y-l,0>r&&a(c,h,-r,n),l=e[c]._rect.y+e[c]._rect.height;this.zr.getHeight()-l<0&&o(h-1,l-this.zr.getHeight());for(var c=0;h>c;c++)e[c]._rect.y>=t[1]?m.push(e[c]):d.push(e[c]);s(m,!0,t,i,n),s(d,!1,t,i,n)},reformOption:function(e){var t=d.merge;return e=t(t(e||{},d.clone(this.ecTheme.pie||{})),d.clone(l.pie)),e.itemStyle.normal.label.textStyle=this.getTextStyle(e.itemStyle.normal.label.textStyle),e.itemStyle.emphasis.label.textStyle=this.getTextStyle(e.itemStyle.emphasis.label.textStyle),e},refresh:function(e){e&&(this.option=e,this.series=e.series),this.backupShapeList(),this._buildShape()},addDataAnimation:function(e){for(var t=this.series,i={},n=0,a=e.length;a>n;n++)i[e[n][0]]=e[n];var o={},s={},r={},h=this.shapeList;this.shapeList=[];for(var d,m,c,p={},n=0,a=e.length;a>n;n++)d=e[n][0],m=e[n][2],c=e[n][3],t[d]&&t[d].type===l.CHART_TYPE_PIE&&(m?(c||(o[d+"_"+t[d].data.length]="delete"),p[d]=1):c?p[d]=0:(o[d+"_-1"]="delete",p[d]=-1),this._buildSinglePie(d));for(var u,V,n=0,a=this.shapeList.length;a>n;n++)switch(d=this.shapeList[n]._seriesIndex,u=this.shapeList[n]._dataIndex,V=d+"_"+u,this.shapeList[n].type){case"sector":o[V]=this.shapeList[n];break;case"text":s[V]=this.shapeList[n];break;case"polyline":r[V]=this.shapeList[n]}this.shapeList=[];for(var g,n=0,a=h.length;a>n;n++)if(d=h[n]._seriesIndex,i[d]){if(u=h[n]._dataIndex+p[d],V=d+"_"+u,g=o[V],!g)continue;if("sector"===h[n].type)"delete"!=g?this.zr.animate(h[n].id,"style").when(400,{startAngle:g.style.startAngle,endAngle:g.style.endAngle}).start():this.zr.animate(h[n].id,"style").when(400,p[d]<0?{startAngle:h[n].style.startAngle}:{endAngle:h[n].style.endAngle}).start();else if("text"===h[n].type||"polyline"===h[n].type)if("delete"===g)this.zr.delShape(h[n].id);else switch(h[n].type){case"text":g=s[V],this.zr.animate(h[n].id,"style").when(400,{x:g.style.x,y:g.style.y}).start();break;case"polyline":g=r[V],this.zr.animate(h[n].id,"style").when(400,{pointList:g.style.pointList}).start()}}this.shapeList=h},onclick:function(e){var t=this.series;if(this.isClick&&e.target){this.isClick=!1;for(var i,n=e.target,a=n.style,o=h.get(n,"seriesIndex"),s=h.get(n,"dataIndex"),r=0,d=this.shapeList.length;d>r;r++)if(this.shapeList[r].id===n.id){if(o=h.get(n,"seriesIndex"),s=h.get(n,"dataIndex"),a._hasSelected)n.style.x=n.style._x,n.style.y=n.style._y,n.style._hasSelected=!1,this._selected[o][s]=!1;else{var c=((a.startAngle+a.endAngle)/2).toFixed(2)-0;n.style._hasSelected=!0,this._selected[o][s]=!0,n.style._x=n.style.x,n.style._y=n.style.y,i=this.query(t[o],"selectedOffset"),n.style.x+=m.cos(c,!0)*i,n.style.y-=m.sin(c,!0)*i}this.zr.modShape(n.id,n)}else this.shapeList[r].style._hasSelected&&"single"===this._selectedMode&&(o=h.get(this.shapeList[r],"seriesIndex"),s=h.get(this.shapeList[r],"dataIndex"),this.shapeList[r].style.x=this.shapeList[r].style._x,this.shapeList[r].style.y=this.shapeList[r].style._y,this.shapeList[r].style._hasSelected=!1,this._selected[o][s]=!1,this.zr.modShape(this.shapeList[r].id,this.shapeList[r]));this.messageCenter.dispatch(l.EVENT.PIE_SELECTED,e.event,{selected:this._selected,target:h.get(n,"name")},this.myChart),this.zr.refreshNextFrame()}}},d.inherits(t,i),e("../chart").define("pie",t),t});
+define('echarts/chart/pie', [
+    'require',
+    './base',
+    'zrender/shape/Text',
+    'zrender/shape/Ring',
+    'zrender/shape/Circle',
+    'zrender/shape/Sector',
+    'zrender/shape/Polyline',
+    '../config',
+    '../util/ecData',
+    'zrender/tool/util',
+    'zrender/tool/math',
+    'zrender/tool/color',
+    '../chart'
+], function (require) {
+    var ChartBase = require('./base');
+    var TextShape = require('zrender/shape/Text');
+    var RingShape = require('zrender/shape/Ring');
+    var CircleShape = require('zrender/shape/Circle');
+    var SectorShape = require('zrender/shape/Sector');
+    var PolylineShape = require('zrender/shape/Polyline');
+    var ecConfig = require('../config');
+    ecConfig.pie = {
+        zlevel: 0,
+        z: 2,
+        clickable: true,
+        legendHoverLink: true,
+        center: [
+            '50%',
+            '50%'
+        ],
+        radius: [
+            0,
+            '75%'
+        ],
+        clockWise: true,
+        startAngle: 90,
+        minAngle: 0,
+        selectedOffset: 10,
+        itemStyle: {
+            normal: {
+                borderColor: 'rgba(0,0,0,0)',
+                borderWidth: 1,
+                label: {
+                    show: true,
+                    position: 'outer'
+                },
+                labelLine: {
+                    show: true,
+                    length: 20,
+                    lineStyle: {
+                        width: 1,
+                        type: 'solid'
+                    }
+                }
+            },
+            emphasis: {
+                borderColor: 'rgba(0,0,0,0)',
+                borderWidth: 1,
+                label: { show: false },
+                labelLine: {
+                    show: false,
+                    length: 20,
+                    lineStyle: {
+                        width: 1,
+                        type: 'solid'
+                    }
+                }
+            }
+        }
+    };
+    var ecData = require('../util/ecData');
+    var zrUtil = require('zrender/tool/util');
+    var zrMath = require('zrender/tool/math');
+    var zrColor = require('zrender/tool/color');
+    function Pie(ecTheme, messageCenter, zr, option, myChart) {
+        ChartBase.call(this, ecTheme, messageCenter, zr, option, myChart);
+        var self = this;
+        self.shapeHandler.onmouseover = function (param) {
+            var shape = param.target;
+            var seriesIndex = ecData.get(shape, 'seriesIndex');
+            var dataIndex = ecData.get(shape, 'dataIndex');
+            var percent = ecData.get(shape, 'special');
+            var center = [
+                shape.style.x,
+                shape.style.y
+            ];
+            var startAngle = shape.style.startAngle;
+            var endAngle = shape.style.endAngle;
+            var midAngle = ((endAngle + startAngle) / 2 + 360) % 360;
+            var defaultColor = shape.highlightStyle.color;
+            var label = self.getLabel(seriesIndex, dataIndex, percent, center, midAngle, defaultColor, true);
+            if (label) {
+                self.zr.addHoverShape(label);
+            }
+            var labelLine = self.getLabelLine(seriesIndex, dataIndex, center, shape.style.r0, shape.style.r, midAngle, defaultColor, true);
+            if (labelLine) {
+                self.zr.addHoverShape(labelLine);
+            }
+        };
+        this.refresh(option);
+    }
+    Pie.prototype = {
+        type: ecConfig.CHART_TYPE_PIE,
+        _buildShape: function () {
+            var series = this.series;
+            var legend = this.component.legend;
+            this.selectedMap = {};
+            this._selected = {};
+            var center;
+            var radius;
+            var pieCase;
+            this._selectedMode = false;
+            var serieName;
+            for (var i = 0, l = series.length; i < l; i++) {
+                if (series[i].type === ecConfig.CHART_TYPE_PIE) {
+                    series[i] = this.reformOption(series[i]);
+                    this.legendHoverLink = series[i].legendHoverLink || this.legendHoverLink;
+                    serieName = series[i].name || '';
+                    this.selectedMap[serieName] = legend ? legend.isSelected(serieName) : true;
+                    if (!this.selectedMap[serieName]) {
+                        continue;
+                    }
+                    center = this.parseCenter(this.zr, series[i].center);
+                    radius = this.parseRadius(this.zr, series[i].radius);
+                    this._selectedMode = this._selectedMode || series[i].selectedMode;
+                    this._selected[i] = [];
+                    if (this.deepQuery([
+                            series[i],
+                            this.option
+                        ], 'calculable')) {
+                        pieCase = {
+                            zlevel: series[i].zlevel,
+                            z: series[i].z,
+                            hoverable: false,
+                            style: {
+                                x: center[0],
+                                y: center[1],
+                                r0: radius[0] <= 10 ? 0 : radius[0] - 10,
+                                r: radius[1] + 10,
+                                brushType: 'stroke',
+                                lineWidth: 1,
+                                strokeColor: series[i].calculableHolderColor || this.ecTheme.calculableHolderColor || ecConfig.calculableHolderColor
+                            }
+                        };
+                        ecData.pack(pieCase, series[i], i, undefined, -1);
+                        this.setCalculable(pieCase);
+                        pieCase = radius[0] <= 10 ? new CircleShape(pieCase) : new RingShape(pieCase);
+                        this.shapeList.push(pieCase);
+                    }
+                    this._buildSinglePie(i);
+                    this.buildMark(i);
+                }
+            }
+            this.addShapeList();
+        },
+        _buildSinglePie: function (seriesIndex) {
+            var series = this.series;
+            var serie = series[seriesIndex];
+            var data = serie.data;
+            var legend = this.component.legend;
+            var itemName;
+            var totalSelected = 0;
+            var totalSelectedValue0 = 0;
+            var totalValue = 0;
+            var maxValue = Number.NEGATIVE_INFINITY;
+            var singleShapeList = [];
+            for (var i = 0, l = data.length; i < l; i++) {
+                itemName = data[i].name;
+                this.selectedMap[itemName] = legend ? legend.isSelected(itemName) : true;
+                if (this.selectedMap[itemName] && !isNaN(data[i].value)) {
+                    if (+data[i].value !== 0) {
+                        totalSelected++;
+                    } else {
+                        totalSelectedValue0++;
+                    }
+                    totalValue += +data[i].value;
+                    maxValue = Math.max(maxValue, +data[i].value);
+                }
+            }
+            if (totalValue === 0) {
+                return;
+            }
+            var percent = 100;
+            var clockWise = serie.clockWise;
+            var startAngle = (serie.startAngle.toFixed(2) - 0 + 360) % 360;
+            var endAngle;
+            var minAngle = serie.minAngle || 0.01;
+            var totalAngle = 360 - minAngle * totalSelected - 0.01 * totalSelectedValue0;
+            var defaultColor;
+            var roseType = serie.roseType;
+            var center;
+            var radius;
+            var r0;
+            var r1;
+            for (var i = 0, l = data.length; i < l; i++) {
+                itemName = data[i].name;
+                if (!this.selectedMap[itemName] || isNaN(data[i].value)) {
+                    continue;
+                }
+                defaultColor = legend ? legend.getColor(itemName) : this.zr.getColor(i);
+                percent = data[i].value / totalValue;
+                if (roseType != 'area') {
+                    endAngle = clockWise ? startAngle - percent * totalAngle - (percent !== 0 ? minAngle : 0.01) : percent * totalAngle + startAngle + (percent !== 0 ? minAngle : 0.01);
+                } else {
+                    endAngle = clockWise ? startAngle - 360 / l : 360 / l + startAngle;
+                }
+                endAngle = endAngle.toFixed(2) - 0;
+                percent = (percent * 100).toFixed(2);
+                center = this.parseCenter(this.zr, serie.center);
+                radius = this.parseRadius(this.zr, serie.radius);
+                r0 = +radius[0];
+                r1 = +radius[1];
+                if (roseType === 'radius') {
+                    r1 = data[i].value / maxValue * (r1 - r0) * 0.8 + (r1 - r0) * 0.2 + r0;
+                } else if (roseType === 'area') {
+                    r1 = Math.sqrt(data[i].value / maxValue) * (r1 - r0) + r0;
+                }
+                if (clockWise) {
+                    var temp;
+                    temp = startAngle;
+                    startAngle = endAngle;
+                    endAngle = temp;
+                }
+                this._buildItem(singleShapeList, seriesIndex, i, percent, data[i].selected, center, r0, r1, startAngle, endAngle, defaultColor);
+                if (!clockWise) {
+                    startAngle = endAngle;
+                }
+            }
+            this._autoLabelLayout(singleShapeList, center, r1);
+            for (var i = 0, l = singleShapeList.length; i < l; i++) {
+                this.shapeList.push(singleShapeList[i]);
+            }
+            singleShapeList = null;
+        },
+        _buildItem: function (singleShapeList, seriesIndex, dataIndex, percent, isSelected, center, r0, r1, startAngle, endAngle, defaultColor) {
+            var series = this.series;
+            var midAngle = ((endAngle + startAngle) / 2 + 360) % 360;
+            var sector = this.getSector(seriesIndex, dataIndex, percent, isSelected, center, r0, r1, startAngle, endAngle, defaultColor);
+            ecData.pack(sector, series[seriesIndex], seriesIndex, series[seriesIndex].data[dataIndex], dataIndex, series[seriesIndex].data[dataIndex].name, percent);
+            singleShapeList.push(sector);
+            var label = this.getLabel(seriesIndex, dataIndex, percent, center, midAngle, defaultColor, false);
+            var labelLine = this.getLabelLine(seriesIndex, dataIndex, center, r0, r1, midAngle, defaultColor, false);
+            if (labelLine) {
+                ecData.pack(labelLine, series[seriesIndex], seriesIndex, series[seriesIndex].data[dataIndex], dataIndex, series[seriesIndex].data[dataIndex].name, percent);
+                singleShapeList.push(labelLine);
+            }
+            if (label) {
+                ecData.pack(label, series[seriesIndex], seriesIndex, series[seriesIndex].data[dataIndex], dataIndex, series[seriesIndex].data[dataIndex].name, percent);
+                label._labelLine = labelLine;
+                singleShapeList.push(label);
+            }
+        },
+        getSector: function (seriesIndex, dataIndex, percent, isSelected, center, r0, r1, startAngle, endAngle, defaultColor) {
+            var series = this.series;
+            var serie = series[seriesIndex];
+            var data = serie.data[dataIndex];
+            var queryTarget = [
+                data,
+                serie
+            ];
+            var normal = this.deepMerge(queryTarget, 'itemStyle.normal') || {};
+            var emphasis = this.deepMerge(queryTarget, 'itemStyle.emphasis') || {};
+            var normalColor = this.getItemStyleColor(normal.color, seriesIndex, dataIndex, data) || defaultColor;
+            var emphasisColor = this.getItemStyleColor(emphasis.color, seriesIndex, dataIndex, data) || (typeof normalColor === 'string' ? zrColor.lift(normalColor, -0.2) : normalColor);
+            var sector = {
+                zlevel: serie.zlevel,
+                z: serie.z,
+                clickable: this.deepQuery(queryTarget, 'clickable'),
+                style: {
+                    x: center[0],
+                    y: center[1],
+                    r0: r0,
+                    r: r1,
+                    startAngle: startAngle,
+                    endAngle: endAngle,
+                    brushType: 'both',
+                    color: normalColor,
+                    lineWidth: normal.borderWidth,
+                    strokeColor: normal.borderColor,
+                    lineJoin: 'round'
+                },
+                highlightStyle: {
+                    color: emphasisColor,
+                    lineWidth: emphasis.borderWidth,
+                    strokeColor: emphasis.borderColor,
+                    lineJoin: 'round'
+                },
+                _seriesIndex: seriesIndex,
+                _dataIndex: dataIndex
+            };
+            if (isSelected) {
+                var midAngle = ((sector.style.startAngle + sector.style.endAngle) / 2).toFixed(2) - 0;
+                sector.style._hasSelected = true;
+                sector.style._x = sector.style.x;
+                sector.style._y = sector.style.y;
+                var offset = this.query(serie, 'selectedOffset');
+                sector.style.x += zrMath.cos(midAngle, true) * offset;
+                sector.style.y -= zrMath.sin(midAngle, true) * offset;
+                this._selected[seriesIndex][dataIndex] = true;
+            } else {
+                this._selected[seriesIndex][dataIndex] = false;
+            }
+            if (this._selectedMode) {
+                sector.onclick = this.shapeHandler.onclick;
+            }
+            if (this.deepQuery([
+                    data,
+                    serie,
+                    this.option
+                ], 'calculable')) {
+                this.setCalculable(sector);
+                sector.draggable = true;
+            }
+            if (this._needLabel(serie, data, true) || this._needLabelLine(serie, data, true)) {
+                sector.onmouseover = this.shapeHandler.onmouseover;
+            }
+            sector = new SectorShape(sector);
+            return sector;
+        },
+        getLabel: function (seriesIndex, dataIndex, percent, center, midAngle, defaultColor, isEmphasis) {
+            var series = this.series;
+            var serie = series[seriesIndex];
+            var data = serie.data[dataIndex];
+            if (!this._needLabel(serie, data, isEmphasis)) {
+                return;
+            }
+            var status = isEmphasis ? 'emphasis' : 'normal';
+            var itemStyle = zrUtil.merge(zrUtil.clone(data.itemStyle) || {}, serie.itemStyle);
+            var labelControl = itemStyle[status].label;
+            var textStyle = labelControl.textStyle || {};
+            var centerX = center[0];
+            var centerY = center[1];
+            var x;
+            var y;
+            var radius = this.parseRadius(this.zr, serie.radius);
+            var textAlign;
+            var textBaseline = 'middle';
+            labelControl.position = labelControl.position || itemStyle.normal.label.position;
+            if (labelControl.position === 'center') {
+                x = centerX;
+                y = centerY;
+                textAlign = 'center';
+            } else if (labelControl.position === 'inner' || labelControl.position === 'inside') {
+                radius = (radius[0] + radius[1]) * (labelControl.distance || 0.5);
+                x = Math.round(centerX + radius * zrMath.cos(midAngle, true));
+                y = Math.round(centerY - radius * zrMath.sin(midAngle, true));
+                defaultColor = '#fff';
+                textAlign = 'center';
+            } else {
+                radius = radius[1] - -itemStyle[status].labelLine.length;
+                x = Math.round(centerX + radius * zrMath.cos(midAngle, true));
+                y = Math.round(centerY - radius * zrMath.sin(midAngle, true));
+                textAlign = midAngle >= 90 && midAngle <= 270 ? 'right' : 'left';
+            }
+            if (labelControl.position != 'center' && labelControl.position != 'inner' && labelControl.position != 'inside') {
+                x += textAlign === 'left' ? 20 : -20;
+            }
+            data.__labelX = x - (textAlign === 'left' ? 5 : -5);
+            data.__labelY = y;
+            var ts = new TextShape({
+                zlevel: serie.zlevel,
+                z: serie.z + 1,
+                hoverable: false,
+                style: {
+                    x: x,
+                    y: y,
+                    color: textStyle.color || defaultColor,
+                    text: this.getLabelText(seriesIndex, dataIndex, percent, status),
+                    textAlign: textStyle.align || textAlign,
+                    textBaseline: textStyle.baseline || textBaseline,
+                    textFont: this.getFont(textStyle)
+                },
+                highlightStyle: { brushType: 'fill' }
+            });
+            ts._radius = radius;
+            ts._labelPosition = labelControl.position || 'outer';
+            ts._rect = ts.getRect(ts.style);
+            ts._seriesIndex = seriesIndex;
+            ts._dataIndex = dataIndex;
+            return ts;
+        },
+        getLabelText: function (seriesIndex, dataIndex, percent, status) {
+            var series = this.series;
+            var serie = series[seriesIndex];
+            var data = serie.data[dataIndex];
+            var formatter = this.deepQuery([
+                data,
+                serie
+            ], 'itemStyle.' + status + '.label.formatter');
+            if (formatter) {
+                if (typeof formatter === 'function') {
+                    return formatter.call(this.myChart, {
+                        seriesIndex: seriesIndex,
+                        seriesName: serie.name || '',
+                        series: serie,
+                        dataIndex: dataIndex,
+                        data: data,
+                        name: data.name,
+                        value: data.value,
+                        percent: percent
+                    });
+                } else if (typeof formatter === 'string') {
+                    formatter = formatter.replace('{a}', '{a0}').replace('{b}', '{b0}').replace('{c}', '{c0}').replace('{d}', '{d0}');
+                    formatter = formatter.replace('{a0}', serie.name).replace('{b0}', data.name).replace('{c0}', data.value).replace('{d0}', percent);
+                    return formatter;
+                }
+            } else {
+                return data.name;
+            }
+        },
+        getLabelLine: function (seriesIndex, dataIndex, center, r0, r1, midAngle, defaultColor, isEmphasis) {
+            var series = this.series;
+            var serie = series[seriesIndex];
+            var data = serie.data[dataIndex];
+            if (this._needLabelLine(serie, data, isEmphasis)) {
+                var status = isEmphasis ? 'emphasis' : 'normal';
+                var itemStyle = zrUtil.merge(zrUtil.clone(data.itemStyle) || {}, serie.itemStyle);
+                var labelLineControl = itemStyle[status].labelLine;
+                var lineStyle = labelLineControl.lineStyle || {};
+                var centerX = center[0];
+                var centerY = center[1];
+                var minRadius = r1;
+                var maxRadius = this.parseRadius(this.zr, serie.radius)[1] - -labelLineControl.length;
+                var cosValue = zrMath.cos(midAngle, true);
+                var sinValue = zrMath.sin(midAngle, true);
+                return new PolylineShape({
+                    zlevel: serie.zlevel,
+                    z: serie.z + 1,
+                    hoverable: false,
+                    style: {
+                        pointList: [
+                            [
+                                centerX + minRadius * cosValue,
+                                centerY - minRadius * sinValue
+                            ],
+                            [
+                                centerX + maxRadius * cosValue,
+                                centerY - maxRadius * sinValue
+                            ],
+                            [
+                                data.__labelX,
+                                data.__labelY
+                            ]
+                        ],
+                        strokeColor: lineStyle.color || defaultColor,
+                        lineType: lineStyle.type,
+                        lineWidth: lineStyle.width
+                    },
+                    _seriesIndex: seriesIndex,
+                    _dataIndex: dataIndex
+                });
+            } else {
+                return;
+            }
+        },
+        _needLabel: function (serie, data, isEmphasis) {
+            return this.deepQuery([
+                data,
+                serie
+            ], 'itemStyle.' + (isEmphasis ? 'emphasis' : 'normal') + '.label.show');
+        },
+        _needLabelLine: function (serie, data, isEmphasis) {
+            return this.deepQuery([
+                data,
+                serie
+            ], 'itemStyle.' + (isEmphasis ? 'emphasis' : 'normal') + '.labelLine.show');
+        },
+        _autoLabelLayout: function (sList, center, r) {
+            var leftList = [];
+            var rightList = [];
+            for (var i = 0, l = sList.length; i < l; i++) {
+                if (sList[i]._labelPosition === 'outer' || sList[i]._labelPosition === 'outside') {
+                    sList[i]._rect._y = sList[i]._rect.y;
+                    if (sList[i]._rect.x < center[0]) {
+                        leftList.push(sList[i]);
+                    } else {
+                        rightList.push(sList[i]);
+                    }
+                }
+            }
+            this._layoutCalculate(leftList, center, r, -1);
+            this._layoutCalculate(rightList, center, r, 1);
+        },
+        _layoutCalculate: function (tList, center, r, direction) {
+            tList.sort(function (a, b) {
+                return a._rect.y - b._rect.y;
+            });
+            function _changeDown(start, end, delta, direction) {
+                for (var j = start; j < end; j++) {
+                    tList[j]._rect.y += delta;
+                    tList[j].style.y += delta;
+                    if (tList[j]._labelLine) {
+                        tList[j]._labelLine.style.pointList[1][1] += delta;
+                        tList[j]._labelLine.style.pointList[2][1] += delta;
+                    }
+                    if (j > start && j + 1 < end && tList[j + 1]._rect.y > tList[j]._rect.y + tList[j]._rect.height) {
+                        _changeUp(j, delta / 2);
+                        return;
+                    }
+                }
+                _changeUp(end - 1, delta / 2);
+            }
+            function _changeUp(end, delta) {
+                for (var j = end; j >= 0; j--) {
+                    tList[j]._rect.y -= delta;
+                    tList[j].style.y -= delta;
+                    if (tList[j]._labelLine) {
+                        tList[j]._labelLine.style.pointList[1][1] -= delta;
+                        tList[j]._labelLine.style.pointList[2][1] -= delta;
+                    }
+                    if (j > 0 && tList[j]._rect.y > tList[j - 1]._rect.y + tList[j - 1]._rect.height) {
+                        break;
+                    }
+                }
+            }
+            function _changeX(sList, isDownList, center, r, direction) {
+                var x = center[0];
+                var y = center[1];
+                var deltaX;
+                var deltaY;
+                var length;
+                var lastDeltaX = direction > 0 ? isDownList ? Number.MAX_VALUE : 0 : isDownList ? Number.MAX_VALUE : 0;
+                for (var i = 0, l = sList.length; i < l; i++) {
+                    deltaY = Math.abs(sList[i]._rect.y - y);
+                    length = sList[i]._radius - r;
+                    deltaX = deltaY < r + length ? Math.sqrt((r + length + 20) * (r + length + 20) - Math.pow(sList[i]._rect.y - y, 2)) : Math.abs(sList[i]._rect.x + (direction > 0 ? 0 : sList[i]._rect.width) - x);
+                    if (isDownList && deltaX >= lastDeltaX) {
+                        deltaX = lastDeltaX - 10;
+                    }
+                    if (!isDownList && deltaX <= lastDeltaX) {
+                        deltaX = lastDeltaX + 10;
+                    }
+                    sList[i]._rect.x = sList[i].style.x = x + deltaX * direction;
+                    if (sList[i]._labelLine) {
+                        sList[i]._labelLine.style.pointList[2][0] = x + (deltaX - 5) * direction;
+                        sList[i]._labelLine.style.pointList[1][0] = x + (deltaX - 20) * direction;
+                    }
+                    lastDeltaX = deltaX;
+                }
+            }
+            var lastY = 0;
+            var delta;
+            var len = tList.length;
+            var upList = [];
+            var downList = [];
+            for (var i = 0; i < len; i++) {
+                delta = tList[i]._rect.y - lastY;
+                if (delta < 0) {
+                    _changeDown(i, len, -delta, direction);
+                }
+                lastY = tList[i]._rect.y + tList[i]._rect.height;
+            }
+            if (this.zr.getHeight() - lastY < 0) {
+                _changeUp(len - 1, lastY - this.zr.getHeight());
+            }
+            for (var i = 0; i < len; i++) {
+                if (tList[i]._rect.y >= center[1]) {
+                    downList.push(tList[i]);
+                } else {
+                    upList.push(tList[i]);
+                }
+            }
+            _changeX(downList, true, center, r, direction);
+            _changeX(upList, false, center, r, direction);
+        },
+        reformOption: function (opt) {
+            var _merge = zrUtil.merge;
+            opt = _merge(_merge(opt || {}, zrUtil.clone(this.ecTheme.pie || {})), zrUtil.clone(ecConfig.pie));
+            opt.itemStyle.normal.label.textStyle = this.getTextStyle(opt.itemStyle.normal.label.textStyle);
+            opt.itemStyle.emphasis.label.textStyle = this.getTextStyle(opt.itemStyle.emphasis.label.textStyle);
+            this.z = opt.z;
+            this.zlevel = opt.zlevel;
+            return opt;
+        },
+        refresh: function (newOption) {
+            if (newOption) {
+                this.option = newOption;
+                this.series = newOption.series;
+            }
+            this.backupShapeList();
+            this._buildShape();
+        },
+        addDataAnimation: function (params, done) {
+            var series = this.series;
+            var aniMap = {};
+            for (var i = 0, l = params.length; i < l; i++) {
+                aniMap[params[i][0]] = params[i];
+            }
+            var aniCount = 0;
+            function animationDone() {
+                aniCount--;
+                if (aniCount === 0) {
+                    done && done();
+                }
+            }
+            var sectorMap = {};
+            var textMap = {};
+            var lineMap = {};
+            var backupShapeList = this.shapeList;
+            this.shapeList = [];
+            var seriesIndex;
+            var isHead;
+            var dataGrow;
+            var deltaIdxMap = {};
+            for (var i = 0, l = params.length; i < l; i++) {
+                seriesIndex = params[i][0];
+                isHead = params[i][2];
+                dataGrow = params[i][3];
+                if (series[seriesIndex] && series[seriesIndex].type === ecConfig.CHART_TYPE_PIE) {
+                    if (isHead) {
+                        if (!dataGrow) {
+                            sectorMap[seriesIndex + '_' + series[seriesIndex].data.length] = 'delete';
+                        }
+                        deltaIdxMap[seriesIndex] = 1;
+                    } else {
+                        if (!dataGrow) {
+                            sectorMap[seriesIndex + '_-1'] = 'delete';
+                            deltaIdxMap[seriesIndex] = -1;
+                        } else {
+                            deltaIdxMap[seriesIndex] = 0;
+                        }
+                    }
+                    this._buildSinglePie(seriesIndex);
+                }
+            }
+            var dataIndex;
+            var key;
+            for (var i = 0, l = this.shapeList.length; i < l; i++) {
+                seriesIndex = this.shapeList[i]._seriesIndex;
+                dataIndex = this.shapeList[i]._dataIndex;
+                key = seriesIndex + '_' + dataIndex;
+                switch (this.shapeList[i].type) {
+                case 'sector':
+                    sectorMap[key] = this.shapeList[i];
+                    break;
+                case 'text':
+                    textMap[key] = this.shapeList[i];
+                    break;
+                case 'polyline':
+                    lineMap[key] = this.shapeList[i];
+                    break;
+                }
+            }
+            this.shapeList = [];
+            var targeSector;
+            for (var i = 0, l = backupShapeList.length; i < l; i++) {
+                seriesIndex = backupShapeList[i]._seriesIndex;
+                if (aniMap[seriesIndex]) {
+                    dataIndex = backupShapeList[i]._dataIndex + deltaIdxMap[seriesIndex];
+                    key = seriesIndex + '_' + dataIndex;
+                    targeSector = sectorMap[key];
+                    if (!targeSector) {
+                        continue;
+                    }
+                    if (backupShapeList[i].type === 'sector') {
+                        if (targeSector != 'delete') {
+                            aniCount++;
+                            this.zr.animate(backupShapeList[i].id, 'style').when(400, {
+                                startAngle: targeSector.style.startAngle,
+                                endAngle: targeSector.style.endAngle
+                            }).done(animationDone).start();
+                        } else {
+                            aniCount++;
+                            this.zr.animate(backupShapeList[i].id, 'style').when(400, deltaIdxMap[seriesIndex] < 0 ? { startAngle: backupShapeList[i].style.startAngle } : { endAngle: backupShapeList[i].style.endAngle }).done(animationDone).start();
+                        }
+                    } else if (backupShapeList[i].type === 'text' || backupShapeList[i].type === 'polyline') {
+                        if (targeSector === 'delete') {
+                            this.zr.delShape(backupShapeList[i].id);
+                        } else {
+                            switch (backupShapeList[i].type) {
+                            case 'text':
+                                aniCount++;
+                                targeSector = textMap[key];
+                                this.zr.animate(backupShapeList[i].id, 'style').when(400, {
+                                    x: targeSector.style.x,
+                                    y: targeSector.style.y
+                                }).done(animationDone).start();
+                                break;
+                            case 'polyline':
+                                aniCount++;
+                                targeSector = lineMap[key];
+                                this.zr.animate(backupShapeList[i].id, 'style').when(400, { pointList: targeSector.style.pointList }).done(animationDone).start();
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            this.shapeList = backupShapeList;
+            if (!aniCount) {
+                done && done();
+            }
+        },
+        onclick: function (param) {
+            var series = this.series;
+            if (!this.isClick || !param.target) {
+                return;
+            }
+            this.isClick = false;
+            var offset;
+            var target = param.target;
+            var style = target.style;
+            var seriesIndex = ecData.get(target, 'seriesIndex');
+            var dataIndex = ecData.get(target, 'dataIndex');
+            for (var i = 0, len = this.shapeList.length; i < len; i++) {
+                if (this.shapeList[i].id === target.id) {
+                    seriesIndex = ecData.get(target, 'seriesIndex');
+                    dataIndex = ecData.get(target, 'dataIndex');
+                    if (!style._hasSelected) {
+                        var midAngle = ((style.startAngle + style.endAngle) / 2).toFixed(2) - 0;
+                        target.style._hasSelected = true;
+                        this._selected[seriesIndex][dataIndex] = true;
+                        target.style._x = target.style.x;
+                        target.style._y = target.style.y;
+                        offset = this.query(series[seriesIndex], 'selectedOffset');
+                        target.style.x += zrMath.cos(midAngle, true) * offset;
+                        target.style.y -= zrMath.sin(midAngle, true) * offset;
+                    } else {
+                        target.style.x = target.style._x;
+                        target.style.y = target.style._y;
+                        target.style._hasSelected = false;
+                        this._selected[seriesIndex][dataIndex] = false;
+                    }
+                    this.zr.modShape(target.id);
+                } else if (this.shapeList[i].style._hasSelected && this._selectedMode === 'single') {
+                    seriesIndex = ecData.get(this.shapeList[i], 'seriesIndex');
+                    dataIndex = ecData.get(this.shapeList[i], 'dataIndex');
+                    this.shapeList[i].style.x = this.shapeList[i].style._x;
+                    this.shapeList[i].style.y = this.shapeList[i].style._y;
+                    this.shapeList[i].style._hasSelected = false;
+                    this._selected[seriesIndex][dataIndex] = false;
+                    this.zr.modShape(this.shapeList[i].id);
+                }
+            }
+            this.messageCenter.dispatch(ecConfig.EVENT.PIE_SELECTED, param.event, {
+                selected: this._selected,
+                target: ecData.get(target, 'name')
+            }, this.myChart);
+            this.zr.refreshNextFrame();
+        }
+    };
+    zrUtil.inherits(Pie, ChartBase);
+    require('../chart').define('pie', Pie);
+    return Pie;
+});
