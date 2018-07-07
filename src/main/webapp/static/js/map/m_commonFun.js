@@ -123,7 +123,7 @@ function getRecordList(deviceId) {
  * @returns {string}
  */
 function getDeviceIcon(status) {
-    if('' == status || null == status){
+    if ('' == status || null == status) {
         return picUrl + 'device_normal.png';
     }
     switch (status) {
@@ -131,10 +131,10 @@ function getDeviceIcon(status) {
             return picUrl + 'device_normal.png';
             break;
         case '2':
-            return picUrl + 'device_normal.png';
+            return picUrl + 'device_alarm.png';
             break;
         case '3':
-            return picUrl + 'device_normal.png';
+            return picUrl + 'device_offline.png';
             break;
         default:
             break;

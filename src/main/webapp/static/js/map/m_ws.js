@@ -34,9 +34,11 @@ socket.connect = (function (url) {
             }
             initDeviceMarker(datas);
         } else if ("2" == type) {   // 告警
-
+            var data = pushData.device;
+            var marker = device.markerMap[data.deviceId];
+            var newIcon = new BMap.Icon(getDeviceIcon(data.status), new BMap.Size(30, 60));
+            marker.setIcon(newIcon);
         }
-
     };
 
     // 关闭连接

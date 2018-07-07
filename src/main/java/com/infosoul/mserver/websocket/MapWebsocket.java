@@ -1,6 +1,7 @@
 package com.infosoul.mserver.websocket;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -96,10 +97,20 @@ public class MapWebsocket {
     /**
      * socket server 推送的消息
      *
-     * @param deviceId 设备ID
+     * @param deviceMapDTO
      */
-    public static void socketServerPush(String deviceId) {
-
+    public static void socketServerPush(DeviceMapDTO deviceMapDTO) {
+        if (null == deviceMapDTO) {
+            return;
+        }
+        WsPushDTO wsPushDTO = new WsPushDTO();
+        wsPushDTO.setType("2");
+        wsPushDTO.setDevice(deviceMapDTO);
+        Iterator<MapWebsocket> iterator = clients.values().iterator();
+        while (iterator.hasNext()) {
+            MapWebsocket mapWebsocket = iterator.next();
+            mapWebsocket.push(JSON.toJSONString(wsPushDTO));
+        }
     }
 
     /**
