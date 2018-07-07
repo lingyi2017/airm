@@ -160,4 +160,31 @@ public class DeviceUtils {
                 return "";
         }
     }
+
+    /**
+     * 传感器数据小数位处理
+     * 
+     * @param val
+     * @param decimal
+     * @return
+     */
+    public static Double decimalDeal(Double val, Integer decimal) {
+        if (null == val) {
+            return null;
+        }
+        switch (decimal) {
+            case 0:
+                return val;
+            case 1:
+                return val / 10;
+            case 2:
+                return val / 100;
+            case 3:
+                return val / 1000;
+            case 4:
+                return val / 10000;
+            default:
+                return val;
+        }
+    }
 }

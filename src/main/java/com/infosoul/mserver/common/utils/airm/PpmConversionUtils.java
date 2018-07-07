@@ -12,11 +12,10 @@
  * ALL RIGHTS RESERVED
  ***********************************************/
 
-package com.infosoul.mserver.common.utils;
+package com.infosoul.mserver.common.utils.airm;
 
 /**
- *
- *
+ * ppm 或 ppb转换成ug/m3
  */
 public class PpmConversionUtils {
 
