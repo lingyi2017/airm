@@ -25,11 +25,18 @@ socket.connect = (function (url) {
     };
     // 收到服务端消息
     ws.onmessage = function (event) {
-        var datas = $.parseJSON(event.data);
-        if (datas.length == 0) {
-            return;
+        var pushData = $.parseJSON(event.data);
+        var type = pushData.type;
+        if ("1" == type) {  // 初始化
+            var datas = pushData.devices;
+            if (datas.length == 0) {
+                return;
+            }
+            initDeviceMarker(datas);
+        } else if ("2" == type) {   // 告警
+
         }
-        initDeviceMarker(datas);
+
     };
 
     // 关闭连接
@@ -60,7 +67,7 @@ function initDeviceMarker(datas) {
  * @param data
  */
 function addDeviceMarker(data) {
-    if(undefined == data.lon || undefined == data.lat){
+    if (undefined == data.lon || undefined == data.lat) {
         return;
     }
     var point = new BMap.Point(data.lon, data.lat);

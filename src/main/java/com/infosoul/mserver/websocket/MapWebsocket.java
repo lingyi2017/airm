@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
+import com.infosoul.mserver.dto.web.WsPushDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,11 +94,11 @@ public class MapWebsocket {
     }
 
     /**
-     * netty推送的消息
+     * socket server 推送的消息
      *
-     * @param id 告警id
+     * @param deviceId 设备ID
      */
-    public static void nettyPush(String id) {
+    public static void socketServerPush(String deviceId) {
 
     }
 
@@ -149,6 +150,9 @@ public class MapWebsocket {
             BeanUtils.copyProperties(device, dto);
             dtos.add(dto);
         }
-        return JSON.toJSONString(dtos);
+        WsPushDTO wsPushDTO = new WsPushDTO();
+        wsPushDTO.setType("1");
+        wsPushDTO.setDevices(dtos);
+        return JSON.toJSONString(wsPushDTO);
     }
 }
