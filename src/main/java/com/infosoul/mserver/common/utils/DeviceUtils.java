@@ -169,8 +169,8 @@ public class DeviceUtils {
      * @return
      */
     public static Double decimalDeal(Double val, Integer decimal) {
-        if (null == val) {
-            return null;
+        if (null == val || null == decimal) {
+            return 0D;
         }
         switch (decimal) {
             case 0:

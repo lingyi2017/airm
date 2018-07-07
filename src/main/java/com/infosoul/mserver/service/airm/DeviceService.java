@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.infosoul.mserver.common.persistence.Page;
-import com.infosoul.mserver.common.utils.DeviceCacheUtils;
+import com.infosoul.mserver.common.utils.airm.DeviceCacheUtils;
 import com.infosoul.mserver.common.utils.IdGen;
 import com.infosoul.mserver.common.utils.StringUtils;
 import com.infosoul.mserver.dto.api.DeviceListRqDTO;

@@ -72,4 +72,14 @@
         where
           id = #{id}
     </update>
+
+    <!-- 查找所有门限配置 -->
+    <select id="findAll" resultMap="latchConfigMap">
+        SELECT
+          *
+        FROM
+          airm_latch_config AS a
+        WHERE
+          a.del_flag = 0
+    </select>
 </mapper>

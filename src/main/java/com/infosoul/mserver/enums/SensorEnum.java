@@ -54,4 +54,20 @@ public enum SensorEnum {
     public void setUnit(String unit) {
         this.unit = unit;
     }
+
+    public Integer getSensorNameNum() {
+        return sensorNameNum;
+    }
+
+    public void setSensorNameNum(Integer sensorNameNum) {
+        this.sensorNameNum = sensorNameNum;
+    }
+
+    public Integer getSensorUnitNum() {
+        return sensorUnitNum;
+    }
+
+    public void setSensorUnitNum(Integer sensorUnitNum) {
+        this.sensorUnitNum = sensorUnitNum;
+    }
 }

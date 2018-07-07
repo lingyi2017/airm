@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.infosoul.mserver.common.utils.IdGen;
 import com.infosoul.mserver.common.utils.UserUtils;
+import com.infosoul.mserver.common.utils.airm.LatchConfigCacheUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,10 +54,11 @@ public class LatchConfigService extends BaseService {
      * @param entity
      * @throws Exception
      */
-    @Transactional(readOnly = false)
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
     public void save(LatchConfig entity) throws Exception {
         entity.setId(IdGen.uuid());
         latchConfigDao.save(entity);
+        LatchConfigCacheUtils.clear();
     }
 
     /**
@@ -65,9 +67,10 @@ public class LatchConfigService extends BaseService {
      * @param id
      * @throws Exception
      */
-    @Transactional(readOnly = false)
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
     public void delete(String id) throws Exception {
         latchConfigDao.deleteById(id);
+        LatchConfigCacheUtils.clear();
     }
 
     /**
@@ -76,8 +79,9 @@ public class LatchConfigService extends BaseService {
      * @param entity
      * @throws Exception
      */
-    @Transactional(readOnly = false)
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
     public void update(LatchConfig entity) throws Exception {
         latchConfigDao.update(entity);
+        LatchConfigCacheUtils.clear();
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import com.infosoul.mserver.common.utils.DeviceCacheUtils;
 import com.infosoul.mserver.common.utils.NettyUtils;
 import com.infosoul.mserver.entity.airm.Device;
 import com.infosoul.mserver.service.BaseService;

@@ -51,4 +51,14 @@ public class Constant {
      */
     public static final String DEVICE_REGISTER = "1";
 
+    /**
+     * PPM编码
+     */
+    public static final Integer SENSOR_UNIT_PPM = 2;
+
+    /**
+     * PPB编码
+     */
+    public static final Integer SENSOR_UNIT_PPB = 3;
+
 }
