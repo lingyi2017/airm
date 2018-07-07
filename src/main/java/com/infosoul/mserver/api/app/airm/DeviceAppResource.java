@@ -78,8 +78,8 @@ public class DeviceAppResource extends BaseResource {
         }
         try {
             Device device = deviceService.findByDeviceId(dto.getDeviceId());
-            if(null == device){
-                return success();
+            if (null == device) {
+                return error(ResponseRest.Status.NOT_EXIST, "设备ID : " + dto.getDeviceId() + "对应的设备不存在");
             }
             DeviceInfoRpDTO rp = new DeviceInfoRpDTO();
             BeanUtils.copyProperties(device, rp);
