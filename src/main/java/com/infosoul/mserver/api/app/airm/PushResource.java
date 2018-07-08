@@ -5,12 +5,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import com.infosoul.mserver.common.utils.DeviceUtils;
-import com.infosoul.mserver.common.utils.SensorCacheUtils;
-import com.infosoul.mserver.common.utils.airm.LatchConfigCacheUtils;
-import com.infosoul.mserver.common.utils.airm.PpmConversionUtils;
-import com.infosoul.mserver.constant.SensorConsts;
-import com.infosoul.mserver.enums.SensorEnum;
+import com.google.common.collect.Maps;
+import com.infosoul.mserver.common.utils.*;
+import com.infosoul.mserver.dto.jpush.MessageDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,18 +15,25 @@ import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSON;
 import com.infosoul.mserver.api.BaseResource;
 import com.infosoul.mserver.api.ResponseRest;
-import com.infosoul.mserver.common.utils.Constant;
-import com.infosoul.mserver.common.utils.StringUtils;
+import com.infosoul.mserver.common.utils.airm.LatchConfigCacheUtils;
+import com.infosoul.mserver.common.utils.airm.PpmConversionUtils;
 import com.infosoul.mserver.common.web.MediaTypes;
+import com.infosoul.mserver.constant.SensorConsts;
 import com.infosoul.mserver.dto.api.DeviceGeoDTO;
 import com.infosoul.mserver.dto.api.DevicePushDTO;
 import com.infosoul.mserver.dto.api.RecordPushDTO;
 import com.infosoul.mserver.dto.api.StatusPushDTO;
+import com.infosoul.mserver.dto.web.DeviceMapDTO;
 import com.infosoul.mserver.entity.airm.Device;
 import com.infosoul.mserver.entity.airm.Record;
+import com.infosoul.mserver.enums.SensorEnum;
 import com.infosoul.mserver.jpush.JClient;
 import com.infosoul.mserver.service.airm.DeviceService;
 import com.infosoul.mserver.service.airm.RecordService;
+import com.infosoul.mserver.websocket.MapWebsocket;
+
+import java.util.Date;
+import java.util.Map;
 
 /**
  * 数据推送 RESTFull接口
@@ -70,19 +74,19 @@ public class PushResource extends BaseResource {
             if (null == device) {
                 device = new Device();
                 BeanUtils.copyProperties(dto, device);
+                device.setRegister(Constant.DEVICE_UNREGISTERED);
                 deviceService.save(device);
             } else {
-                device.setStatus(dto.getStatus());
-                deviceService.updateStatus(device);
-                try {
-                    // TODO 离线告警推送
-                    push(device);
-                } catch (Exception e) {
-                    logger.error("设备上线推送异常", e);
+                if (!dto.getStatus().equals(device.getStatus())) {
+                    device.setStatus(dto.getStatus());
+                    deviceService.updateStatus(device);
+                    // web 推送
+                    webPush(device);
                 }
             }
             return success();
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("设备上线异常", e);
             return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "设备上线异常");
         }
@@ -124,6 +128,7 @@ public class PushResource extends BaseResource {
     @Path("/device/record")
     public ResponseRest record(RecordPushDTO dto) {
         try {
+            System.out.println("==读设备记录==" + JSON.toJSONString(dto));
             if (null == dto || StringUtils.isEmpty(dto.getDeviceId())) {
                 return error(ResponseRest.Status.BAD_REQUEST, "设备ID不能为空");
             }
@@ -139,13 +144,22 @@ public class PushResource extends BaseResource {
             analystRecord(record, device);
             // TODO AQI计算
             recordService.save(record);
-            try {
-                // TODO 告警推送
-                if (Constant.RECORD_ALARM.equals(record.getStatus())) {
-                    push(record);
+            if (Constant.RECORD_ALARM.equals(record.getStatus())) {
+                // 更新设备状态
+                device.setStatus("2");
+                deviceService.updateStatus(device);
+
+                // 告警推送
+                Map<String, String> paramMap = Maps.newHashMap();
+                paramMap.put("deviceId", device.getDeviceId());
+                paramMap.put("startDate", DateUtils.reduceMin(new Date(), -30));
+                Integer count = recordService.getRecordCount(paramMap);
+                if (null != count && count < 2) {
+                    // 推送web端
+                    webPush(device);
+                    // 推送APP端
+                    appPush(device, record);
                 }
-            } catch (Exception e) {
-                logger.error("设备记录推送异常", e);
             }
             return success();
         } catch (Exception e) {
@@ -168,6 +182,7 @@ public class PushResource extends BaseResource {
         try {
             return success();
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("推送设备位置异常", e);
             return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "推送设备位置发生异常");
         }
@@ -189,6 +204,7 @@ public class PushResource extends BaseResource {
     }
 
     private void buildRecord(Record record, Device device) {
+
         // 初始值
         Double sensorVal1 = record.getSensorVal1();
         // 小数位处理
@@ -199,21 +215,25 @@ public class PushResource extends BaseResource {
         // ppm或ppb转换成ug/m3
         if (Constant.SENSOR_UNIT_PPM.equals(device.getSensorUnitNum1())
                 || Constant.SENSOR_UNIT_PPB.equals(device.getSensorUnitNum1())) {
-            int unitNum1 = device.getSensorUnitNum1();
-            int nameNum1 = device.getSensorNameNum1();
-            record.setSensorVal1(PpmConversionUtils.retUgVal((byte) unitNum1, (byte) nameNum1, decimalVal1));
+            if (null != device.getSensorUnitNum1() || null != device.getSensorNameNum1()) {
+                int unitNum1 = device.getSensorUnitNum1();
+                int nameNum1 = device.getSensorNameNum1();
+                record.setSensorVal1(PpmConversionUtils.retUgVal((byte) unitNum1, (byte) nameNum1, decimalVal1));
+            }
         }
 
-        Double sensorVal2 = record.getSensorVal1();
+        Double sensorVal2 = record.getSensorVal2();
         Double decimalVal2 = DeviceUtils.decimalDeal(sensorVal2, device.getSensorDecimal2());
         if (0 == decimalVal2) {
             record.setSensorVal2(0D);
         }
         if (Constant.SENSOR_UNIT_PPM.equals(device.getSensorUnitNum2())
                 || Constant.SENSOR_UNIT_PPB.equals(device.getSensorUnitNum2())) {
-            int unitNum2 = device.getSensorUnitNum2();
-            int nameNum2 = device.getSensorNameNum2();
-            record.setSensorVal2(PpmConversionUtils.retUgVal((byte) unitNum2, (byte) nameNum2, decimalVal2));
+            if (null != device.getSensorUnitNum2() || null != device.getSensorNameNum2()) {
+                int unitNum2 = device.getSensorUnitNum2();
+                int nameNum2 = device.getSensorNameNum2();
+                record.setSensorVal2(PpmConversionUtils.retUgVal((byte) unitNum2, (byte) nameNum2, decimalVal2));
+            }
         }
 
         Double sensorVal3 = record.getSensorVal3();
@@ -223,9 +243,11 @@ public class PushResource extends BaseResource {
         }
         if (Constant.SENSOR_UNIT_PPM.equals(device.getSensorUnitNum3())
                 || Constant.SENSOR_UNIT_PPB.equals(device.getSensorUnitNum3())) {
-            int unitNum3 = device.getSensorUnitNum3();
-            int nameNum3 = device.getSensorNameNum3();
-            record.setSensorVal3(PpmConversionUtils.retUgVal((byte) unitNum3, (byte) nameNum3, decimalVal3));
+            if (null != device.getSensorUnitNum3() || null != device.getSensorNameNum3()) {
+                int unitNum3 = device.getSensorUnitNum3();
+                int nameNum3 = device.getSensorNameNum3();
+                record.setSensorVal3(PpmConversionUtils.retUgVal((byte) unitNum3, (byte) nameNum3, decimalVal3));
+            }
         }
 
         Double sensorVal4 = record.getSensorVal4();
@@ -235,9 +257,11 @@ public class PushResource extends BaseResource {
         }
         if (Constant.SENSOR_UNIT_PPM.equals(device.getSensorUnitNum4())
                 || Constant.SENSOR_UNIT_PPB.equals(device.getSensorUnitNum4())) {
-            int unitNum4 = device.getSensorUnitNum4();
-            int nameNum4 = device.getSensorNameNum4();
-            record.setSensorVal4(PpmConversionUtils.retUgVal((byte) unitNum4, (byte) nameNum4, decimalVal4));
+            if (null != device.getSensorUnitNum4() || null != device.getSensorNameNum4()) {
+                int unitNum4 = device.getSensorUnitNum4();
+                int nameNum4 = device.getSensorNameNum4();
+                record.setSensorVal4(PpmConversionUtils.retUgVal((byte) unitNum4, (byte) nameNum4, decimalVal4));
+            }
         }
 
         Double sensorVal5 = record.getSensorVal5();
@@ -247,9 +271,11 @@ public class PushResource extends BaseResource {
         }
         if (Constant.SENSOR_UNIT_PPM.equals(device.getSensorUnitNum5())
                 || Constant.SENSOR_UNIT_PPB.equals(device.getSensorUnitNum5())) {
-            int unitNum5 = device.getSensorUnitNum5();
-            int nameNum5 = device.getSensorNameNum5();
-            record.setSensorVal5(PpmConversionUtils.retUgVal((byte) unitNum5, (byte) nameNum5, decimalVal5));
+            if (null != device.getSensorUnitNum5() || null != device.getSensorNameNum5()) {
+                int unitNum5 = device.getSensorUnitNum5();
+                int nameNum5 = device.getSensorNameNum5();
+                record.setSensorVal5(PpmConversionUtils.retUgVal((byte) unitNum5, (byte) nameNum5, decimalVal5));
+            }
         }
 
         Double sensorVal6 = record.getSensorVal6();
@@ -259,9 +285,11 @@ public class PushResource extends BaseResource {
         }
         if (Constant.SENSOR_UNIT_PPM.equals(device.getSensorUnitNum6())
                 || Constant.SENSOR_UNIT_PPB.equals(device.getSensorUnitNum6())) {
-            int unitNum6 = device.getSensorUnitNum6();
-            int nameNum6 = device.getSensorNameNum6();
-            record.setSensorVal2(PpmConversionUtils.retUgVal((byte) unitNum6, (byte) nameNum6, decimalVal6));
+            if (null != device.getSensorUnitNum6() || null != device.getSensorNameNum6()) {
+                int unitNum6 = device.getSensorUnitNum6();
+                int nameNum6 = device.getSensorNameNum6();
+                record.setSensorVal6(PpmConversionUtils.retUgVal((byte) unitNum6, (byte) nameNum6, decimalVal6));
+            }
         }
     }
 
@@ -382,8 +410,32 @@ public class PushResource extends BaseResource {
         device.setSensorUnit6(SensorConsts.getUnit(dto.getSensorUnitNum6()));
     }
 
-    private void push(Object obj) {
+    private void appPush(Device device, Record record) {
+        MessageDTO messageDTO = new MessageDTO();
+        String title = "德科大气监测系统";
+        StringBuilder content = new StringBuilder(32);
+        content.append(device.getAddress());
+        content.append("地点");
+        content.append(device.getStation());
+        content.append("空气检测微站检测到空气异常，详情请点击查看。");
+        Map<String, String> extras = Maps.newHashMap();
+
         // TODO
+        System.out.println("==告警记录id==" + record.getId());
+        extras.put("id", record.getId());
+
+        messageDTO.setTitle(title);
+        messageDTO.setMsgContent(content.toString());
+        messageDTO.setExtras(extras);
     }
 
+    private void webPush(Device device) {
+        try {
+            DeviceMapDTO deviceMapDTO = new DeviceMapDTO();
+            BeanUtils.copyProperties(device, deviceMapDTO);
+            MapWebsocket.socketServerPush(deviceMapDTO);
+        } catch (Exception e) {
+            logger.error("web socket 推送异常", e);
+        }
+    }
 }

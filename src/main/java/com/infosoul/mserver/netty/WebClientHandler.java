@@ -1,6 +1,7 @@
 package com.infosoul.mserver.netty;
 
 import com.infosoul.mserver.common.utils.NettyUtils;
+
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
@@ -30,10 +31,10 @@ public class WebClientHandler extends ChannelInboundHandlerAdapter {
             IdleStateEvent event = (IdleStateEvent) evt;
             // 读空闲
             if (event.state().equals(IdleState.READER_IDLE)) {
-                ctx.close();
+                //ctx.close();
                 // 写空闲
             } else if (event.state().equals(IdleState.WRITER_IDLE)) {
-                ctx.close();
+                //ctx.close();
                 // 都空闲
             } else if (event.state().equals(IdleState.ALL_IDLE)) {
                 NettyUtils.sendHeartBeat(ctx);

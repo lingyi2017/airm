@@ -109,6 +109,8 @@
           sensor_status11,
           sensor_val12,
           sensor_status12,
+          aqi,
+          pollution_degree,
           create_date
           )
         VALUES
@@ -140,6 +142,8 @@
           #{sensorStatus11},
           #{sensorVal12},
           #{sensorStatus12},
+          #{aqi},
+          #{pollutionDegree}
           now()
           )
     </insert>
@@ -153,5 +157,16 @@
         WHERE
         device_id = #{deviceId}
         AND create_date BETWEEN #{beginDate} AND #{endDate}
+    </select>
+
+    <select id="getRecordCount" parameterType="map" resultType="int">
+        SELECT
+	      count(*)
+        FROM
+	      airm_record
+        WHERE
+	      device_id = #{deviceId}
+	      AND `status` = '2'
+          AND create_date <![CDATA[ >= ]]> #{startDate}
     </select>
 </mapper>

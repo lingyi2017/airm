@@ -131,6 +131,7 @@ public class NettyUtils {
      * @param deviceId
      */
     public static void sensorInfo(String deviceId) {
+        System.out.println("==读传感器info==" + DateUtils.getDate("yyyy-MM-dd HH:mm:ss"));
         FrameDTO dto = new FrameDTO();
         dto.setFrameType(FrameTypeEnum.SENSOR_INFO);
         dto.setDataLength(deviceId.length());
@@ -144,6 +145,7 @@ public class NettyUtils {
      * @param deviceId
      */
     public static void sensorData(String deviceId) {
+        System.out.println("==读传感器data==" + DateUtils.getDate("yyyy-MM-dd HH:mm:ss"));
         FrameDTO dto = new FrameDTO();
         dto.setFrameType(FrameTypeEnum.SENSOR_DATA);
         dto.setDataLength(deviceId.length());

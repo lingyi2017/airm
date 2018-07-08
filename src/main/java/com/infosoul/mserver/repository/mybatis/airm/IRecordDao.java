@@ -27,4 +27,12 @@ public interface IRecordDao extends BaseMybatisDao<Record> {
      * @return
      */
     Double getSensorAvg(Map<String, String> paramMap);
+
+    /**
+     * 30min内的告警数
+     * 
+     * @param paramMap
+     * @return
+     */
+    Integer getRecordCount(Map<String, String> paramMap);
 }

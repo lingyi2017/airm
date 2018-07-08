@@ -119,4 +119,14 @@ public class RecordService extends BaseService {
     public Double getSensorParamAvg(Map<String, String> paramMap) {
         return recordDao.getSensorAvg(paramMap);
     }
+
+    /**
+     * 30min内的告警数
+     * 
+     * @param paramMap
+     * @return
+     */
+    public Integer getRecordCount(Map<String, String> paramMap) {
+        return recordDao.getRecordCount(paramMap);
+    }
 }

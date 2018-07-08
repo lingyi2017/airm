@@ -340,11 +340,25 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
+     * 得到min分钟前的时间
+     * 
+     * @param date
+     * @param min
+     * @return
+     */
+    public static String reduceMin(Date date, int min) {
+        long datetime = addMin(date, min);
+        Date nowDate = new Date(datetime);
+        SimpleDateFormat sdf = new SimpleDateFormat(parsePatterns[1]);
+        return sdf.format(nowDate);
+    }
+
+    /**
      * @param args
      * @throws ParseException
      */
     public static void main(String[] args) throws ParseException {
-        List<String> hours = getHourSegmentByDay(new Date(), 24);
-        System.out.println("====" + hours);
+        String now = reduceMin(new Date(), -30);
+        System.out.println("====" + now);
     }
 }
