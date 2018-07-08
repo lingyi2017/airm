@@ -1,12 +1,12 @@
 package com.infosoul.mserver.common.utils;
 
+import java.util.List;
+
 import com.google.common.collect.Lists;
 import com.infosoul.mserver.dto.web.SensorDTO;
 import com.infosoul.mserver.entity.airm.Device;
+import com.infosoul.mserver.entity.airm.Record;
 import com.infosoul.mserver.enums.SensorEnum;
-import org.apache.ibatis.annotations.Case;
-
-import java.util.List;
 
 /**
  * 设备工具类
@@ -164,7 +164,7 @@ public class DeviceUtils {
                 return device.getSensorUnit6();
             case 7:
                 return "ug/m3";
-                //return SensorEnum.CO2.getUnit();
+            // return SensorEnum.CO2.getUnit();
             case 8:
                 return SensorEnum.PM1.getUnit();
             case 9:
@@ -205,5 +205,47 @@ public class DeviceUtils {
             default:
                 return val;
         }
+    }
+
+    public static double getApi(Record record, Device device, int sensorNum) {
+        Double val;
+        if (device.getSensorNameNum1() == sensorNum) {
+            val = record.getSensorVal1();
+            if (null == val) {
+                return 0;
+            }
+            return val;
+        } else if (device.getSensorNameNum2() == sensorNum) {
+            val = record.getSensorVal2();
+            if (null == val) {
+                return 0;
+            }
+            return val;
+        } else if (device.getSensorNameNum3() == sensorNum) {
+            val = record.getSensorVal3();
+            if (null == val) {
+                return 0;
+            }
+            return val;
+        } else if (device.getSensorNameNum4() == sensorNum) {
+            val = record.getSensorVal4();
+            if (null == val) {
+                return 0;
+            }
+            return val;
+        } else if (device.getSensorNameNum5() == sensorNum) {
+            val = record.getSensorVal5();
+            if (null == val) {
+                return 0;
+            }
+            return val;
+        } else if (device.getSensorNameNum6() == sensorNum) {
+            val = record.getSensorVal6();
+            if (null == val) {
+                return 0;
+            }
+            return val;
+        }
+        return 0;
     }
 }

@@ -7,6 +7,7 @@ import javax.ws.rs.Produces;
 
 import com.google.common.collect.Maps;
 import com.infosoul.mserver.common.utils.*;
+import com.infosoul.mserver.common.utils.aqi.AqiUtils;
 import com.infosoul.mserver.dto.jpush.MessageDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,7 +143,7 @@ public class PushResource extends BaseResource {
             record.setDeviceName(device.getName());
             buildRecord(record, device);
             analystRecord(record, device);
-            // TODO AQI计算
+            buildAqi(record, device);
             recordService.save(record);
             if (Constant.RECORD_ALARM.equals(record.getStatus())) {
                 // 更新设备状态
@@ -390,6 +391,26 @@ public class PushResource extends BaseResource {
             record.setStatus(Constant.RECORD_ALARM);
             return;
         }
+        record.setStatus("1");
+    }
+
+    private void buildAqi(Record record, Device device) {
+        double so2 = DeviceUtils.getApi(record, device, 0x0A);
+        double no2 = DeviceUtils.getApi(record, device, 0x16);
+        double pm10 = record.getSensorVal10();
+        double co = DeviceUtils.getApi(record, device, 0x02);
+        double o3 = DeviceUtils.getApi(record, device, 0x15);
+        double pm25 = record.getSensorVal9();
+        Map<String, Object> aqiMap =
+                AqiUtils.getRealTime((float) so2, (float) no2, (float) pm10, (float) co, (float) o3, (float) pm25);
+        Object aqi = aqiMap.get("aqi");
+        if (null != aqi) {
+            record.setAqi((int) aqi);
+        }
+        Object level = aqiMap.get("level");
+        if (null != level) {
+            record.setPollutionDegree((String) level);
+        }
     }
 
     private void buildSensorName(Device device, DevicePushDTO dto) {
@@ -419,14 +440,16 @@ public class PushResource extends BaseResource {
         content.append(device.getStation());
         content.append("空气检测微站检测到空气异常，详情请点击查看。");
         Map<String, String> extras = Maps.newHashMap();
-
-        // TODO
-        System.out.println("==告警记录id==" + record.getId());
         extras.put("id", record.getId());
 
         messageDTO.setTitle(title);
         messageDTO.setMsgContent(content.toString());
         messageDTO.setExtras(extras);
+        try {
+            client.initMessage(messageDTO).push();
+        } catch (Exception e) {
+            logger.error("极光推送异常", e);
+        }
     }
 
     private void webPush(Device device) {

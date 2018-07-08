@@ -34,6 +34,9 @@ public class Record extends IdEntity<Record> {
 
     private Integer aqi;
 
+    /**
+     * 1-优级；2-良好；3-轻度污染；4-中度污染；5-重度污染
+     */
     private String pollutionDegree;
 
     /**
