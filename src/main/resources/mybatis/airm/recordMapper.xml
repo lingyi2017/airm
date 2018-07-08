@@ -143,7 +143,7 @@
           #{sensorVal12},
           #{sensorStatus12},
           #{aqi},
-          #{pollutionDegree}
+          #{pollutionDegree},
           now()
           )
     </insert>

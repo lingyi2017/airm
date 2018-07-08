@@ -32,6 +32,10 @@ public class Record extends IdEntity<Record> {
      */
     private Double sensorVal1;
 
+    private Integer aqi;
+
+    private String pollutionDegree;
+
     /**
      * 传感器1状态
      */
@@ -387,5 +391,21 @@ public class Record extends IdEntity<Record> {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public Integer getAqi() {
+        return aqi;
+    }
+
+    public void setAqi(Integer aqi) {
+        this.aqi = aqi;
+    }
+
+    public String getPollutionDegree() {
+        return pollutionDegree;
+    }
+
+    public void setPollutionDegree(String pollutionDegree) {
+        this.pollutionDegree = pollutionDegree;
     }
 }

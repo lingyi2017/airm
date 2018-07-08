@@ -133,19 +133,38 @@ public class DeviceUtils {
     public static String getSensorUnit(Device device, Integer sensorNum) {
         switch (sensorNum) {
             case 1:
+                if (2 == device.getSensorUnitNum1() || 3 == device.getSensorUnitNum1()) {
+                    return "ug/m3";
+                }
                 return device.getSensorUnit1();
             case 2:
+                if (2 == device.getSensorUnitNum2() || 3 == device.getSensorUnitNum2()) {
+                    return "ug/m3";
+                }
                 return device.getSensorUnit2();
             case 3:
+                if (2 == device.getSensorUnitNum3() || 3 == device.getSensorUnitNum3()) {
+                    return "ug/m3";
+                }
                 return device.getSensorUnit3();
             case 4:
+                if (2 == device.getSensorUnitNum4() || 3 == device.getSensorUnitNum4()) {
+                    return "ug/m3";
+                }
                 return device.getSensorUnit4();
             case 5:
+                if (2 == device.getSensorUnitNum5() || 3 == device.getSensorUnitNum5()) {
+                    return "ug/m3";
+                }
                 return device.getSensorUnit5();
             case 6:
+                if (2 == device.getSensorUnitNum6() || 3 == device.getSensorUnitNum6()) {
+                    return "ug/m3";
+                }
                 return device.getSensorUnit6();
             case 7:
-                return SensorEnum.CO2.getUnit();
+                return "ug/m3";
+                //return SensorEnum.CO2.getUnit();
             case 8:
                 return SensorEnum.PM1.getUnit();
             case 9:
