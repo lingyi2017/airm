@@ -54,10 +54,16 @@ public class MapResource extends BaseResource {
         try {
             Device device = deviceService.findByDeviceId(deviceId);
             DeviceInfoRpDTO header = new DeviceInfoRpDTO();
+            if (null == device) {
+                return success();
+            }
             BeanUtils.copyProperties(device, header);
 
             Record record = recordService.findLatestByDeviceId(deviceId);
             RecordLatestRpDTO data = new RecordLatestRpDTO();
+            if (null == record) {
+                return success();
+            }
             BeanUtils.copyProperties(record, data);
             data.setAddDate(DateUtils.formatDate(record.getCreateDate(), "HH:mm"));
 
