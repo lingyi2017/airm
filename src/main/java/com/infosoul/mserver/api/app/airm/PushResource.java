@@ -67,7 +67,7 @@ public class PushResource extends BaseResource {
     @Path("/device/status")
     public ResponseRest status(StatusPushDTO dto) {
         try {
-            System.out.println("==设备登录成功==" + JSON.toJSONString(dto));
+            logger.info("==设备登录成功== {}", JSON.toJSONString(dto));
             if (null == dto || StringUtils.isEmpty(dto.getDeviceId())) {
                 return error(ResponseRest.Status.BAD_REQUEST, "设备ID不能为空");
             }
@@ -103,6 +103,7 @@ public class PushResource extends BaseResource {
     @Path("/device/info")
     public ResponseRest deviceInfo(DevicePushDTO dto) {
         try {
+            logger.info("==收到设备信息数据== {}", JSON.toJSONString(dto));
             if (null == dto || StringUtils.isEmpty(dto.getDeviceId())) {
                 return error(ResponseRest.Status.BAD_REQUEST, "设备ID不能为空");
             }
@@ -129,7 +130,7 @@ public class PushResource extends BaseResource {
     @Path("/device/record")
     public ResponseRest record(RecordPushDTO dto) {
         try {
-            System.out.println("==读设备记录==" + JSON.toJSONString(dto));
+            logger.info("==收到设备记录数据== {}", JSON.toJSONString(dto));
             if (null == dto || StringUtils.isEmpty(dto.getDeviceId())) {
                 return error(ResponseRest.Status.BAD_REQUEST, "设备ID不能为空");
             }
@@ -140,6 +141,7 @@ public class PushResource extends BaseResource {
 
             Record record = new Record();
             BeanUtils.copyProperties(dto, record);
+            record.setCreateDate(new Date());
             record.setDeviceName(device.getName());
             buildRecord(record, device);
             analystRecord(record, device);
@@ -216,7 +218,7 @@ public class PushResource extends BaseResource {
         // ppm或ppb转换成ug/m3
         if (Constant.SENSOR_UNIT_PPM.equals(device.getSensorUnitNum1())
                 || Constant.SENSOR_UNIT_PPB.equals(device.getSensorUnitNum1())) {
-            if (null != device.getSensorUnitNum1() || null != device.getSensorNameNum1()) {
+            if (null != device.getSensorUnitNum1() && null != device.getSensorNameNum1()) {
                 int unitNum1 = device.getSensorUnitNum1();
                 int nameNum1 = device.getSensorNameNum1();
                 record.setSensorVal1(PpmConversionUtils.retUgVal((byte) unitNum1, (byte) nameNum1, decimalVal1));
@@ -230,7 +232,7 @@ public class PushResource extends BaseResource {
         }
         if (Constant.SENSOR_UNIT_PPM.equals(device.getSensorUnitNum2())
                 || Constant.SENSOR_UNIT_PPB.equals(device.getSensorUnitNum2())) {
-            if (null != device.getSensorUnitNum2() || null != device.getSensorNameNum2()) {
+            if (null != device.getSensorUnitNum2() && null != device.getSensorNameNum2()) {
                 int unitNum2 = device.getSensorUnitNum2();
                 int nameNum2 = device.getSensorNameNum2();
                 record.setSensorVal2(PpmConversionUtils.retUgVal((byte) unitNum2, (byte) nameNum2, decimalVal2));
@@ -244,7 +246,7 @@ public class PushResource extends BaseResource {
         }
         if (Constant.SENSOR_UNIT_PPM.equals(device.getSensorUnitNum3())
                 || Constant.SENSOR_UNIT_PPB.equals(device.getSensorUnitNum3())) {
-            if (null != device.getSensorUnitNum3() || null != device.getSensorNameNum3()) {
+            if (null != device.getSensorUnitNum3() && null != device.getSensorNameNum3()) {
                 int unitNum3 = device.getSensorUnitNum3();
                 int nameNum3 = device.getSensorNameNum3();
                 record.setSensorVal3(PpmConversionUtils.retUgVal((byte) unitNum3, (byte) nameNum3, decimalVal3));
@@ -258,7 +260,7 @@ public class PushResource extends BaseResource {
         }
         if (Constant.SENSOR_UNIT_PPM.equals(device.getSensorUnitNum4())
                 || Constant.SENSOR_UNIT_PPB.equals(device.getSensorUnitNum4())) {
-            if (null != device.getSensorUnitNum4() || null != device.getSensorNameNum4()) {
+            if (null != device.getSensorUnitNum4() && null != device.getSensorNameNum4()) {
                 int unitNum4 = device.getSensorUnitNum4();
                 int nameNum4 = device.getSensorNameNum4();
                 record.setSensorVal4(PpmConversionUtils.retUgVal((byte) unitNum4, (byte) nameNum4, decimalVal4));
@@ -272,7 +274,7 @@ public class PushResource extends BaseResource {
         }
         if (Constant.SENSOR_UNIT_PPM.equals(device.getSensorUnitNum5())
                 || Constant.SENSOR_UNIT_PPB.equals(device.getSensorUnitNum5())) {
-            if (null != device.getSensorUnitNum5() || null != device.getSensorNameNum5()) {
+            if (null != device.getSensorUnitNum5() && null != device.getSensorNameNum5()) {
                 int unitNum5 = device.getSensorUnitNum5();
                 int nameNum5 = device.getSensorNameNum5();
                 record.setSensorVal5(PpmConversionUtils.retUgVal((byte) unitNum5, (byte) nameNum5, decimalVal5));
@@ -286,7 +288,7 @@ public class PushResource extends BaseResource {
         }
         if (Constant.SENSOR_UNIT_PPM.equals(device.getSensorUnitNum6())
                 || Constant.SENSOR_UNIT_PPB.equals(device.getSensorUnitNum6())) {
-            if (null != device.getSensorUnitNum6() || null != device.getSensorNameNum6()) {
+            if (null != device.getSensorUnitNum6() && null != device.getSensorNameNum6()) {
                 int unitNum6 = device.getSensorUnitNum6();
                 int nameNum6 = device.getSensorNameNum6();
                 record.setSensorVal6(PpmConversionUtils.retUgVal((byte) unitNum6, (byte) nameNum6, decimalVal6));

@@ -32,6 +32,9 @@ public class Record extends IdEntity<Record> {
      */
     private Double sensorVal1;
 
+    /**
+     * 空气指标
+     */
     private Integer aqi;
 
     /**
