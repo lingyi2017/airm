@@ -1,29 +1,32 @@
 package com.infosoul.mserver.api.app.airm;
 
+import java.util.Date;
+import java.util.Map;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import com.google.common.collect.Maps;
-import com.infosoul.mserver.common.utils.*;
-import com.infosoul.mserver.common.utils.aqi.AqiUtils;
-import com.infosoul.mserver.dto.jpush.MessageDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Maps;
 import com.infosoul.mserver.api.BaseResource;
 import com.infosoul.mserver.api.ResponseRest;
+import com.infosoul.mserver.common.utils.*;
 import com.infosoul.mserver.common.utils.airm.LatchConfigCacheUtils;
 import com.infosoul.mserver.common.utils.airm.PpmConversionUtils;
+import com.infosoul.mserver.common.utils.aqi.AqiUtils;
 import com.infosoul.mserver.common.web.MediaTypes;
 import com.infosoul.mserver.constant.SensorConsts;
 import com.infosoul.mserver.dto.api.DeviceGeoDTO;
 import com.infosoul.mserver.dto.api.DevicePushDTO;
 import com.infosoul.mserver.dto.api.RecordPushDTO;
 import com.infosoul.mserver.dto.api.StatusPushDTO;
+import com.infosoul.mserver.dto.jpush.MessageDTO;
 import com.infosoul.mserver.dto.web.DeviceMapDTO;
 import com.infosoul.mserver.entity.airm.Device;
 import com.infosoul.mserver.entity.airm.Record;
@@ -32,9 +35,6 @@ import com.infosoul.mserver.jpush.JClient;
 import com.infosoul.mserver.service.airm.DeviceService;
 import com.infosoul.mserver.service.airm.RecordService;
 import com.infosoul.mserver.websocket.MapWebsocket;
-
-import java.util.Date;
-import java.util.Map;
 
 /**
  * 数据推送 RESTFull接口
@@ -395,12 +395,12 @@ public class PushResource extends BaseResource {
     }
 
     private void buildAqi(Record record, Device device) {
-        double so2 = DeviceUtils.getApi(record, device, 0x0A);
-        double no2 = DeviceUtils.getApi(record, device, 0x16);
-        double pm10 = record.getSensorVal10();
-        double co = DeviceUtils.getApi(record, device, 0x02);
-        double o3 = DeviceUtils.getApi(record, device, 0x15);
-        double pm25 = record.getSensorVal9();
+        double so2 = DeviceUtils.getSensorVal(record, device, 0x0A);
+        double no2 = DeviceUtils.getSensorVal(record, device, 0x16);
+        double pm10 = record.getSensorVal10() == null ? 0 : record.getSensorVal10();
+        double co = DeviceUtils.getSensorVal(record, device, 0x02);
+        double o3 = DeviceUtils.getSensorVal(record, device, 0x15);
+        double pm25 = record.getSensorVal9() == null ? 0 : record.getSensorVal9();
         Map<String, Object> aqiMap =
                 AqiUtils.getRealTime((float) so2, (float) no2, (float) pm10, (float) co, (float) o3, (float) pm25);
         Object aqi = aqiMap.get("aqi");
@@ -440,7 +440,8 @@ public class PushResource extends BaseResource {
         content.append(device.getStation());
         content.append("空气检测微站检测到空气异常，详情请点击查看。");
         Map<String, String> extras = Maps.newHashMap();
-        extras.put("id", record.getId());
+        extras.put("recordId", record.getId());
+        extras.put("deviceId", device.getDeviceId());
 
         messageDTO.setTitle(title);
         messageDTO.setMsgContent(content.toString());

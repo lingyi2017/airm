@@ -207,7 +207,7 @@ public class DeviceUtils {
         }
     }
 
-    public static double getApi(Record record, Device device, int sensorNum) {
+    public static double getSensorVal(Record record, Device device, int sensorNum) {
         Double val;
         if (device.getSensorNameNum1() == sensorNum) {
             val = record.getSensorVal1();

@@ -48,8 +48,6 @@ public class AqiUtils {
 	}
 
 	public static Map<String, Object> getRealTime(float so2, float no2, float pm10, float co, float o3, float pm25) {
-		System.out.println("==========RealTimeCalc==========");
-
 		// 分指数
 		HashMap<String, Integer> indexMap = new HashMap<String, Integer>();
 		RealTimeCalc realTimeCalc = new RealTimeCalc();
@@ -65,24 +63,18 @@ public class AqiUtils {
 		indexMap.put("o3", iAqi_o3);
 		int iAqi_pm25 = realTimeCalc.getIAqi("pm25", pm25);//19
 		indexMap.put("pm25", iAqi_pm25);
-		System.out.println(indexMap);
 
 		AqiCalc aqiCalc = new AqiCalc(indexMap);
 		// 首要污染物
 		ArrayList<String> primaryPollutant = aqiCalc.getPrimaryPollutant();
-		System.out.println(primaryPollutant);
 		// aqi
 		int aqi = indexMap.get(primaryPollutant.get(0));
-		System.out.println(aqi);
 		// 空气质量指数级别
 		String level = aqiCalc.getLevel(aqi);
-		System.out.println(level);
 		// 空气质量指数类别
 		String cls = aqiCalc.getCls(aqi);
-		System.out.println(cls);
 		// 空气质量指数类别表示颜色
 		String color = aqiCalc.getColor(aqi);
-		System.out.println(color);
 		// 全部AQI数据
 		return aqiCalc.getAllData();
 	}
