@@ -173,7 +173,10 @@ public class RecordAppResource extends BaseResource {
             userRecord.setUserId(UserUtils.getUser().getId());
             userRecord.setRecordId(dto.getId());
             userRecord.setStatus(Constant.RECORD_READ);
-            userRecordService.save(userRecord);
+            String status = userRecordService.getStatus(userRecord);
+            if (null == status) {
+                userRecordService.save(userRecord);
+            }
             return success();
         } catch (Exception e) {
             logger.error("APP端点击阅读", e.getMessage());
