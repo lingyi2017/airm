@@ -139,6 +139,11 @@ public class DeviceInfoRpDTO implements Serializable {
      */
     private String sensorUnit12;
 
+    /**
+     * 空气指数
+     */
+    private String aqi;
+
     public DeviceInfoRpDTO() {
         this.sensorName7 = SensorEnum.CO2.getName();
         this.sensorUnit7 = SensorEnum.CO2.getUnit();
@@ -352,5 +357,13 @@ public class DeviceInfoRpDTO implements Serializable {
 
     public void setSensorUnit12(String sensorUnit12) {
         this.sensorUnit12 = sensorUnit12;
+    }
+
+    public String getAqi() {
+        return aqi;
+    }
+
+    public void setAqi(String aqi) {
+        this.aqi = aqi;
     }
 }

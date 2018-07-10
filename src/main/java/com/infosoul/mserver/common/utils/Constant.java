@@ -61,4 +61,9 @@ public class Constant {
      */
     public static final Integer SENSOR_UNIT_PPB = 3;
 
+    /**
+     * 传感器值换算后的单位
+     */
+    public static final String SENSOR_CONVERT_UNIT = "μg/m3";
+
 }

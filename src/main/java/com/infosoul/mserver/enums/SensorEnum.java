@@ -8,7 +8,7 @@ package com.infosoul.mserver.enums;
  */
 public enum SensorEnum {
 
-    CO2("CO2", "PPM", 0x07, 0x02), PM1("PM1.0", "μg/m3", 0x54, 0x04), PM25("PM2.5", "μg/m3", 0x54, 0x04), PM10("PM10",
+    CO2("CO2", "μg/m3", 0x07, 0x02), PM1("PM1.0", "μg/m3", 0x54, 0x04), PM25("PM2.5", "μg/m3", 0x54, 0x04), PM10("PM10",
             "μg/m3", 0x54, 0x04), TEM("温度", "℃", 0x54, 0x04), HUM("湿度", "%RH", 0x54, 0x04);
 
     /**

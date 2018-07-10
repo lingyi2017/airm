@@ -1,31 +1,29 @@
 package com.infosoul.mserver.api.app.airm;
 
-import javax.ws.rs.*;
+import java.util.List;
 
-import com.google.common.collect.Lists;
-import com.infosoul.mserver.common.persistence.Page;
-import com.infosoul.mserver.common.utils.Constant;
-import com.infosoul.mserver.common.utils.DateUtils;
-import com.infosoul.mserver.common.utils.StringUtils;
-import com.infosoul.mserver.common.utils.UserUtils;
-import com.infosoul.mserver.dto.BaseRqDTO;
-import com.infosoul.mserver.dto.api.*;
-import com.infosoul.mserver.entity.airm.Record;
-import com.infosoul.mserver.entity.airm.UserRecord;
-import com.infosoul.mserver.entity.sys.User;
-import com.infosoul.mserver.service.airm.RecordService;
-import com.infosoul.mserver.service.airm.UserRecordService;
-import com.sun.org.apache.regexp.internal.RE;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.google.common.collect.Lists;
 import com.infosoul.mserver.api.BaseResource;
 import com.infosoul.mserver.api.ResponseRest;
+import com.infosoul.mserver.common.persistence.Page;
+import com.infosoul.mserver.common.utils.Constant;
+import com.infosoul.mserver.common.utils.StringUtils;
+import com.infosoul.mserver.common.utils.UserUtils;
 import com.infosoul.mserver.common.web.MediaTypes;
-import com.infosoul.mserver.service.airm.DeviceService;
-
-import java.util.List;
+import com.infosoul.mserver.dto.api.*;
+import com.infosoul.mserver.entity.airm.Record;
+import com.infosoul.mserver.entity.airm.UserRecord;
+import com.infosoul.mserver.service.airm.RecordService;
+import com.infosoul.mserver.service.airm.UserRecordService;
 
 /**
  * APP端历史记录RESTFull接口
@@ -59,6 +57,9 @@ public class RecordAppResource extends BaseResource {
         }
         try {
             Record record = recordService.findLatestByDeviceId(dto.getDeviceId());
+            if (null == record) {
+                return error(ResponseRest.Status.NOT_EXIST, "记录不存在");
+            }
             RecordLatestRpDTO rp = new RecordLatestRpDTO();
             BeanUtils.copyProperties(record, rp);
             return success(rp);
@@ -144,6 +145,9 @@ public class RecordAppResource extends BaseResource {
         }
         try {
             Record record = recordService.get(dto.getId());
+            if (null == record) {
+                return error(ResponseRest.Status.NOT_EXIST, "告警记录不存在");
+            }
             RecordAlarmDetailRpDTO rp = new RecordAlarmDetailRpDTO();
             BeanUtils.copyProperties(record, rp);
             rp.setAqi(60);

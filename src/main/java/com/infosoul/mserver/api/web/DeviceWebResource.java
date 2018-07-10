@@ -43,6 +43,9 @@ public class DeviceWebResource extends BaseResource {
         }
         try {
             Device device = deviceService.findByDeviceId(deviceId);
+            if (null == device) {
+                return error(ResponseRest.Status.NOT_EXIST, "设备不存在");
+            }
             DeviceInfoRpDTO rp = new DeviceInfoRpDTO();
             BeanUtils.copyProperties(device, rp);
             return success(rp);
