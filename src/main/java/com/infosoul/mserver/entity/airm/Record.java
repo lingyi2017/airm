@@ -28,11 +28,6 @@ public class Record extends IdEntity<Record> {
     private String status;
 
     /**
-     * 传感器1采样值
-     */
-    private Double sensorVal1;
-
-    /**
      * 空气指标
      */
     private Integer aqi;
@@ -41,6 +36,11 @@ public class Record extends IdEntity<Record> {
      * 1-优级；2-良好；3-轻度污染；4-中度污染；5-重度污染
      */
     private String pollutionDegree;
+
+    /**
+     * 传感器1采样值
+     */
+    private Double sensorVal1;
 
     /**
      * 传感器1状态

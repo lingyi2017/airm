@@ -14,6 +14,11 @@ public class RecordLatestRpDTO implements Serializable {
     private static final long serialVersionUID = 7907571347233771721L;
 
     /**
+     * 空气指数
+     */
+    private Integer aqi;
+
+    /**
      * 传感器1采样值
      */
     private Double sensorVal1;
@@ -82,6 +87,14 @@ public class RecordLatestRpDTO implements Serializable {
      * 添加时间
      */
     private String addDate;
+
+    public Integer getAqi() {
+        return aqi;
+    }
+
+    public void setAqi(Integer aqi) {
+        this.aqi = aqi;
+    }
 
     public Double getSensorVal1() {
         return sensorVal1;

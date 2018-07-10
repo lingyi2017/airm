@@ -150,8 +150,6 @@ public class RecordAppResource extends BaseResource {
             }
             RecordAlarmDetailRpDTO rp = new RecordAlarmDetailRpDTO();
             BeanUtils.copyProperties(record, rp);
-            rp.setAqi(60);
-            rp.setPollutionDegree("1");
             return success(rp);
         } catch (Exception e) {
             logger.error("APP端告警详情", e.getMessage());

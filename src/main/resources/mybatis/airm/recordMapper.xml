@@ -7,6 +7,8 @@
         <id column="id" property="id"/>
         <result column="device_id" property="deviceId"/>
         <result column="status" property="status"/>
+        <result column="aqi" property="aqi"/>
+        <result column="pollution_degree" property="pollutionDegree"/>
         <result column="sensor_val1" property="sensorVal1"/>
         <result column="sensor_status1" property="sensorStatus1"/>
         <result column="sensor_val2" property="sensorVal2"/>
