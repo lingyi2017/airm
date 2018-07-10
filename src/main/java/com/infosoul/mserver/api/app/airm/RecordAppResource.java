@@ -121,7 +121,6 @@ public class RecordAppResource extends BaseResource {
                 RecordAlarmListRpDTO rp = new RecordAlarmListRpDTO();
                 BeanUtils.copyProperties(record, rp);
                 rp.setRead(buildRead(record));
-                rp.setPollutionDegree("1");
                 rps.add(rp);
             }
             return success(rps, page.getCount());
@@ -174,7 +173,7 @@ public class RecordAppResource extends BaseResource {
             userRecord.setUserId(UserUtils.getUser().getId());
             userRecord.setRecordId(dto.getId());
             userRecord.setStatus(Constant.RECORD_READ);
-            userRecordService.updateStatus(userRecord);
+            userRecordService.save(userRecord);
             return success();
         } catch (Exception e) {
             logger.error("APP端点击阅读", e.getMessage());

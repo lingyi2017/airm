@@ -33,7 +33,7 @@
           (#{id},
           #{userId},
           #{recordId},
-          0
+          #{status}
           )
     </insert>
 
