@@ -79,7 +79,11 @@ public class StatResource extends BaseResource {
             List<Double> data = Lists.newArrayList();
             Map<String, String> paramMap = Maps.newHashMap();
             paramMap.put("deviceId", deviceId);
-            paramMap.put("sensor", "sensor_val" + sensorNum);
+            if (sensorNum == 13) {
+                paramMap.put("sensor", "aqi");
+            } else {
+                paramMap.put("sensor", "sensor_val" + sensorNum);
+            }
             for (int i = 0; i < segmentTimes.size() - 1; i++) {
                 paramMap.put("beginDate", segmentTimes.get(i));
                 paramMap.put("endDate", segmentTimes.get(i + 1));

@@ -22,35 +22,47 @@ public class DeviceUtils {
         }
         List<SensorDTO> sensors = Lists.newArrayList();
 
-        SensorDTO sensor1 = new SensorDTO();
-        sensor1.setNum(1);
-        sensor1.setName(device.getSensorName1());
-        sensors.add(sensor1);
+        if (!Constant.SENSOR_DEFAULT_NAME.equals(device.getSensorName1())) {
+            SensorDTO sensor1 = new SensorDTO();
+            sensor1.setNum(1);
+            sensor1.setName(device.getSensorName1());
+            sensors.add(sensor1);
+        }
 
-        SensorDTO sensor2 = new SensorDTO();
-        sensor2.setNum(2);
-        sensor2.setName(device.getSensorName2());
-        sensors.add(sensor2);
+        if (!Constant.SENSOR_DEFAULT_NAME.equals(device.getSensorName2())) {
+            SensorDTO sensor2 = new SensorDTO();
+            sensor2.setNum(2);
+            sensor2.setName(device.getSensorName2());
+            sensors.add(sensor2);
+        }
 
-        SensorDTO sensor3 = new SensorDTO();
-        sensor3.setNum(3);
-        sensor3.setName(device.getSensorName3());
-        sensors.add(sensor3);
+        if (!Constant.SENSOR_DEFAULT_NAME.equals(device.getSensorName3())) {
+            SensorDTO sensor3 = new SensorDTO();
+            sensor3.setNum(3);
+            sensor3.setName(device.getSensorName3());
+            sensors.add(sensor3);
+        }
 
-        SensorDTO sensor4 = new SensorDTO();
-        sensor4.setNum(1);
-        sensor4.setName(device.getSensorName4());
-        sensors.add(sensor4);
+        if (!Constant.SENSOR_DEFAULT_NAME.equals(device.getSensorName4())) {
+            SensorDTO sensor4 = new SensorDTO();
+            sensor4.setNum(1);
+            sensor4.setName(device.getSensorName4());
+            sensors.add(sensor4);
+        }
 
-        SensorDTO sensor5 = new SensorDTO();
-        sensor5.setNum(5);
-        sensor5.setName(device.getSensorName5());
-        sensors.add(sensor5);
+        if (!Constant.SENSOR_DEFAULT_NAME.equals(device.getSensorName5())) {
+            SensorDTO sensor5 = new SensorDTO();
+            sensor5.setNum(5);
+            sensor5.setName(device.getSensorName5());
+            sensors.add(sensor5);
+        }
 
-        SensorDTO sensor6 = new SensorDTO();
-        sensor6.setNum(6);
-        sensor6.setName(device.getSensorName6());
-        sensors.add(sensor6);
+        if (!Constant.SENSOR_DEFAULT_NAME.equals(device.getSensorName6())) {
+            SensorDTO sensor6 = new SensorDTO();
+            sensor6.setNum(6);
+            sensor6.setName(device.getSensorName6());
+            sensors.add(sensor6);
+        }
 
         SensorDTO sensor7 = new SensorDTO();
         sensor7.setNum(7);
@@ -81,6 +93,12 @@ public class DeviceUtils {
         sensor12.setNum(12);
         sensor12.setName(SensorEnum.HUM.getName());
         sensors.add(sensor12);
+
+        // 空气指数
+        SensorDTO sensor13 = new SensorDTO();
+        sensor13.setNum(13);
+        sensor13.setName("aqi");
+        sensors.add(sensor13);
         return sensors;
     }
 
@@ -118,6 +136,8 @@ public class DeviceUtils {
                 return SensorEnum.TEM.getName();
             case 12:
                 return SensorEnum.HUM.getName();
+            case 13:
+                return "aqi";
             default:
                 return "";
         }

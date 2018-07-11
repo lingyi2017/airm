@@ -66,4 +66,9 @@ public class Constant {
      */
     public static final String SENSOR_CONVERT_UNIT = "μg/m3";
 
+    /**
+     * 传感器默认名称
+     */
+    public static final String SENSOR_DEFAULT_NAME = "无";
+
 }
