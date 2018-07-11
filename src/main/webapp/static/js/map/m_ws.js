@@ -77,6 +77,20 @@ function addDeviceMarker(data) {
 
     // 创建标注
     var marker = new BMap.Marker(point, {icon: myIcon});
+    var x = 10;
+    var aqi = data.aqi;
+    if (10 <= aqi && aqi < 100) {
+        x = 7;
+    } else if (100 <= aqi && aqi < 1000) {
+        x = 4;
+    }
+    var label = new BMap.Label(aqi, {
+        offset: new BMap.Size(x, 20)
+    });
+    label.setStyle({
+        background: 'none', color: '#fff', border: 'none'
+    });
+    marker.setLabel(label)
     // 将标注添加到地图中
     map.addOverlay(marker);
 

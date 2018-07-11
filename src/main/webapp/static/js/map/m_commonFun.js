@@ -53,7 +53,19 @@ function openInfoWindow(marker, data) {
                 var header = datas.content.header;
                 var data = datas.content.data;
                 addDate = data.addDate;
-                recordHTM += "<table id='contentTable' class='table' style='width: 110%;margin-top: 5px;'>" +
+                var sensorVal1 = null == data.sensorVal1 ? 0 : data.sensorVal1;
+                var sensorVal2 = null == data.sensorVal2 ? 0 : data.sensorVal2;
+                var sensorVal3 = null == data.sensorVal3 ? 0 : data.sensorVal3;
+                var sensorVal4 = null == data.sensorVal4 ? 0 : data.sensorVal4;
+                var sensorVal5 = null == data.sensorVal5 ? 0 : data.sensorVal5;
+                var sensorVal6 = null == data.sensorVal6 ? 0 : data.sensorVal6;
+                var sensorVal7 = null == data.sensorVal7 ? 0 : data.sensorVal7;
+                var sensorVal8 = null == data.sensorVal8 ? 0 : data.sensorVal8;
+                var sensorVal9 = null == data.sensorVal9 ? 0 : data.sensorVal9;
+                var sensorVal10 = null == data.sensorVal10 ? 0 : data.sensorVal10;
+                var sensorVal11 = null == data.sensorVal11 ? 0 : data.sensorVal11;
+                var sensorVal12 = null == data.sensorVal12 ? 0 : data.sensorVal12;
+                recordHTM += "<table id='contentTable' class='table' style='width: 105%;margin-top: 5px;'>" +
                     "<tr>" +
                     "<td>" + header.sensorName1 + "</td>" +
                     "<td>" + header.sensorName2 + "</td>" +
@@ -61,10 +73,10 @@ function openInfoWindow(marker, data) {
                     "<td>" + header.sensorName4 + "</td>" +
                     "</tr>" +
                     "<tr>" +
-                    "<td>" + data.sensorVal1 + "</td>" +
-                    "<td>" + data.sensorVal2 + "</td>" +
-                    "<td>" + data.sensorVal3 + "</td>" +
-                    "<td>" + data.sensorVal4 + "</td>" +
+                    "<td>" + sensorVal1 + "</td>" +
+                    "<td>" + sensorVal2 + "</td>" +
+                    "<td>" + sensorVal3 + "</td>" +
+                    "<td>" + sensorVal4 + "</td>" +
                     "</tr>" +
                     "<tr>" +
                     "<td>" + header.sensorName5 + "</td>" +
@@ -73,10 +85,10 @@ function openInfoWindow(marker, data) {
                     "<td>" + header.sensorName8 + "</td>" +
                     "</tr>" +
                     "<tr>" +
-                    "<td>" + data.sensorVal5 + "</td>" +
-                    "<td>" + data.sensorVal6 + "</td>" +
-                    "<td>" + data.sensorVal7 + "</td>" +
-                    "<td>" + data.sensorVal8 + "</td>" +
+                    "<td>" + sensorVal5 + "</td>" +
+                    "<td>" + sensorVal6 + "</td>" +
+                    "<td>" + sensorVal7 + "</td>" +
+                    "<td>" + sensorVal8 + "</td>" +
                     "</tr>" +
                     "<tr>" +
                     "<td>" + header.sensorName9 + "</td>" +
@@ -85,10 +97,10 @@ function openInfoWindow(marker, data) {
                     "<td>" + header.sensorName12 + "</td>" +
                     "</tr>" +
                     "<tr>" +
-                    "<td>" + data.sensorVal9 + "</td>" +
-                    "<td>" + data.sensorVal10 + "</td>" +
-                    "<td>" + data.sensorVal11 + "</td>" +
-                    "<td>" + data.sensorVal12 + "</td>" +
+                    "<td>" + sensorVal9 + "</td>" +
+                    "<td>" + sensorVal10 + "</td>" +
+                    "<td>" + sensorVal11 + "</td>" +
+                    "<td>" + sensorVal12 + "</td>" +
                     "</tr>" +
                     "</table>";
             }
@@ -96,9 +108,9 @@ function openInfoWindow(marker, data) {
         }
     });
 
-    var titleHTM = "<span style='margin-right: 115px'>设备最近记录</span>" + addDate;
+    var titleHTM = "<span style='margin-right: 170px'>设备最近记录</span>" + addDate;
     var opts = {
-        width: 280,     // 信息窗口宽度
+        width: 330,     // 信息窗口宽度
         height: 180,     // 信息窗口高度
         title: titleHTM  // 信息窗口标题
     }

@@ -10,6 +10,8 @@ import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
 import com.infosoul.mserver.dto.web.WsPushDTO;
+import com.infosoul.mserver.entity.airm.Record;
+import com.infosoul.mserver.service.airm.RecordService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +41,9 @@ public class MapWebsocket {
 
     @Autowired
     private DeviceService deviceService;
+
+    @Autowired
+    private RecordService recordService;
 
     /**
      * 某个客户端连接的session
@@ -159,6 +164,12 @@ public class MapWebsocket {
         for (Device device : devices) {
             DeviceMapDTO dto = new DeviceMapDTO();
             BeanUtils.copyProperties(device, dto);
+            Record record = recordService.findLatestByDeviceId(device.getDeviceId());
+            if (null == record) {
+                dto.setAqi(0);
+            } else {
+                dto.setAqi(record.getAqi());
+            }
             dtos.add(dto);
         }
         WsPushDTO wsPushDTO = new WsPushDTO();

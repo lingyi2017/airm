@@ -95,7 +95,7 @@ public class MapResource extends BaseResource {
     }
 
     /**
-     * 通过ID查询设备
+     * 通过设备ID查询设备
      *
      * @param deviceId
      * @return
@@ -111,6 +111,12 @@ public class MapResource extends BaseResource {
             DeviceMapDTO dto = new DeviceMapDTO();
             if (null != device) {
                 BeanUtils.copyProperties(device, dto);
+                Record record = recordService.findLatestByDeviceId(deviceId);
+                if (null != record) {
+                    dto.setAqi(record.getAqi());
+                } else {
+                    dto.setAqi(0);
+                }
             }
             return success(dto);
         } catch (Exception e) {
