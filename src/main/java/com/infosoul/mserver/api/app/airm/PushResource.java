@@ -157,7 +157,7 @@ public class PushResource extends BaseResource {
                 paramMap.put("deviceId", device.getDeviceId());
                 paramMap.put("startDate", DateUtils.reduceMin(new Date(), -30));
                 Integer count = recordService.getRecordCount(paramMap);
-                if (null != count && count < 2) {
+                if (null != count && count <= 1) {
                     // 推送web端
                     webPush(device);
                     // 推送APP端
@@ -450,6 +450,7 @@ public class PushResource extends BaseResource {
         messageDTO.setExtras(extras);
         try {
             client.initMessage(messageDTO).push();
+            logger.info("极光推送成功：{}", JSON.toJSONString(messageDTO));
         } catch (Exception e) {
             logger.error("极光推送异常", e);
         }

@@ -23,7 +23,9 @@ import com.infosoul.mserver.dto.api.DeviceInfoRqDTO;
 import com.infosoul.mserver.dto.api.DeviceListRpDTO;
 import com.infosoul.mserver.dto.api.DeviceListRqDTO;
 import com.infosoul.mserver.entity.airm.Device;
+import com.infosoul.mserver.entity.airm.Record;
 import com.infosoul.mserver.service.airm.DeviceService;
+import com.infosoul.mserver.service.airm.RecordService;
 
 /**
  * APP端设备RESTFull接口
@@ -39,6 +41,9 @@ public class DeviceAppResource extends BaseResource {
 
     @Autowired
     private DeviceService deviceService;
+
+    @Autowired
+    private RecordService recordService;
 
     /**
      * 设备列表
@@ -59,6 +64,12 @@ public class DeviceAppResource extends BaseResource {
             for (Device device : devices) {
                 DeviceListRpDTO rpDTO = new DeviceListRpDTO();
                 BeanUtils.copyProperties(device, rpDTO);
+                Record record = recordService.findLatestByDeviceId(device.getDeviceId());
+                if (null != record) {
+                    rpDTO.setAqi(record.getAqi());
+                } else {
+                    rpDTO.setAqi(0);
+                }
                 rpDTOS.add(rpDTO);
             }
             return success(rpDTOS, page.getCount());

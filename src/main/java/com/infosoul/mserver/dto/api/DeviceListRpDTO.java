@@ -38,6 +38,11 @@ public class DeviceListRpDTO implements Serializable {
      */
     private String status;
 
+    /**
+     * 空气指数
+     */
+    private Integer aqi;
+
     public String getName() {
         return name;
     }
@@ -76,5 +81,13 @@ public class DeviceListRpDTO implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Integer getAqi() {
+        return aqi;
+    }
+
+    public void setAqi(Integer aqi) {
+        this.aqi = aqi;
     }
 }
