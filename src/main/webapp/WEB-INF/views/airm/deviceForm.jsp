@@ -30,15 +30,21 @@
     <form:hidden path="id"/>
     <tags:message content="${message}"/>
     <div class="control-group">
-        <label class="control-label">检测站:</label>
+        <label class="control-label">设备名称:</label>
         <div class="controls">
-            <form:input path="station" htmlEscape="false" maxlength="16" rangelength="2,16" class="required"/>
+            <form:input path="name" htmlEscape="false" maxlength="256" class="required"/>
         </div>
     </div>
     <div class="control-group">
         <label class="control-label">设备地址:</label>
         <div class="controls">
             <form:input path="address" htmlEscape="false" maxlength="256" class="required"/>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">检测站:</label>
+        <div class="controls">
+            <form:input path="station" htmlEscape="false" maxlength="16" rangelength="2,16" class="required"/>
         </div>
     </div>
     <div class="control-group">
