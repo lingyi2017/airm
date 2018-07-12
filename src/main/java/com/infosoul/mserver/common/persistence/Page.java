@@ -305,9 +305,9 @@ public class Page<T> {
      */
     public void setCount(long count) {
         this.count = count;
-        /*if (count >=0 && pageSize >= count) {
+        if (count >=0 && pageSize >= count) {
             pageNo = 1;
-        }*/
+        }
     }
 
     /**
