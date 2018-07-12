@@ -1,5 +1,6 @@
 package com.infosoul.mserver.jpush;
 
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -70,7 +71,7 @@ public class JClient {
     }
 
     private Message getMessage() {
-        return Message.newBuilder().setMsgContent(messageDTO.getMsgContent()).setTitle(messageDTO.getTitle())
+        return Message.newBuilder().setMsgContent(JSON.toJSONString(messageDTO)).setTitle(messageDTO.getTitle())
                 .addExtras(messageDTO.getExtras()).build();
     }
 }
