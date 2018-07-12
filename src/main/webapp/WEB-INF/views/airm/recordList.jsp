@@ -73,7 +73,8 @@
                             headerHTML += "<th>" + header.sensorName10 + "</th>";
                             headerHTML += "<th>" + header.sensorName11 + "</th>";
                             headerHTML += "<th>" + header.sensorName12 + "</th>";
-                            headerHTML += "<tr>"
+                            headerHTML += "<th style='width: 130px;'>时间</th>";
+                            headerHTML += "<tr>";
                             $("#js-head").html(headerHTML);
                         }
                     }
@@ -122,6 +123,7 @@
             <td>${record.sensorVal10}</td>
             <td>${record.sensorVal11}</td>
             <td>${record.sensorVal12}</td>
+            <td><fmt:formatDate value="${record.createDate}" pattern="yyyy-MM-dd hh:mm:ss"/></td>
         </tr>
     </c:forEach>
     </tbody>
