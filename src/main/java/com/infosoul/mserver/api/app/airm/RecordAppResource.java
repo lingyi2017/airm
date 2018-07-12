@@ -1,6 +1,7 @@
 package com.infosoul.mserver.api.app.airm;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -11,7 +12,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.infosoul.mserver.api.BaseResource;
 import com.infosoul.mserver.api.ResponseRest;
 import com.infosoul.mserver.common.persistence.Page;
@@ -20,8 +23,12 @@ import com.infosoul.mserver.common.utils.StringUtils;
 import com.infosoul.mserver.common.utils.UserUtils;
 import com.infosoul.mserver.common.web.MediaTypes;
 import com.infosoul.mserver.dto.api.*;
+import com.infosoul.mserver.dto.jpush.MessageDTO;
+import com.infosoul.mserver.entity.airm.Device;
 import com.infosoul.mserver.entity.airm.Record;
 import com.infosoul.mserver.entity.airm.UserRecord;
+import com.infosoul.mserver.jpush.JClient;
+import com.infosoul.mserver.service.airm.DeviceService;
 import com.infosoul.mserver.service.airm.RecordService;
 import com.infosoul.mserver.service.airm.UserRecordService;
 
@@ -42,6 +49,12 @@ public class RecordAppResource extends BaseResource {
 
     @Autowired
     private UserRecordService userRecordService;
+
+    @Autowired
+    private DeviceService deviceService;
+
+    @Autowired
+    private JClient client;
 
     /**
      * 设备最近一条记录
@@ -181,6 +194,55 @@ public class RecordAppResource extends BaseResource {
         } catch (Exception e) {
             logger.error("APP端点击阅读", e.getMessage());
             return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "点击阅读异常");
+        }
+    }
+
+    /**
+     * 模拟极光推送
+     *
+     * @param dto
+     * @return
+     */
+    @POST
+    @Path("/alarm/push")
+    public ResponseRest recordAlarmPush(PushRqDTO dto) {
+        if (null == dto || StringUtils.isEmpty(dto.getDeviceId())) {
+            return error(ResponseRest.Status.BAD_REQUEST, "设备ID不存在");
+        }
+        try {
+            Device device = deviceService.findByDeviceId(dto.getDeviceId());
+            if (null == device) {
+                return error(ResponseRest.Status.NOT_EXIST, "设备不存在");
+            }
+            Record record = recordService.findLatestByDeviceId(dto.getDeviceId());
+            if (null == record) {
+                return error(ResponseRest.Status.NOT_EXIST, "该设备没有告警记录");
+            }
+            MessageDTO messageDTO = new MessageDTO();
+            String title = "德科大气监测系统";
+            StringBuilder content = new StringBuilder(32);
+            content.append(device.getAddress());
+            content.append("地点");
+            content.append(device.getStation());
+            content.append("空气检测微站检测到空气异常，详情请点击查看。");
+            Map<String, String> extras = Maps.newHashMap();
+            extras.put("recordId", record.getId());
+            extras.put("deviceId", device.getDeviceId());
+
+            messageDTO.setTitle(title);
+            messageDTO.setMsgContent(content.toString());
+            messageDTO.setExtras(extras);
+            try {
+                client.initMessage(messageDTO).push();
+                logger.info("模拟推送成功：{}", JSON.toJSONString(messageDTO));
+                return success();
+            } catch (Exception e) {
+                logger.error("模拟推送异常", e);
+                return error(ResponseRest.Status.INTERNAL_SERVER_ERROR);
+            }
+        } catch (Exception e) {
+            logger.error("模拟推送异常", e);
+            return error(ResponseRest.Status.INTERNAL_SERVER_ERROR, "模拟推送异常");
         }
     }
 
